@@ -3,7 +3,7 @@
 
 :root {
     --bg-color: #223030;
-    --text-color: #002885;
+    --text-color: #ffffff;
     --bg-image: url("background.png");
     --SHORTCUT_TIMEOUT: 1.5s;
 }
