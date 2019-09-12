@@ -16,35 +16,36 @@ const MASTER_MAP = [
     {
         "groupName": "Hacking",
         "items":[
-            {"a": "Item A", "shortcutKey": "q", "url": "https://passwordsgenerator.net/"},
-            {"b": "Item B", "shortcutKey": "w", "url": "https://microcorruption.com/login"},
-            {"c": "Item C", "shortcutKey": "e", "url": "https://github.com/mgalde"},
-            {"d": "Item D", "shortcutKey": "r", "url": "http://ref.x86asm.net/coder32.html"},
-            {"e": "Item E", "shortcutKey": "t", "url": "https://app.any.run/"},
-            {"f": "Item F", "shortcutKey": "y", "url": "https://dnsdumpster.com/"}
+            {"name": "Password Generator", "shortcutKey": "q", "url": "https://passwordsgenerator.net/"},
+            {"name": "Micro Corruption", "shortcutKey": "w", "url": "https://microcorruption.com/login"},
+            {"name": "Github", "shortcutKey": "e", "url": "https://github.com/mgalde"},
+            {"name": "X86 Opp Codes", "shortcutKey": "r", "url": "http://ref.x86asm.net/coder32.html"},
+            {"name": "Malware Runner", "shortcutKey": "t", "url": "https://app.any.run/"},
+            {"name": "DNS Dumpster", "shortcutKey": "y", "url": "https://dnsdumpster.com/"},
+            {"name": "SHODAN", "shortcutKey": "u", "url": "https://shodan.com/"}
         ]
     },
     {
         "groupName": "References",
         "items":[
-            {"g": "Item G", "shortcutKey": "a", "url": "https://nari-cyber.com"},
-            {"h": "Item H", "shortcutKey": "s", "url": "https://www.serdp-estcp.org/Tools-and-Training/Installation-Energy-and-Water/Cybersecurity"},
-            {"i": "Item I", "shortcutKey": "d", "url": "https://www.infragard.org/"},
-            {"j": "Item J", "shortcutKey": "f", "url": "https://www.fbo.gov/"},
-            {"k": "Item K", "shortcutKey": "g", "url": "https://www.canva.com/create/infographics/"},
-            {"l": "Item L", "shortcutKey": "h", "url": "https://meraki.cisco.com/"}
+            {"name": "NARI Home Page", "shortcutKey": "a", "url": "https://nari-cyber.com"},
+            {"name": "ESTCP", "shortcutKey": "s", "url": "https://www.serdp-estcp.org/Tools-and-Training/Installation-Energy-and-Water/Cybersecurity"},
+            {"name": "Infragard", "shortcutKey": "d", "url": "https://www.infragard.org/"},
+            {"name": "FedBizzOpps", "shortcutKey": "f", "url": "https://www.fbo.gov/"},
+            {"name": "Infographics Builder", "shortcutKey": "g", "url": "https://www.canva.com/create/infographics/"},
+            {"name": "Meraki Management", "shortcutKey": "h", "url": "https://meraki.cisco.com/"}
         ]
     },
     {
         "groupName": "Important",
         "items":[
-            {"m": "Item M", "shortcutKey": "z", "url": "https://naricyber.tsheets.com/page/login"},
-            {"n": "Item N", "shortcutKey": "x", "url": "https://aex.dev.azure.com/me?mkt=en-US"},
-            {"o": "Item O", "shortcutKey": "c", "url": "https://unebraskanari.sharepoint.com/sites/team"},
-            {"p": "Item P", "shortcutKey": "v", "url": "https://nari-cyber.com/wp-login.php"},
-            {"q": "Item Q", "shortcutKey": "b", "url": "https://app.getflywheel.com/login"},
-            {"r": "Item R", "shortcutKey": "n", "url": "https://domains.google.com/m/registrar/nari-cyber.com/dns?hl=en_US&authuser=1"},
-            {"s": "Item S", "shortcutKey": "m", "url": "https://analytics.google.com/analytics/web/?authuser=1"}
+            {"name": "Time Card", "shortcutKey": "z", "url": "https://naricyber.tsheets.com/page/login"},
+            {"name": "VSTS", "shortcutKey": "x", "url": "https://aex.dev.azure.com/me?mkt=en-US"},
+            {"name": "Sharepoint", "shortcutKey": "c", "url": "https://unebraskanari.sharepoint.com/sites/team"},
+            {"name": "Wordpress", "shortcutKey": "v", "url": "https://nari-cyber.com/wp-login.php"},
+            {"name": "Hosting", "shortcutKey": "b", "url": "https://app.getflywheel.com/login"},
+            {"name": "DNS Management", "shortcutKey": "n", "url": "https://domains.google.com/m/registrar/nari-cyber.com/dns?hl=en_US&authuser=1"},
+            {"name": "Analytics Management", "shortcutKey": "m", "url": "https://analytics.google.com/analytics/web/?authuser=1"}
         ]
     }
 ]
