@@ -16,23 +16,23 @@ const MASTER_MAP = [
     {
         "groupName": "Hacking",
         "items":[
-            {"Password Generator": "Item A", "shortcutKey": "q", "url": "https://passwordsgenerator.net/"},
-            {"Micro Corruption": "Item B", "shortcutKey": "w", "url": "https://microcorruption.com/login"},
+            {"Password_Generator": "Item A", "shortcutKey": "q", "url": "https://passwordsgenerator.net/"},
+            {"Micro_Corruption": "Item B", "shortcutKey": "w", "url": "https://microcorruption.com/login"},
             {"Github": "Item C", "shortcutKey": "e", "url": "https://github.com/mgalde"},
-            {"X86 Opp Codes": "Item D", "shortcutKey": "r", "url": "http://ref.x86asm.net/coder32.html"},
-            {"Malware Sandbox": "Item E", "shortcutKey": "t", "url": "https://app.any.run/"},
-            {"DNS Dumpster": "Item F", "shortcutKey": "y", "url": "https://dnsdumpster.com/"}
+            {"X86_Opp_Codes": "Item D", "shortcutKey": "r", "url": "http://ref.x86asm.net/coder32.html"},
+            {"Malware_Sandbox": "Item E", "shortcutKey": "t", "url": "https://app.any.run/"},
+            {"DNS_Dumpster": "Item F", "shortcutKey": "y", "url": "https://dnsdumpster.com/"}
         ]
     },
     {
         "groupName": "References",
         "items":[
-            {"NARI Home": "Item G", "shortcutKey": "a", "url": "https://nari-cyber.com"},
+            {"NARI_Home": "Item G", "shortcutKey": "a", "url": "https://nari-cyber.com"},
             {"ESTCP": "Item H", "shortcutKey": "s", "url": "https://www.serdp-estcp.org/Tools-and-Training/Installation-Energy-and-Water/Cybersecurity"},
             {"InfraGard": "Item I", "shortcutKey": "d", "url": "https://www.infragard.org/"},
             {"FedBizOpps": "Item J", "shortcutKey": "f", "url": "https://www.fbo.gov/"},
-            {"Infographic Maker": "Item K", "shortcutKey": "g", "url": "https://www.canva.com/create/infographics/"},
-            {"Meraki System": "Item L", "shortcutKey": "h", "url": "https://meraki.cisco.com/"}
+            {"Infographic_Maker": "Item K", "shortcutKey": "g", "url": "https://www.canva.com/create/infographics/"},
+            {"Meraki_System": "Item L", "shortcutKey": "h", "url": "https://meraki.cisco.com/"}
         ]
     },
     {
