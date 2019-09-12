@@ -22,7 +22,7 @@ const MASTER_MAP = [
             {"name": "X86 Opp Codes", "shortcutKey": "r", "url": "http://ref.x86asm.net/coder32.html"},
             {"name": "Malware Runner", "shortcutKey": "t", "url": "https://app.any.run/"},
             {"name": "DNS Dumpster", "shortcutKey": "y", "url": "https://dnsdumpster.com/"},
-            {"name": "SHODAN", "shortcutKey": "u", "url": "https://shodan.com/"}
+            {"name": "SHODAN", "shortcutKey": "u", "url": "https://shodan.io/"}
         ]
     },
     {
