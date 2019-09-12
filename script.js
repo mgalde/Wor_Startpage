@@ -16,35 +16,35 @@ const MASTER_MAP = [
     {
         "groupName": "Hacking",
         "items":[
-            {"Password_Generator": "Item A", "shortcutKey": "q", "url": "https://passwordsgenerator.net/"},
-            {"Micro_Corruption": "Item B", "shortcutKey": "w", "url": "https://microcorruption.com/login"},
-            {"Github": "Item C", "shortcutKey": "e", "url": "https://github.com/mgalde"},
-            {"X86_Opp_Codes": "Item D", "shortcutKey": "r", "url": "http://ref.x86asm.net/coder32.html"},
-            {"Malware_Sandbox": "Item E", "shortcutKey": "t", "url": "https://app.any.run/"},
-            {"DNS_Dumpster": "Item F", "shortcutKey": "y", "url": "https://dnsdumpster.com/"}
+            {"a": "Item A", "shortcutKey": "q", "url": "https://passwordsgenerator.net/"},
+            {"b": "Item B", "shortcutKey": "w", "url": "https://microcorruption.com/login"},
+            {"c": "Item C", "shortcutKey": "e", "url": "https://github.com/mgalde"},
+            {"d": "Item D", "shortcutKey": "r", "url": "http://ref.x86asm.net/coder32.html"},
+            {"e": "Item E", "shortcutKey": "t", "url": "https://app.any.run/"},
+            {"f": "Item F", "shortcutKey": "y", "url": "https://dnsdumpster.com/"}
         ]
     },
     {
         "groupName": "References",
         "items":[
-            {"NARI_Home": "Item G", "shortcutKey": "a", "url": "https://nari-cyber.com"},
-            {"ESTCP": "Item H", "shortcutKey": "s", "url": "https://www.serdp-estcp.org/Tools-and-Training/Installation-Energy-and-Water/Cybersecurity"},
-            {"InfraGard": "Item I", "shortcutKey": "d", "url": "https://www.infragard.org/"},
-            {"FedBizOpps": "Item J", "shortcutKey": "f", "url": "https://www.fbo.gov/"},
-            {"Infographic_Maker": "Item K", "shortcutKey": "g", "url": "https://www.canva.com/create/infographics/"},
-            {"Meraki_System": "Item L", "shortcutKey": "h", "url": "https://meraki.cisco.com/"}
+            {"g": "Item G", "shortcutKey": "a", "url": "https://nari-cyber.com"},
+            {"h": "Item H", "shortcutKey": "s", "url": "https://www.serdp-estcp.org/Tools-and-Training/Installation-Energy-and-Water/Cybersecurity"},
+            {"i": "Item I", "shortcutKey": "d", "url": "https://www.infragard.org/"},
+            {"j": "Item J", "shortcutKey": "f", "url": "https://www.fbo.gov/"},
+            {"k": "Item K", "shortcutKey": "g", "url": "https://www.canva.com/create/infographics/"},
+            {"l": "Item L", "shortcutKey": "h", "url": "https://meraki.cisco.com/"}
         ]
     },
     {
         "groupName": "Important",
         "items":[
-            {"Tsheets": "Item M", "shortcutKey": "z", "url": "https://naricyber.tsheets.com/page/login"},
-            {"VSTS": "Item N", "shortcutKey": "x", "url": "https://aex.dev.azure.com/me?mkt=en-US"},
-            {"Sharepoint": "Item O", "shortcutKey": "c", "url": "https://unebraskanari.sharepoint.com/sites/team"},
-            {"Wordpress": "Item P", "shortcutKey": "v", "url": "https://nari-cyber.com/wp-login.php"},
-            {"Domain": "Item Q", "shortcutKey": "b", "url": "https://app.getflywheel.com/login"},
-            {"DNS": "Item R", "shortcutKey": "n", "url": "https://domains.google.com/m/registrar/nari-cyber.com/dns?hl=en_US&authuser=1"},
-            {"Analytics": "Item S", "shortcutKey": "m", "url": "https://analytics.google.com/analytics/web/?authuser=1"}
+            {"m": "Item M", "shortcutKey": "z", "url": "https://naricyber.tsheets.com/page/login"},
+            {"n": "Item N", "shortcutKey": "x", "url": "https://aex.dev.azure.com/me?mkt=en-US"},
+            {"o": "Item O", "shortcutKey": "c", "url": "https://unebraskanari.sharepoint.com/sites/team"},
+            {"p": "Item P", "shortcutKey": "v", "url": "https://nari-cyber.com/wp-login.php"},
+            {"q": "Item Q", "shortcutKey": "b", "url": "https://app.getflywheel.com/login"},
+            {"r": "Item R", "shortcutKey": "n", "url": "https://domains.google.com/m/registrar/nari-cyber.com/dns?hl=en_US&authuser=1"},
+            {"s": "Item S", "shortcutKey": "m", "url": "https://analytics.google.com/analytics/web/?authuser=1"}
         ]
     }
 ]
