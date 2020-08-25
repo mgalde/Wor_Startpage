@@ -33,7 +33,7 @@ const MASTER_MAP = [
             {"name": "Infragard", "shortcutKey": "d", "url": "https://www.infragard.org/"},
             {"name": "FedBizzOpps", "shortcutKey": "f", "url": "https://www.fbo.gov/"},
             {"name": "Infographics Builder", "shortcutKey": "g", "url": "https://www.canva.com/create/infographics/"},
-            {"name": "Grants.Gov", "shortcutKey": "h", "url": "https://www.grants.gov/"}
+            {"name": "Grants.Gov", "shortcutKey": "h", "url": "https://www.grants.gov/"},
             {"name": "The Packet", "shortcutKey": "p", "url": "https://the-packet.com/"}
         ]
     },
