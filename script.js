@@ -28,24 +28,24 @@ const MASTER_MAP = [
     {
         "groupName": "References",
         "items":[
-            {"name": "NARI Home Page", "shortcutKey": "a", "url": "https://nari-cyber.com"},
+            {"name": "CAST Home Page", "shortcutKey": "a", "url": "https://azcast.arizona.edu/"},
             {"name": "ESTCP", "shortcutKey": "s", "url": "https://www.serdp-estcp.org/Tools-and-Training/Installation-Energy-and-Water/Cybersecurity"},
             {"name": "Infragard", "shortcutKey": "d", "url": "https://www.infragard.org/"},
             {"name": "FedBizzOpps", "shortcutKey": "f", "url": "https://www.fbo.gov/"},
             {"name": "Infographics Builder", "shortcutKey": "g", "url": "https://www.canva.com/create/infographics/"},
-            {"name": "Meraki Management", "shortcutKey": "h", "url": "https://meraki.cisco.com/"}
+            {"name": "Grants.Gov", "shortcutKey": "h", "url": "https://www.grants.gov/"}
         ]
     },
     {
         "groupName": "Important",
         "items":[
-            {"name": "Time Card", "shortcutKey": "z", "url": "https://naricyber.tsheets.com/page/login"},
-            {"name": "VSTS", "shortcutKey": "x", "url": "https://aex.dev.azure.com/me?mkt=en-US"},
-            {"name": "Sharepoint", "shortcutKey": "c", "url": "https://unebraskanari.sharepoint.com/sites/team"},
-            {"name": "Wordpress", "shortcutKey": "v", "url": "https://nari-cyber.com/wp-login.php"},
-            {"name": "Hosting", "shortcutKey": "b", "url": "https://app.getflywheel.com/login"},
-            {"name": "DNS Management", "shortcutKey": "n", "url": "https://domains.google.com/m/registrar/nari-cyber.com/dns?hl=en_US&authuser=1"},
-            {"name": "Analytics Management", "shortcutKey": "m", "url": "https://analytics.google.com/analytics/web/?authuser=1"}
+            {"name": "Faculty Affairs", "shortcutKey": "z", "url": "https://facultyaffairs.arizona.edu/"},
+            {"name": "CYBER OPERATIONS /PORTAL", "shortcutKey": "x", "url": "https://portal.cyberapolis.com/"},
+            {"name": "Office of Instruction & Assessment", "shortcutKey": "c", "url": "https://oia.arizona.edu/"},
+            {"name": "UA VITAE", "shortcutKey": "v", "url": "https://uavitae.arizona.edu/"},
+            {"name": "UA Access", "shortcutKey": "b", "url": "https://uaccess.arizona.edu/"},
+            {"name": "D2L", "shortcutKey": "n", "url": "https://d2l.arizona.edu/d2l/home"},
+            {"name": "NSF Research", "shortcutKey": "m", "url": "https://www.research.gov/research-web/"}
         ]
     }
 ]
