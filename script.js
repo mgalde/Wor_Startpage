@@ -136,6 +136,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
     setTheme(savedTheme);
 });
 
+document.getElementById("search-form").addEventListener("submit", function(event) {
+    let query = document.getElementById("search-input").value.trim();
+    if (!query) {
+        event.preventDefault(); // Prevent the form from submitting if the search bar is empty.
+    }
+});
+
 function main(){
     setupWelcomeMessage();
     setupGroups();
