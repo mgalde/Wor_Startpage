@@ -141,12 +141,17 @@ function setTheme(theme) {
 }
 
 function toggleTheme() {
+    let themeSwitch = document.getElementById('theme-switch');
     let currentTheme = document.documentElement.getAttribute('data-theme');
     let newTheme = currentTheme === 'dark' ? 'light' : 'dark';
     setTheme(newTheme);
+    themeSwitch.checked = newTheme === 'light';  // Update the switch's state
 }
 
+
 document.addEventListener('DOMContentLoaded', (event) => {
+    let themeSwitch = document.getElementById('theme-switch');
+    themeSwitch.addEventListener('change', toggleTheme);
     let savedTheme = localStorage.getItem('theme') || 'dark';
     setTheme(savedTheme);
     setBackgroundBasedOnTime(); // Set background based on the time of day
