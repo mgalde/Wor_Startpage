@@ -69,15 +69,16 @@ function setBackgroundBasedOnTime() {
     const hour = new Date().getHours();
 
     if (hour >= 5 && hour < 8) {
-        document.body.style.backgroundImage = 'url("sunrise.jpg")';
+        document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("sunrise.jpg")';
     } else if (hour >= 8 && hour < 18) {
-        document.body.style.backgroundImage = 'url("daytime.jpg")';
+        document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("daytime.jpg")';
     } else if (hour >= 18 && hour < 20) {
-        document.body.style.backgroundImage = 'url("sunset.jpg")';
+        document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("sunset.jpg")';
     } else {
-        document.body.style.backgroundImage = 'url("night.jpg")';
+        document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("night.jpg")';
     }
 }
+
 
 function setupGroups(){
     for (let i = 0; i < MASTER_MAP.length; i++){
