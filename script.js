@@ -15,11 +15,11 @@ const SHORTCUT_TIMEOUT = 1500;
 const MASTER_MAP = [
     {
         "groupName": "Hacking",
-        "items":[
-            {"name": "Password Generator", "shortcutKey": "q", "url": "https://passwordsgenerator.net/"},
-            {"name": "Micro Corruption", "shortcutKey": "w", "url": "https://microcorruption.com/login"},
+        "items": [
+            {"name": "Exploit Database", "shortcutKey": "q", "url": "https://www.exploit-db.com/"},
+            {"name": "Bleeping Computer", "shortcutKey": "w", "url": "https://www.bleepingcomputer.com"},
             {"name": "Github", "shortcutKey": "e", "url": "https://github.com/mgalde"},
-            {"name": "X86 Opp Codes", "shortcutKey": "r", "url": "http://ref.x86asm.net/coder32.html"},
+            {"name": "Dark Reading", "shortcutKey": "r", "url": "https://www.darkreading.com"},
             {"name": "Malware Runner", "shortcutKey": "t", "url": "https://app.any.run/"},
             {"name": "DNS Dumpster", "shortcutKey": "y", "url": "https://dnsdumpster.com/"},
             {"name": "SHODAN", "shortcutKey": "u", "url": "https://shodan.io/"}
@@ -27,26 +27,26 @@ const MASTER_MAP = [
     },
     {
         "groupName": "References",
-        "items":[
+        "items": [
             {"name": "CAST Home Page", "shortcutKey": "a", "url": "https://azcast.arizona.edu/"},
             {"name": "ESTCP", "shortcutKey": "s", "url": "https://www.serdp-estcp.org/Tools-and-Training/Installation-Energy-and-Water/Cybersecurity"},
             {"name": "Infragard", "shortcutKey": "d", "url": "https://www.infragard.org/"},
-            {"name": "FedBizzOpps", "shortcutKey": "f", "url": "https://www.fbo.gov/"},
-            {"name": "Infographics Builder", "shortcutKey": "g", "url": "https://www.canva.com/create/infographics/"},
-            {"name": "Grants.Gov", "shortcutKey": "h", "url": "https://www.grants.gov/"},
+            {"name": "SAM.gov", "shortcutKey": "f", "url": "https://sam.gov/content/opportunities"},
+            {"name": "MITRE ATT&CK", "shortcutKey": "g", "url": "https://attack.mitre.org/"},
+            {"name": "NIST Cybersecurity Framework", "shortcutKey": "h", "url": "https://www.nist.gov/cyberframework"},
             {"name": "The Packet", "shortcutKey": "p", "url": "https://the-packet.com/"}
         ]
     },
     {
         "groupName": "Important",
-        "items":[
-            {"name": "Faculty Affairs", "shortcutKey": "z", "url": "https://facultyaffairs.arizona.edu/"},
+        "items": [
+            {"name": "CAST Sharepoint", "shortcutKey": "z", "url": "https://emailarizona.sharepoint.com/sites/CAST"},
             {"name": "CYBER OPERATIONS /PORTAL", "shortcutKey": "x", "url": "https://portal.cyberapolis.com/"},
-            {"name": "Office of Instruction & Assessment", "shortcutKey": "c", "url": "https://oia.arizona.edu/"},
+            {"name": "ChatGPT", "shortcutKey": "c", "url": "https://chat.openai.com"},
             {"name": "UA VITAE", "shortcutKey": "v", "url": "https://uavitae.arizona.edu/"},
             {"name": "UA Access", "shortcutKey": "b", "url": "https://uaccess.arizona.edu/"},
             {"name": "D2L", "shortcutKey": "n", "url": "https://d2l.arizona.edu/d2l/home"},
-            {"name": "NSF Research", "shortcutKey": "m", "url": "https://www.research.gov/research-web/"}
+            {"name": "CDW Anywhere", "shortcutKey": "m", "url": "https://anywhere.cdw.com/logon/LogonPoint/tmindex.html"}
         ]
     }
 ]
