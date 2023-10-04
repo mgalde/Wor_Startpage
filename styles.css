@@ -33,7 +33,7 @@ body {
     background-size: cover;
     color: var(--text-color);
     font-family: 'Raleway', sans-serif;
-    font-size: 22px;
+    font-size: 16px;  /* Default font size */
     user-select: none;
     animation: fadein 1s;
 }
@@ -88,6 +88,12 @@ body {
     padding: 0.3rem 0;
 }
 
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
 .shortcut {
     float: right;
     opacity: 0;
@@ -115,6 +121,22 @@ a {
     opacity: 1;
 }
 
+img {
+    max-width: 100%;
+    height: auto;
+}
+@media (min-width: 600px) {
+    body {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 600px) {
+    body {
+        background-color: lightblue;
+    }
+}
+
 @keyframes fadein {
     from { opacity: 0; }
     to   { opacity: 1; }
@@ -126,6 +148,9 @@ a {
     80% { opacity: 0.3; }
     100%   { opacity: 0; }
 }
+
+/* Default styles first, then media queries for larger screens */
+
 
 #theme-toggle {
     position: absolute;
