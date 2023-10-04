@@ -101,6 +101,8 @@ function setupGroups(){
             let link = document.createElement("a");
             link.innerHTML = curItemData.name;
             link.setAttribute("href", curItemData.url);
+            link.setAttribute("target", "_blank");
+
             pContainer.appendChild(link);
 
             let shortcutDisplay = document.createElement("span");
