@@ -7,12 +7,12 @@
     --SHORTCUT_TIMEOUT: 1.5s;
 
     /* Light Theme Variables */
-    --bg-color-light: #f5f5f5;
-    --text-color-light: #333;
+    --bg-color-light: #FAFAFA;
+    --text-color-light: #333344;
 
     /* Dark Theme Variables */
-    --bg-color-dark: #223030;
-    --text-color-dark: #ffffff;
+    --bg-color-dark: #1E1E3F;
+    --text-color-dark: #E0E0E0;
 }
 
 [data-theme="light"] {
