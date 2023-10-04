@@ -16,8 +16,12 @@
 </head>
 <body>
 	<div id="theme-toggle">
-    		<button onclick="toggleTheme()">Toggle Theme</button>
+	    <label class="switch">
+	        <input type="checkbox" id="theme-switch">
+	        <span class="slider"></span>
+	    </label>
 	</div>
+
 	<div id="search-container">
 	    <form id="search-form" action="https://www.google.com/search" method="get">
 	        <input type="text" name="q" id="search-input" placeholder="Search Google...">
