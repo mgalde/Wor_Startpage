@@ -79,12 +79,59 @@ function setBackgroundBasedOnTime() {
     }
 }
 
-function setupGroups() {
-    // ... (your existing setupGroups function)
+function setupGroups(){
+    for (let i = 0; i < MASTER_MAP.length; i++){
+        let curGroupData = MASTER_MAP[i];
+
+        let group = document.createElement("div");
+        group.className = "group";
+        $container.appendChild(group);
+
+        let header = document.createElement("h1");
+        header.innerHTML = curGroupData.groupName;
+        group.appendChild(header);
+
+        for (let j = 0; j < curGroupData.items.length; j++){
+            let curItemData = curGroupData.items[j];
+
+            let pContainer = document.createElement("p");
+            group.appendChild(pContainer);
+
+            let link = document.createElement("a");
+            link.innerHTML = curItemData.name;
+            link.setAttribute("href", curItemData.url);
+            pContainer.appendChild(link);
+
+            let shortcutDisplay = document.createElement("span");
+            shortcutDisplay.innerHTML = curItemData.shortcutKey;
+            shortcutDisplay.className = "shortcut";
+            shortcutDisplay.style.animation = "none";
+            pContainer.appendChild(shortcutDisplay);
+
+            getUrl[curItemData.shortcutKey] = curItemData.url
+        }
+    }
 }
 
 function shortcutListener(e) {
-    // ... (your existing shortcutListener function)
+    let key = e.key.toLowerCase();
+
+    if (listeningForShortcut && getUrl.hasOwnProperty(key)){
+        window.location = getUrl[key];
+    }
+
+    if (key === SHORTCUT_STARTER) {
+        clearTimeout(listenerTimeout);
+        listeningForShortcut = true;
+
+        // Animation reset
+        for (let i = 0; i < $shortcutDisplayList.length; i++){
+            $shortcutDisplayList[i].style.animation = "none";
+            setTimeout(function() { $shortcutDisplayList[i].style.animation = ''; }, 10);
+        }
+
+        listenerTimeout = setTimeout(function(){ listeningForShortcut = false; }, SHORTCUT_TIMEOUT);
+    }
 }
 
 function setTheme(theme) {
