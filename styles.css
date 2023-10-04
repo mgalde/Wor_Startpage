@@ -33,7 +33,7 @@ body {
     background-size: cover;
     background-position: center;
     color: var(--text-color);
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 16px;  /* Default font size */
     font-weight: 500;  /* Increase from the default, which is typically 400 */
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);  /* subtle shadow */
@@ -48,19 +48,25 @@ body {
 
 #logo h1 {
     font-weight: 200;
+    font-family: 'Roboto', sans-serif;
     font-size: 4rem;
     margin-bottom: 0;
 }
 
 #logo h2 {
     font-weight: 200;
+    font-family: 'Roboto', sans-serif;
     font-size: 2rem;
     margin-top: 0;
     opacity: 0.5;
 }
 
+
 #content {
     text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 #credits {
@@ -89,6 +95,7 @@ body {
 
 .group h1 {
     font-weight: 400;
+    font-family: 'Roboto', sans-serif;
     font-size: 2rem;
     margin-bottom: 0;
     border-bottom: 2px solid var(--text-color);
@@ -98,6 +105,19 @@ body {
     margin-bottom: 0;
     padding: 0.3rem 0;
 }
+
+/* Link hover effect */
+.group a:hover {
+    transform: scale(1.05);
+    color: #FF6347;  /* Tomato color for hover, feel free to change */
+}
+
+/* Group hover effect */
+.group:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
 
 .container {
     width: 100%;
