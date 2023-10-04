@@ -120,6 +120,21 @@ function shortcutListener(e) {
         listenerTimeout = setTimeout(function(){ listeningForShortcut = false; }, SHORTCUT_TIMEOUT);
     }
 }
+function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+}
+
+function toggleTheme() {
+    let currentTheme = document.documentElement.getAttribute('data-theme');
+    let newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    let savedTheme = localStorage.getItem('theme') || 'dark';
+    setTheme(savedTheme);
+});
 
 function main(){
     setupWelcomeMessage();
