@@ -8,11 +8,11 @@
 
     /* Light Theme Variables */
     --bg-color-light: #FAFAFA;
-    --text-color-light: #333344;
+    --text-color-light: #7be675;
 
     /* Dark Theme Variables */
     --bg-color-dark: #1E1E3F;
-    --text-color-dark: #E0E0E0;
+    --text-color-dark: #fff7a1;
 }
 
 [data-theme="light"] {
