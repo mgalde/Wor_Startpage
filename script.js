@@ -53,73 +53,40 @@ const MASTER_MAP = [
 
 let $container = document.getElementById("content");
 let getUrl = {};
-
 let $shortcutDisplayList = document.getElementsByClassName("shortcut");
 let listeningForShortcut = false;
 let listenerTimeout;
 
-function setupWelcomeMessage(){
+function setupWelcomeMessage() {
     let curHours = new Date().getHours();
-    curHours = Math.floor(curHours/6); // Simply dividing current hours by 6 proves to be a good enough aproximation.
+    curHours = Math.floor(curHours / 6);
     if (curHours == 4) curHours = 3;
     let welcome = "Good " + WELCOME_MESSAGE_TEMPLATE[curHours] + ", " + NAME;
     document.getElementById("welcome-string").innerHTML = welcome;
 }
 
-function setupGroups(){
-    for (let i = 0; i < MASTER_MAP.length; i++){
-        let curGroupData = MASTER_MAP[i];
+function setBackgroundBasedOnTime() {
+    const hour = new Date().getHours();
 
-        let group = document.createElement("div");
-        group.className = "group";
-        $container.appendChild(group);
-
-        let header = document.createElement("h1");
-        header.innerHTML = curGroupData.groupName;
-        group.appendChild(header);
-
-        for (let j = 0; j < curGroupData.items.length; j++){
-            let curItemData = curGroupData.items[j];
-
-            let pContainer = document.createElement("p");
-            group.appendChild(pContainer);
-
-            let link = document.createElement("a");
-            link.innerHTML = curItemData.name;
-            link.setAttribute("href", curItemData.url);
-            pContainer.appendChild(link);
-
-            let shortcutDisplay = document.createElement("span");
-            shortcutDisplay.innerHTML = curItemData.shortcutKey;
-            shortcutDisplay.className = "shortcut";
-            shortcutDisplay.style.animation = "none";
-            pContainer.appendChild(shortcutDisplay);
-
-            getUrl[curItemData.shortcutKey] = curItemData.url
-        }
+    if (hour >= 5 && hour < 8) {
+        document.body.style.backgroundImage = 'url("sunrise.jpg")';
+    } else if (hour >= 8 && hour < 18) {
+        document.body.style.backgroundImage = 'url("daytime.jpg")';
+    } else if (hour >= 18 && hour < 20) {
+        document.body.style.backgroundImage = 'url("sunset.jpg")';
+    } else {
+        document.body.style.backgroundImage = 'url("night.jpg")';
     }
+}
+
+function setupGroups() {
+    // ... (your existing setupGroups function)
 }
 
 function shortcutListener(e) {
-    let key = e.key.toLowerCase();
-
-    if (listeningForShortcut && getUrl.hasOwnProperty(key)){
-        window.location = getUrl[key];
-    }
-
-    if (key === SHORTCUT_STARTER) {
-        clearTimeout(listenerTimeout);
-        listeningForShortcut = true;
-
-        // Animation reset
-        for (let i = 0; i < $shortcutDisplayList.length; i++){
-            $shortcutDisplayList[i].style.animation = "none";
-            setTimeout(function() { $shortcutDisplayList[i].style.animation = ''; }, 10);
-        }
-
-        listenerTimeout = setTimeout(function(){ listeningForShortcut = false; }, SHORTCUT_TIMEOUT);
-    }
+    // ... (your existing shortcutListener function)
 }
+
 function setTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
@@ -134,19 +101,8 @@ function toggleTheme() {
 document.addEventListener('DOMContentLoaded', (event) => {
     let savedTheme = localStorage.getItem('theme') || 'dark';
     setTheme(savedTheme);
-});
-
-document.getElementById("search-form").addEventListener("submit", function(event) {
-    let query = document.getElementById("search-input").value.trim();
-    if (!query) {
-        event.preventDefault(); // Prevent the form from submitting if the search bar is empty.
-    }
-});
-
-function main(){
+    setBackgroundBasedOnTime(); // Set background based on the time of day
     setupWelcomeMessage();
     setupGroups();
     document.addEventListener('keyup', shortcutListener, false);
-}
-
-main();
+});
