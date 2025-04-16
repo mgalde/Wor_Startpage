@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,19 +25,22 @@
             --text-color-dark: #e1e1e1;
             --group-bg-dark: rgba(30, 30, 30, 0.7);
             --link-hover-dark: #a3abff;
-
+        }
+        
         [data-theme="light"] {
             --bg-color: var(--bg-color-light);
             --text-color: var(--text-color-light);
             --group-bg: var(--group-bg-light);
             --link-hover: var(--link-hover-light);
-
+        }
+        
         [data-theme="dark"] {
             --bg-color: var(--bg-color-dark);
             --text-color: var(--text-color-dark);
             --group-bg: var(--group-bg-dark);
             --link-hover: var(--link-hover-dark);
-
+        }
+        
         body {
             padding: 0;
             margin: 0;
@@ -55,26 +57,30 @@
             animation: fadein 1s;
             transition: background-image 1s ease;
             min-height: 100vh;
-
+        }
+        
         #logo {
             padding-top: 8vh;
             text-align: center;
             margin-bottom: 20px;
-
+        }
+        
         #logo h1 {
             font-weight: 200;
             font-family: 'Roboto', sans-serif;
             font-size: 3.5rem;
             margin-bottom: 0;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-
+        }
+        
         #logo h2 {
             font-weight: 200;
             font-family: 'Roboto', sans-serif;
             font-size: 1.5rem;
             margin-top: 5px;
             opacity: 0.8;
-
+        }
+        
         #content {
             text-align: center;
             display: flex;
@@ -83,7 +89,8 @@
             max-width: 1400px;
             margin: 0 auto;
             padding: 0 20px;
-
+        }
+        
         #credits {
             position: fixed;
             font-size: 0.9rem;
@@ -91,7 +98,8 @@
             bottom: 1rem;
             left: 1rem;
             z-index: 10;
-
+        }
+        
         .group {
             display: inline-block;
             vertical-align: top;
@@ -105,7 +113,8 @@
             padding: 20px;
             margin: 10px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-
+        }
+        
         .group h1 {
             font-weight: 400;
             font-family: 'Roboto', sans-serif;
@@ -114,18 +123,21 @@
             margin-bottom: 15px;
             padding-bottom: 8px;
             border-bottom: 2px solid var(--text-color);
-
+        }
+        
         .group p {
             margin: 8px 0;
             padding: 0.3rem 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-
+        }
+        
         .group:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-
+        }
+        
         .shortcut {
             float: right;
             opacity: 0;
@@ -134,23 +146,27 @@
             border-radius: 4px;
             font-size: 0.8rem;
             animation: pulse var(--SHORTCUT_TIMEOUT);
-
+        }
+        
         [data-theme="light"] .shortcut {
             background-color: rgba(0, 0, 0, 0.1);
-
+        }
+        
         /* The switch - the box around the slider */
         .switch {
             position: relative;
             display: inline-block;
             width: 60px;
             height: 34px;
-
+        }
+        
         /* Hide default HTML checkbox */
         .switch input {
             opacity: 0;
             width: 0;
             height: 0;
-
+        }
+        
         /* The slider */
         .slider {
             position: absolute;
@@ -162,7 +178,8 @@
             background-color: #ccc;
             transition: .4s;
             border-radius: 34px;
-
+        }
+        
         .slider:before {
             position: absolute;
             content: "";
@@ -173,19 +190,24 @@
             background-color: white;
             transition: .4s;
             border-radius: 50%;
-
+        }
+        
         input:checked + .slider {
             background-color: var(--link-hover);
-
+        }
+        
         input:focus + .slider {
             box-shadow: 0 0 1px var(--link-hover);
-
+        }
+        
         input:checked + .slider:before {
             transform: translateX(26px);
-
+        }
+        
         a, a:hover {
             transition: all 0.3s ease;
-
+        }
+        
         a {
             color: var(--text-color);
             text-decoration: none;
@@ -193,12 +215,14 @@
             padding: 5px 0;
             display: inline-block;
             position: relative;
-
+        }
+        
         .group a:hover {
             opacity: 1;
             color: var(--link-hover);
             transform: translateX(5px);
-
+        }
+        
         .group a:hover::after {
             content: '';
             position: absolute;
@@ -209,11 +233,13 @@
             background-color: var(--link-hover);
             transform: scaleX(1);
             transition: transform 0.3s;
-
+        }
+        
         #credits a:hover {
             opacity: 1;
             text-decoration: underline;
-
+        }
+        
         #theme-toggle {
             position: fixed;
             top: 20px;
@@ -221,11 +247,13 @@
             z-index: 10;
             display: flex;
             align-items: center;
-
+        }
+        
         #theme-toggle span {
             margin-right: 10px;
             font-size: 0.9rem;
-
+        }
+        
         #search-container {
             text-align: center;
             margin: 25px 0;
@@ -233,7 +261,8 @@
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
-
+        }
+        
         #search-input {
             padding: 12px 20px;
             width: 100%;
@@ -246,16 +275,19 @@
             color: var(--text-color);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
-
+        }
+        
         #search-input::placeholder {
             color: var(--text-color);
             opacity: 0.6;
-
+        }
+        
         #search-input:focus {
             outline: none;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
             background-color: rgba(255, 255, 255, 0.25);
-
+        }
+        
         .weather-widget {
             position: fixed;
             top: 20px;
@@ -270,15 +302,18 @@
             font-size: 0.9rem;
             z-index: 100;
             transition: all 0.3s ease;
-
+        }
+        
         .weather-widget:hover {
             transform: translateY(3px);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-
+        }
+        
         .weather-icon {
             margin-right: 10px;
             font-size: 1.5rem;
-
+        }
+        
         #datetime {
             position: fixed;
             top: 70px;
@@ -290,44 +325,54 @@
             backdrop-filter: blur(8px);
             text-align: center;
             font-size: 0.9rem;
-
+        }
+        
         #datetime .time {
             font-size: 1.2rem;
             font-weight: bold;
             margin-bottom: 5px;
-
+        }
+        
         #datetime .date {
             opacity: 0.8;
-
+        }
+        
         @media (max-width: 1200px) {
             .group {
                 width: 30%;
-
-
+            }
+        }
+        
         @media (max-width: 900px) {
             .group {
                 width: 45%;
-
+            }
+            
             #logo h1 {
                 font-size: 3rem;
-
-
+            }
+        }
+        
         @media (max-width: 600px) {
             .group {
                 width: 90%;
-
+            }
+            
             #logo h1 {
                 font-size: 2.5rem;
-
+            }
+            
             #logo h2 {
                 font-size: 1.2rem;
-
+            }
+            
             .weather-widget, #datetime {
                 position: static;
                 margin: 10px auto;
                 width: fit-content;
-
-
+            }
+        }
+        
         .news-ticker {
     position: fixed;
     bottom: 0;
@@ -343,6 +388,7 @@
     display: flex;
     align-items: center;
     backdrop-filter: blur(8px);
+}
 
 .news-ticker-label {
     font-weight: bold;
@@ -352,26 +398,31 @@
     color: white;
     border-radius: 4px;
     white-space: nowrap;
+}
 
 .news-ticker-container {
     overflow: hidden;
     height: 100%;
     flex-grow: 1;
     position: relative;
+}
 
 .news-ticker-content {
-  display: flex;
-  align-items: center;
-  position: absolute;
-  white-space: nowrap;
-  will-change: transform;
-  animation: ticker-scroll 240s linear infinite; /* Slowed down from 240s to 360s for much slower speed */
+    display: flex;
+    align-items: center;
+    position: absolute;
+    white-space: nowrap;
+    will-change: transform;
+    transition: all 0.5s ease;
+    animation: ticker-scroll 900s linear infinite; /* Slowed down from 240s to 360s for much slower speed */
     animation-timing-function: linear; /* Ensures consistently smooth scrolling */
+}
 
 .news-ticker-item {
     margin-right: 60px;
     display: inline-flex;
     align-items: center;
+}
 
 .news-ticker-item a {
     color: var(--text-color);
@@ -379,31 +430,31 @@
     opacity: 0.9;
     transition: opacity 0.3s;
     font-size: 0.95rem;
+}
 
 .news-ticker-item a:hover {
     opacity: 1;
     color: var(--link-hover);
+}
 
 .news-ticker-item::before {
     content: "•";
     margin-right: 10px;
     color: rgba(255, 0, 0, 0.7);
+}
 
 .news-ticker-container:hover .news-ticker-content {
     animation-play-state: paused;
+}
 
 @keyframes ticker-scroll {
-  0% {
-    transform: translateX(100%);
-
-  100% {
-    transform: translateX(-200%);
-
-
+    0% {
+        transform: translateX(100%);
+    }
     100% {
         transform: translateX(-120%); /* Extended to ensure continuous scrolling */
-
-
+    }
+}
     </style>
 </head>
 <body>
@@ -540,7 +591,6 @@
                     {"name": "Twitch", "shortcutKey": "=", "url": "https://www.twitch.tv/"}
                 ]
             }
-
         ];
         
         let $container = document.getElementById("content");
@@ -555,7 +605,8 @@
             if (curHours == 4) curHours = 3;
             let welcome = "Good " + WELCOME_MESSAGE_TEMPLATE[curHours] + ", " + NAME;
             document.getElementById("welcome-string").innerHTML = welcome;
-
+        }
+        
         function setBackgroundBasedOnTime() {
             const hour = new Date().getHours();
             
@@ -567,8 +618,9 @@
                 document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("sunset.jpg")';
             } else {
                 document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("night.jpg")';
-
-
+            }
+        }
+        
         function updateDateTime() {
             const now = new Date();
             
@@ -584,7 +636,8 @@
             
             // Call this function again in 1 second
             setTimeout(updateDateTime, 1000);
-
+        }
+        
         function fetchWeather() {
             const latitude = 32.253460;
             const longitude = -110.911789;
@@ -594,7 +647,7 @@
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Weather API response was not ok');
-
+                    }
                     return response.json();
                 })
                 .then(data => {
@@ -607,7 +660,7 @@
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Forecast API response was not ok');
-
+                    }
                     return response.json();
                 })
                 .then(forecastData => {
@@ -629,7 +682,7 @@
                             iconElem.textContent = "🌤️";
                         } else {
                             iconElem.textContent = "☁️";
-
+                        }
                     } else if (forecast.includes('rain') || forecast.includes('shower')) {
                         iconElem.textContent = "🌧️";
                     } else if (forecast.includes('snow')) {
@@ -638,7 +691,8 @@
                         iconElem.textContent = "⛈️";
                     } else {
                         iconElem.textContent = "🌡️"; // Default icon
-
+                    }
+                    
                     console.log('Weather updated with forecast:', currentForecast);
                 })
                 .catch(error => {
@@ -651,7 +705,8 @@
             
             // Refresh every 30 minutes
             setTimeout(fetchWeather, 30 * 60 * 1000);
-
+        }
+        
         function setupGroups(){
             // Clear existing content
             $container.innerHTML = '';
@@ -687,15 +742,17 @@
                     pContainer.appendChild(shortcutDisplay);
                     
                     getUrl[curItemData.shortcutKey] = curItemData.url;
-
-
-
+                }
+            }
+        }
+        
         function shortcutListener(e) {
             let key = e.key.toLowerCase();
             
             if (listeningForShortcut && getUrl.hasOwnProperty(key)){
                 window.location = getUrl[key];
-
+            }
+            
             if (key === SHORTCUT_STARTER) {
                 clearTimeout(listenerTimeout);
                 listeningForShortcut = true;
@@ -704,21 +761,25 @@
                 for (let i = 0; i < $shortcutDisplayList.length; i++){
                     $shortcutDisplayList[i].style.animation = "none";
                     setTimeout(function() { $shortcutDisplayList[i].style.animation = ''; }, 10);
-
+                }
+                
                 listenerTimeout = setTimeout(function(){ listeningForShortcut = false; }, SHORTCUT_TIMEOUT);
-
-
+            }
+        }
+        
         function setTheme(theme) {
             document.documentElement.setAttribute('data-theme', theme);
             localStorage.setItem('theme', theme);
-
+        }
+        
         function toggleTheme() {
             let themeSwitch = document.getElementById('theme-switch');
             let currentTheme = document.documentElement.getAttribute('data-theme');
             let newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             setTheme(newTheme);
             themeSwitch.checked = newTheme === 'light';  // Update the switch's state
-
+        }
+        
         // Event when the DOM is fully loaded
         document.addEventListener('DOMContentLoaded', (event) => {
             let themeSwitch = document.getElementById('theme-switch');
@@ -733,7 +794,7 @@
             searchInput.addEventListener('blur', () => {
                 if (searchInput.value === '') {
                     searchInput.style.width = '';
-
+                }
             });
             
             // Load saved theme or default to dark
@@ -757,15 +818,50 @@
         // Function to fetch cybersecurity news
         // Function to add some redundancy to prevent gaps
 // Fisher-Yates shuffle algorithm to randomize news items
-// Function to shuffle array (Fisher-Yates algorithm)
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
-
+    }
     return array;
+}
 
-// Load fallback news immediately to show something while fetching real news
+// Function to update the news ticker with items
+function updateNewsTicker(newsItems) {
+    const tickerContent = document.getElementById('news-ticker-content');
+    tickerContent.innerHTML = '';
+    
+    const itemsCopy = [...newsItems];
+
+    newsItems.forEach(item => {
+        const newsItem = document.createElement('div');
+        newsItem.className = 'news-ticker-item';
+        const link = document.createElement('a');
+        link.href = item.link;
+        link.target = '_blank';
+        link.textContent = `[${item.sourceName || 'News'}] ${item.title}`;
+        newsItem.appendChild(link);
+        tickerContent.appendChild(newsItem);
+    });
+
+    const spacer = document.createElement('div');
+    spacer.className = 'news-ticker-item';
+    spacer.style.margin = '0 100px';
+    tickerContent.appendChild(spacer);
+
+    itemsCopy.forEach(item => {
+        const newsItem = document.createElement('div');
+        newsItem.className = 'news-ticker-item';
+        const link = document.createElement('a');
+        link.href = item.link;
+        link.target = '_blank';
+        link.textContent = `[${item.sourceName || 'News'}] ${item.title}`;
+        newsItem.appendChild(link);
+        tickerContent.appendChild(newsItem);
+    });
+}
+
+// Fallback news in case the API fails
 function loadFallbackNews() {
     const fallbackNews = [
         { title: "Maintaining proper cyber hygiene is essential for protecting against threats", link: "https://thehackernews.com/", sourceName: "The Hacker News" },
@@ -786,82 +882,12 @@ function loadFallbackNews() {
         { title: "New transportation technology promises to reduce commute times", link: "https://news.yahoo.com/", sourceName: "Yahoo News" }
     ];
     
-    const shuffledNews = shuffleArray(fallbackNews);
-    updateNewsTicker(shuffledNews);
-    return shuffledNews;
+    shuffleArray(fallbackNews);
+    updateNewsTicker(fallbackNews);
+}
 
-// Improved function to update the news ticker with better continuity
-function updateNewsTicker(newsItems) {
-    const tickerContent = document.getElementById('news-ticker-content');
-    tickerContent.innerHTML = '';
-    
-    // Calculate the total width needed
-    let totalWidth = 0;
-    const tempDiv = document.createElement('div');
-    tempDiv.style.visibility = 'hidden';
-    tempDiv.style.position = 'absolute';
-    document.body.appendChild(tempDiv);
-    
-    newsItems.forEach(item => {
-        const testItem = document.createElement('div');
-        testItem.className = 'news-ticker-item';
-        const testLink = document.createElement('a');
-        testLink.textContent = `[${item.sourceName || 'News'}] ${item.title}`;
-        testItem.appendChild(testLink);
-        tempDiv.appendChild(testItem);
-        totalWidth += testItem.offsetWidth + 60; // Adding margin-right
-    });
-    
-    document.body.removeChild(tempDiv);
-    
-    // Create duplicate sets to ensure seamless scrolling
-    const sets = 4; // Create multiple sets for continuous scrolling
-    for (let i = 0; i < sets; i++) {
-        newsItems.forEach(item => {
-            const newsItem = document.createElement('div');
-            newsItem.className = 'news-ticker-item';
-            const link = document.createElement('a');
-            link.href = item.link;
-            link.target = '_blank';
-            link.textContent = `[${item.sourceName || 'News'}] ${item.title}`;
-            newsItem.appendChild(link);
-            tickerContent.appendChild(newsItem);
-        });
-
-    // Adjust animation based on content
-    const tickerContainer = document.querySelector('.news-ticker-container');
-    const containerWidth = tickerContainer.offsetWidth;
-    const contentWidth = totalWidth;
-    
-    // Dynamic animation duration based on content length
-    // Calculate a reasonable speed (pixels per second)
-    const pixelsPerSecond = 60; // Adjust this value to control speed
-    const animationDuration = (contentWidth / pixelsPerSecond) * sets;
-    
-    tickerContent.style.animation = `ticker-scroll ${animationDuration}s linear infinite`;
-    
-    // Restart animation to apply new duration
-    tickerContent.style.animationName = 'none';
-    void tickerContent.offsetWidth; // Trigger reflow
-    tickerContent.style.animationName = 'ticker-scroll';
-
-// Function to fetch cybersecurity news with better error handling and loading states
+// Function to fetch cybersecurity news
 function fetchCyberSecurityNews() {
-    // Show loading state only if we don't already have news displayed
-    const tickerContent = document.getElementById('news-ticker-content');
-    if (tickerContent.children.length <= 1) {
-        const loadingItem = document.createElement('div');
-        loadingItem.className = 'news-ticker-item';
-        const loadingLink = document.createElement('a');
-        loadingLink.href = "#";
-        loadingLink.textContent = "Loading news feed...";
-        loadingItem.appendChild(loadingLink);
-        tickerContent.innerHTML = '';
-        tickerContent.appendChild(loadingItem);
-        
-        // Load fallback news immediately to show something
-        const fallbackItems = loadFallbackNews();
-
     const newsSources = [
         {
             name: 'The Hacker News',
@@ -897,253 +923,52 @@ function fetchCyberSecurityNews() {
             name: 'Yahoo News',
             url: 'https://api.rss2json.com/v1/api.json?rss_url=https://news.yahoo.com/rss/',
             limit: 7
-        }    
+        }
     ];
     
     let allNewsItems = [];
     let fetchPromises = [];
     
-    // Create a timeout promise to limit waiting time
-    const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error('Fetch timeout')), 10000); // 10 second timeout
-    });
-    
     newsSources.forEach(source => {
-        const fetchPromise = Promise.race([
-            fetch(source.url)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error ${response.status}`);
-
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.status === 'ok') {
-                        const items = data.items.slice(0, source.limit).map(item => {
-                            return {
-                                title: item.title,
-                                link: item.link,
-                                sourceName: source.name
-                            };
-                        });
-                        allNewsItems = allNewsItems.concat(items);
-                        
-                        // Update ticker progressively as we get more news
-                        if (allNewsItems.length >= 5) {
-                            shuffleArray(allNewsItems);
-                            updateNewsTicker(allNewsItems);
-
-
-                }),
-            timeoutPromise
-        ]).catch(error => {
-            console.warn(`Error fetching from ${source.name}:`, error);
-            // Continue without this source
-        });
+        const fetchPromise = fetch(source.url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'ok') {
+                    const items = data.items.slice(0, source.limit).map(item => {
+                        item.sourceName = source.name;
+                        return item;
+                    });
+                    allNewsItems = allNewsItems.concat(items);
+                }
+            })
+            .catch(error => {
+                console.error(`Error fetching from ${source.name}:`, error);
+            });
         
         fetchPromises.push(fetchPromise);
     });
     
-    // Handle all promises
-    Promise.allSettled(fetchPromises)
+    Promise.all(fetchPromises)
         .then(() => {
             if (allNewsItems.length > 0) {
                 shuffleArray(allNewsItems);
                 updateNewsTicker(allNewsItems);
             } else {
-                // If we didn't get any news, ensure fallback is displayed
                 loadFallbackNews();
-
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching news:', error);
+            loadFallbackNews();
         });
+}
 
 // Initialize the ticker
 function setupNewsTicker() {
-    // Load fallback news immediately to prevent initial empty state
-    loadFallbackNews();
-    
-    // Try to fetch real news right away
     fetchCyberSecurityNews();
-    
-    // Set refresh interval (every 5 minutes)
-    setInterval(fetchCyberSecurityNews, 300000);
+    setInterval(fetchCyberSecurityNews, 600000); // every 10 minutes
+}
 
-// Update the CSS for better news ticker animation
-function updateNewsTickerCSS() {
-    const styleElement = document.createElement('style');
-    styleElement.textContent = `
-    @keyframes ticker-scroll {
-  0% {
-    transform: translateX(100%);
-
-  100% {
-    transform: translateX(-200%);
-
-
-        100% {
-            transform: translateX(-300%);
-
-
-    .news-ticker {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background-color: var(--group-bg);
-        color: var(--text-color);
-        padding: 10px;
-        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15);
-        z-index: 1000;
-        overflow: hidden;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        backdrop-filter: blur(8px);
-
-    .news-ticker-container {
-        overflow: hidden;
-        height: 100%;
-        flex-grow: 1;
-        position: relative;
-
-    .news-ticker-content {
-  display: flex;
-  align-items: center;
-  position: absolute;
-  white-space: nowrap;
-  will-change: transform;
-  animation: ticker-scroll 240s linear infinite;
-
-    .news-ticker-item {
-        margin-right: 60px;
-        display: inline-flex;
-        align-items: center;
-
-    `;
-    
-    document.head.appendChild(styleElement);
-
-// Call this function to update the CSS when setting up
-function initializeNewsTickerImprovements() {
-    updateNewsTickerCSS();
-    setupNewsTicker();
-
-// This is the function you should call to initialize everything
-
-
-
-        // Add this script at the end of your body tag to help debug and fix the news ticker issues
-
-// [Removed extra DOMContentLoaded listeners to consolidate behavior]
-
-  // 6. Force a redraw of the ticker
-  tickerContent.style.display = 'none';
-  void tickerContent.offsetHeight; // Trigger reflow
-  tickerContent.style.display = 'flex';
-  
-  // 7. Apply animation programmatically
-  setTimeout(() => {
-    console.log('Applying animation directly');
-    tickerContent.style.animationName = 'ticker-scroll';
-    tickerContent.style.animationDuration = '180s';
-    tickerContent.style.animationIterationCount = 'infinite';
-    tickerContent.style.animationTimingFunction = 'linear';
-  }, 100);
-  
-  // 8. Monitor if animation is actually running
-  setTimeout(() => {
-    const computedStyle = window.getComputedStyle(tickerContent);
-    console.log('Animation status check:', {
-      animationName: computedStyle.animationName,
-      animationDuration: computedStyle.animationDuration,
-      animationPlayState: computedStyle.animationPlayState,
-      display: computedStyle.display,
-      visibility: computedStyle.visibility,
-      transform: computedStyle.transform
-    });
-    
-    // 9. If still no animation, try forcing with transform
-    if (computedStyle.animationPlayState !== 'running' || 
-        computedStyle.animationName === 'none') {
-      console.log('Animation not running, applying manual animation');
-      
-      // Create a manual animation using requestAnimationFrame
-      let startPosition = 100; // Start off-screen to the right
-      const animate = () => {
-        startPosition -= 0.05; // Adjust speed as needed
-        if (startPosition < -300) startPosition = 100; // Reset when fully off-screen
-        
-        tickerContent.style.transform = `translateX(${startPosition}%)`;
-        requestAnimationFrame(animate);
-      };
-      
-      requestAnimationFrame(animate);
-
-  }, 1000);
-});
-
-        // Reset ticker position
-document.getElementById('news-ticker-content').style.transform = 'translateX(100%)';
-// Restart animation
-document.getElementById('news-ticker-content').style.animation = 'none';
-setTimeout(() => {
-  document.getElementById('news-ticker-content').style.animation = 'ticker-scroll 180s linear infinite';
-}, 50);
-
-        console.log('Ticker dimensions:', 
-  document.querySelector('.news-ticker').offsetHeight,
-  document.querySelector('.news-ticker').offsetWidth);
-
-
-        // Add this script at the end of your body tag to fix the ticker timing issues
-
-// [Removed extra DOMContentLoaded listeners to consolidate behavior]
-
-      console.log(`Duplicated ticker items: ${tickerContent.children.length} total items`);
-
-    // 3. Reset and restart the animation
-    if (tickerContent) {
-      tickerContent.style.animation = 'none';
-      void tickerContent.offsetWidth; // Trigger reflow
-      tickerContent.style.animation = 'ticker-scroll 180s linear infinite';
-
-    // 4. Log success
-    console.log('Ticker timing fix applied successfully');
-
-  // Call the function immediately to fix any existing ticker
-  fixTickerTiming();
-  
-  // Also apply fix when window loads (in case ticker loads after this script)
-  window.addEventListener('load', fixTickerTiming);
-  
-  // Also hook into your original news fetching if possible
-  const originalUpdateNewsTicker = window.updateNewsTicker;
-  if (typeof originalUpdateNewsTicker === 'function') {
-    window.updateNewsTicker = function(newsItems) {
-      const result = originalUpdateNewsTicker.apply(this, arguments);
-      // Apply our timing fix after the original function runs
-      setTimeout(fixTickerTiming, 100);
-      return result;
-    };
-    console.log('Hooked into original updateNewsTicker function');
-
-  // Periodically check and fix ticker if needed
-  setInterval(() => {
-    const tickerContent = document.getElementById('news-ticker-content');
-    if (tickerContent) {
-      const computedStyle = window.getComputedStyle(tickerContent);
-      
-      // Check if animation is still running properly
-      if (computedStyle.animationPlayState !== 'running' || 
-          computedStyle.animationName !== 'ticker-scroll' ||
-          tickerContent.children.length < 10) { // Not enough items
-        console.log('Ticker needs fixing, reapplying fix...');
-        fixTickerTiming();
-
-
-  }, 10000); // Check every 10 seconds
-});
     </script>
-
-    
 </body>
 </html>
