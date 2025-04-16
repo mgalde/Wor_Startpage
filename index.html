@@ -413,11 +413,7 @@
     position: absolute;
     white-space: nowrap;
     will-change: transform;
-    /* transition: all 0.5s ease;
-    /* animation: ticker-scroll 900s linear infinite; /* Slowed down from 240s to 360s for much slower speed */
-    animation: ticker-scroll 280s linear infinite;
-    animation-delay: 0s;
-    animation-timing-function: linear; /* Ensures consistently smooth scrolling */
+    /* animation properties removed */
 }
 
 .news-ticker-item {
@@ -819,7 +815,8 @@
     <script>
         // Function to fetch cybersecurity news
         // Function to add some redundancy to prevent gaps
-// Fisher-Yates shuffle algorithm to randomize news items
+
+        // Keep this function
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -827,24 +824,14 @@ function shuffleArray(array) {
     }
     return array;
 }
-
 // Function to update the news ticker with items
 function updateNewsTicker(newsItems) {
     const tickerContent = document.getElementById('news-ticker-content');
     
-    // Stop existing animation first
-    tickerContent.style.animation = 'none';
-    
-    // Force reflow to make sure animation stop is registered
-    void tickerContent.offsetWidth;
-    
     // Clear existing content
     tickerContent.innerHTML = '';
     
-    // Create duplicate news items for seamless looping
-    const itemsCopy = [...newsItems];
-    
-    // First set of items
+    // Add news items
     newsItems.forEach(item => {
         const newsItem = document.createElement('div');
         newsItem.className = 'news-ticker-item';
@@ -856,14 +843,8 @@ function updateNewsTicker(newsItems) {
         tickerContent.appendChild(newsItem);
     });
     
-    // Add spacer
-    const spacer = document.createElement('div');
-    spacer.className = 'news-ticker-item';
-    spacer.style.margin = '0 100px';
-    tickerContent.appendChild(spacer);
-    
-    // Add duplicate set for seamless loop
-    itemsCopy.forEach(item => {
+    // Duplicate items for seamless looping
+    newsItems.forEach(item => {
         const newsItem = document.createElement('div');
         newsItem.className = 'news-ticker-item';
         const link = document.createElement('a');
@@ -873,12 +854,76 @@ function updateNewsTicker(newsItems) {
         newsItem.appendChild(link);
         tickerContent.appendChild(newsItem);
     });
+
+    // Start JS-based animation (replaces CSS animation)
+    startTickerAnimation();
+}
+
+// JavaScript-based animation function
+function startTickerAnimation() {
+    const tickerContent = document.getElementById('news-ticker-content');
+    const tickerContainer = document.querySelector('.news-ticker-container');
+    let startPosition = tickerContainer.offsetWidth; // Start from right edge
+    let position = startPosition;
+    let isPaused = false;
+    let animationId = null;
     
-    // Restart animation after content is ready
-    // Use setTimeout to ensure DOM has updated
+    // Reset any existing animation
+    if (tickerContent.animationId) {
+        cancelAnimationFrame(tickerContent.animationId);
+    }
+    
+    // Remove CSS animation
+    tickerContent.style.animation = 'none';
+    
+    // Apply initial position
+    tickerContent.style.transform = `translateX(${position}px)`;
+    
+    // Set up pause on hover
+    tickerContainer.addEventListener('mouseenter', () => {
+        isPaused = true;
+    });
+    
+    tickerContainer.addEventListener('mouseleave', () => {
+        isPaused = false;
+    });
+    
+    // Animation function
+    function animate() {
+        if (!isPaused) {
+            // Move left (adjust speed by changing this value)
+            position -= 0.5;
+            
+            // If content has scrolled past left edge, reset to right
+            if (position < -tickerContent.offsetWidth) {
+                position = startPosition;
+            }
+            
+            // Apply new position
+            tickerContent.style.transform = `translateX(${position}px)`;
+        }
+        
+        // Continue animation
+        animationId = requestAnimationFrame(animate);
+        tickerContent.animationId = animationId;
+    }
+    
+    // Start animation
+    animate();
+}
+
+// Initialize the ticker
+function setupNewsTicker() {
+    // Show fallback news IMMEDIATELY
+    loadFallbackNews();
+    
+    // Fetch real news with a slight delay
     setTimeout(() => {
-        tickerContent.style.animation = 'ticker-scroll 280s linear infinite';
-    }, 10);
+        fetchCyberSecurityNews();
+        
+        // Set refresh interval
+        setInterval(fetchCyberSecurityNews, 600000); // every 10 minutes
+    }, 100);
 }
 // Fallback news in case the API fails
 function loadFallbackNews() {
