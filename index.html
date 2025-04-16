@@ -1233,6 +1233,128 @@ setTimeout(() => {
         console.log('Ticker dimensions:', 
   document.querySelector('.news-ticker').offsetHeight,
   document.querySelector('.news-ticker').offsetWidth);
+
+
+        // Add this script at the end of your body tag to fix the ticker timing issues
+
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('News ticker timing fix initialized');
+  
+  // Function to fix ticker timing issues
+  function fixTickerTiming() {
+    // 1. Create custom CSS to override the animation timing
+    const styleElement = document.createElement('style');
+    styleElement.textContent = `
+      @keyframes ticker-scroll {
+        0% {
+          transform: translateX(100%);
+        }
+        100% {
+          transform: translateX(-300%);
+        }
+      }
+      
+      .news-ticker-content {
+        display: flex !important;
+        align-items: center !important;
+        position: absolute !important;
+        white-space: nowrap !important;
+        will-change: transform !important;
+        
+        /* Important flags to override existing styles */
+        animation-name: ticker-scroll !important;
+        animation-duration: 180s !important;
+        animation-timing-function: linear !important;
+        animation-iteration-count: infinite !important;
+        animation-delay: 0s !important;
+        
+        /* Ensure content is visible */
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+      
+      /* Ensure container properties are correct */
+      .news-ticker-container {
+        overflow: hidden !important;
+        height: 100% !important;
+        flex-grow: 1 !important;
+        position: relative !important;
+      }
+      
+      /* Add enough spacing between items */
+      .news-ticker-item {
+        margin-right: 60px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+      }
+    `;
+    document.head.appendChild(styleElement);
+    
+    // 2. Ensure we have enough duplicated content to prevent gaps
+    const tickerContent = document.getElementById('news-ticker-content');
+    
+    // Clone all current items to create multiple sets
+    if (tickerContent && tickerContent.children.length > 0) {
+      // First, save current items
+      const originalItems = Array.from(tickerContent.children);
+      
+      // Create multiple copies for continuous scrolling
+      // (Make 5-6 copies to ensure no gaps)
+      for (let i = 0; i < 5; i++) {
+        originalItems.forEach(item => {
+          const clone = item.cloneNode(true);
+          tickerContent.appendChild(clone);
+        });
+      }
+      
+      console.log(`Duplicated ticker items: ${tickerContent.children.length} total items`);
+    }
+    
+    // 3. Reset and restart the animation
+    if (tickerContent) {
+      tickerContent.style.animation = 'none';
+      void tickerContent.offsetWidth; // Trigger reflow
+      tickerContent.style.animation = 'ticker-scroll 180s linear infinite';
+    }
+    
+    // 4. Log success
+    console.log('Ticker timing fix applied successfully');
+  }
+  
+  // Call the function immediately to fix any existing ticker
+  fixTickerTiming();
+  
+  // Also apply fix when window loads (in case ticker loads after this script)
+  window.addEventListener('load', fixTickerTiming);
+  
+  // Also hook into your original news fetching if possible
+  const originalUpdateNewsTicker = window.updateNewsTicker;
+  if (typeof originalUpdateNewsTicker === 'function') {
+    window.updateNewsTicker = function(newsItems) {
+      const result = originalUpdateNewsTicker.apply(this, arguments);
+      // Apply our timing fix after the original function runs
+      setTimeout(fixTickerTiming, 100);
+      return result;
+    };
+    console.log('Hooked into original updateNewsTicker function');
+  }
+  
+  // Periodically check and fix ticker if needed
+  setInterval(() => {
+    const tickerContent = document.getElementById('news-ticker-content');
+    if (tickerContent) {
+      const computedStyle = window.getComputedStyle(tickerContent);
+      
+      // Check if animation is still running properly
+      if (computedStyle.animationPlayState !== 'running' || 
+          computedStyle.animationName !== 'ticker-scroll' ||
+          tickerContent.children.length < 10) { // Not enough items
+        console.log('Ticker needs fixing, reapplying fix...');
+        fixTickerTiming();
+      }
+    }
+  }, 10000); // Check every 10 seconds
+});
     </script>
 
     
