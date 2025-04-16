@@ -928,22 +928,22 @@ function setupNewsTicker() {
 // Fallback news in case the API fails
 function loadFallbackNews() {
     const fallbackNews = [
-        { title: "Maintaining proper cyber hygiene is essential for protecting against threats", link: "https://thehackernews.com/", sourceName: "The Hacker News" },
-        { title: "Zero-day vulnerabilities continue to be exploited in major software", link: "https://thehackernews.com/", sourceName: "The Hacker News" },
-        { title: "Ransomware attacks target critical infrastructure worldwide", link: "https://krebsonsecurity.com/", sourceName: "Krebs on Security" },
-        { title: "New phishing campaign targets corporate executives", link: "https://www.darkreading.com/", sourceName: "Dark Reading" },
-        { title: "Security researchers discover vulnerability in popular IoT devices", link: "https://www.bleepingcomputer.com/", sourceName: "Bleeping Computer" },
-        { title: "Data breach exposes millions of customer records", link: "https://krebsonsecurity.com/", sourceName: "Krebs on Security" },
-        { title: "NIST releases new guidelines for password security", link: "https://www.nist.gov/", sourceName: "NIST" },
-        { title: "Critical security patches released for major operating systems", link: "https://www.bleepingcomputer.com/", sourceName: "Bleeping Computer" },
-        { title: "Global economic outlook shows signs of recovery", link: "https://www.cnn.com/", sourceName: "CNN" },
-        { title: "New climate agreement reached at international summit", link: "https://www.bbc.com/news", sourceName: "BBC" },
-        { title: "Tech companies announce major investments in AI research", link: "https://www.nytimes.com/", sourceName: "NY Times" },
-        { title: "Scientists make breakthrough in renewable energy storage", link: "https://news.yahoo.com/", sourceName: "Yahoo News" },
-        { title: "Space agency reveals plans for next lunar mission", link: "https://www.bbc.com/news", sourceName: "BBC" },
-        { title: "Major sports league announces expansion teams", link: "https://www.cnn.com/", sourceName: "CNN" },
-        { title: "Global health organization reports decline in pandemic cases", link: "https://www.nytimes.com/", sourceName: "NY Times" },
-        { title: "New transportation technology promises to reduce commute times", link: "https://news.yahoo.com/", sourceName: "Yahoo News" }
+        { title: "AA Maintaining proper cyber hygiene is essential for protecting against threats", link: "https://thehackernews.com/", sourceName: "The Hacker News" },
+        { title: "AA Zero-day vulnerabilities continue to be exploited in major software", link: "https://thehackernews.com/", sourceName: "The Hacker News" },
+        { title: "AA Ransomware attacks target critical infrastructure worldwide", link: "https://krebsonsecurity.com/", sourceName: "Krebs on Security" },
+        { title: "AA New phishing campaign targets corporate executives", link: "https://www.darkreading.com/", sourceName: "Dark Reading" },
+        { title: "AA Security researchers discover vulnerability in popular IoT devices", link: "https://www.bleepingcomputer.com/", sourceName: "Bleeping Computer" },
+        { title: "AA Data breach exposes millions of customer records", link: "https://krebsonsecurity.com/", sourceName: "Krebs on Security" },
+        { title: "AA NIST releases new guidelines for password security", link: "https://www.nist.gov/", sourceName: "NIST" },
+        { title: "AA Critical security patches released for major operating systems", link: "https://www.bleepingcomputer.com/", sourceName: "Bleeping Computer" },
+        { title: "AA Global economic outlook shows signs of recovery", link: "https://www.cnn.com/", sourceName: "CNN" },
+        { title: "AA New climate agreement reached at international summit", link: "https://www.bbc.com/news", sourceName: "BBC" },
+        { title: "AA Tech companies announce major investments in AI research", link: "https://www.nytimes.com/", sourceName: "NY Times" },
+        { title: "AA Scientists make breakthrough in renewable energy storage", link: "https://news.yahoo.com/", sourceName: "Yahoo News" },
+        { title: "AA Space agency reveals plans for next lunar mission", link: "https://www.bbc.com/news", sourceName: "BBC" },
+        { title: "AA Major sports league announces expansion teams", link: "https://www.cnn.com/", sourceName: "CNN" },
+        { title: "AA Global health organization reports decline in pandemic cases", link: "https://www.nytimes.com/", sourceName: "NY Times" },
+        { title: "AA New transportation technology promises to reduce commute times", link: "https://news.yahoo.com/", sourceName: "Yahoo News" }
     ];
     
     shuffleArray(fallbackNews);
@@ -956,37 +956,37 @@ function fetchCyberSecurityNews() {
         {
             name: 'The Hacker News',
             url: 'https://api.rss2json.com/v1/api.json?rss_url=https://feeds.feedburner.com/TheHackersNews',
-            limit: 1
+            limit: 10
         },
         {
             name: 'Krebs on Security',
             url: 'https://api.rss2json.com/v1/api.json?rss_url=https://krebsonsecurity.com/feed/',
-            limit: 1
+            limit: 10
         },
         {
             name: 'Bleeping Computer',
             url: 'https://api.rss2json.com/v1/api.json?rss_url=https://www.bleepingcomputer.com/feed/',
-            limit: 1
+            limit: 10
         },
         {
             name: 'CNN',
             url: 'https://api.rss2json.com/v1/api.json?rss_url=http://rss.cnn.com/rss/edition.rss',
-            limit: 1
+            limit: 5
         },
         {
             name: 'BBC',
             url: 'https://api.rss2json.com/v1/api.json?rss_url=http://feeds.bbci.co.uk/news/rss.xml',
-            limit: 1
+            limit: 5
         },
         {
             name: 'NY Times',
             url: 'https://api.rss2json.com/v1/api.json?rss_url=https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml',
-            limit: 1
+            limit: 5
         },
         {
             name: 'Yahoo News',
             url: 'https://api.rss2json.com/v1/api.json?rss_url=https://news.yahoo.com/rss/',
-            limit: 1
+            limit: 5
         }
     ];
     
