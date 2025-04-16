@@ -843,35 +843,6 @@ function updateNewsTicker(newsItems) {
     tickerContent.appendChild(spacer);
     
     // Remove Dark Reading RSS source that's giving 500 errors
-    // Function to add some redundancy to prevent gaps
-function updateNewsTicker(newsItems) {
-    const tickerContent = document.getElementById('news-ticker-content');
-    tickerContent.innerHTML = '';
-    
-    // Create a longer list by duplicating the news items to ensure no gaps
-    // First add all the original items
-    newsItems.forEach(item => {
-        const newsItem = document.createElement('div');
-        newsItem.className = 'news-ticker-item';
-        
-        const link = document.createElement('a');
-        link.href = item.link;
-        link.target = '_blank';
-        
-        // Include the source name in brackets before the headline
-        link.textContent = `[${item.sourceName || 'News'}] ${item.title}`;
-        
-        newsItem.appendChild(link);
-        tickerContent.appendChild(newsItem);
-    });
-    
-    // Then add a spacer
-    const spacer = document.createElement('div');
-    spacer.className = 'news-ticker-item';
-    spacer.style.margin = '0 100px';
-    tickerContent.appendChild(spacer);
-    
-    // Remove Dark Reading RSS source that's giving 500 errors
     function fetchCyberSecurityNews() {
         // Array of news sources to fetch from
         const newsSources = [
