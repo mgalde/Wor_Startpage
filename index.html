@@ -1042,14 +1042,14 @@ function setupNewsTicker() {
     
     // Add visibility change detection to handle tab switching
     document.addEventListener('visibilitychange', function() {
-        if (!document.hidden) {
-            // Reset animation when tab becomes visible again
-            const tickerContent = document.getElementById('news-ticker-content');
-            tickerContent.style.animation = 'none';
-            void tickerContent.offsetWidth;
-            tickerContent.style.animation = 'ticker-scroll 280s linear infinite';
-        }
-    });
+    if (document.hidden) {
+        cancelAnimationFrame(document.getElementById('news-ticker-content').animationId);
+    } else {
+        startTickerAnimation();
+    }
+});
+
+
 }
 
     </script>
