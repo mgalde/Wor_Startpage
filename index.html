@@ -1121,7 +1121,10 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   console.log('Ticker elements found in DOM');
-  
+
+    console.log('Ticker container visibility:', 
+  window.getComputedStyle(document.querySelector('.news-ticker')).visibility,
+  window.getComputedStyle(document.querySelector('.news-ticker')).display);
   // 2. Fix CSS issues by applying styles directly
   const styleElement = document.createElement('style');
   styleElement.textContent = `
@@ -1218,6 +1221,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }, 1000);
 });
+
+        // Reset ticker position
+document.getElementById('news-ticker-content').style.transform = 'translateX(100%)';
+// Restart animation
+document.getElementById('news-ticker-content').style.animation = 'none';
+setTimeout(() => {
+  document.getElementById('news-ticker-content').style.animation = 'ticker-scroll 180s linear infinite';
+}, 50);
+
+        console.log('Ticker dimensions:', 
+  document.querySelector('.news-ticker').offsetHeight,
+  document.querySelector('.news-ticker').offsetWidth);
     </script>
 
     
