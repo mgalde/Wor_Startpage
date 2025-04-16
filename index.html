@@ -300,6 +300,13 @@
             display: flex;
             align-items: center;
             font-size: 0.9rem;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        .weather-widget:hover {
+            transform: translateY(3px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
         }
         
         .weather-icon {
@@ -393,6 +400,7 @@
         <div class="weather-info">
             <span id="weather-temp">--°F</span> 
             <span id="weather-desc">Loading...</span>
+            <div id="weather-location" style="font-size: 0.8rem; opacity: 0.8; margin-top: 2px;">Las Vegas, NV</div>
         </div>
     </div>
     
@@ -437,50 +445,69 @@
         // but intended to be used with just regular latin letters.
         const MASTER_MAP = [
             {
-                "groupName": "Hacking",
+                "groupName": "Hacking News",
                 "items": [
-                    {"name": "Exploit Database", "shortcutKey": "q", "url": "https://www.exploit-db.com/"},
-                    {"name": "Bleeping Computer", "shortcutKey": "w", "url": "https://www.bleepingcomputer.com"},
-                    {"name": "Github", "shortcutKey": "e", "url": "https://github.com/mgalde"},
-                    {"name": "Dark Reading", "shortcutKey": "r", "url": "https://www.darkreading.com"},
-                    {"name": "Malware Runner", "shortcutKey": "t", "url": "https://app.any.run/"},
-                    {"name": "DNS Dumpster", "shortcutKey": "y", "url": "https://dnsdumpster.com/"},
-                    {"name": "SHODAN", "shortcutKey": "u", "url": "https://shodan.io/"}
+                    {"name": "Bleeping Computer", "shortcutKey": "q", "url": "https://www.bleepingcomputer.com"},
+                    {"name": "Dark Reading", "shortcutKey": "w", "url": "https://www.darkreading.com"},
+                    {"name": "NY Times", "shortcutKey": "e", "url": "https://www.nytimes.com/"},
+                    {"name": "Hacker News", "shortcutKey": "r", "url": "https://news.ycombinator.com/"},
+                    {"name": "The Hacker News", "shortcutKey": "t", "url": "https://thehackernews.com/"}
                 ]
             },
             {
                 "groupName": "References",
                 "items": [
-                    {"name": "CAST Home Page", "shortcutKey": "a", "url": "https://azcast.arizona.edu/"},
-                    {"name": "ESTCP", "shortcutKey": "s", "url": "https://www.serdp-estcp.org/Tools-and-Training/Installation-Energy-and-Water/Cybersecurity"},
-                    {"name": "Infragard", "shortcutKey": "d", "url": "https://www.infragard.org/"},
-                    {"name": "SAM.gov", "shortcutKey": "f", "url": "https://sam.gov/content/opportunities"},
-                    {"name": "MITRE ATT&CK", "shortcutKey": "g", "url": "https://attack.mitre.org/"},
-                    {"name": "NIST Cybersecurity Framework", "shortcutKey": "h", "url": "https://www.nist.gov/cyberframework"},
-                    {"name": "The Packet", "shortcutKey": "p", "url": "https://the-packet.com/"}
+                    {"name": "ESTCP", "shortcutKey": "a", "url": "https://www.serdp-estcp.org/Tools-and-Training/Installation-Energy-and-Water/Cybersecurity"},
+                    {"name": "Infragard", "shortcutKey": "s", "url": "https://www.infragard.org/"},
+                    {"name": "SAM.gov", "shortcutKey": "d", "url": "https://sam.gov/content/opportunities"},
+                    {"name": "MITRE ATT&CK", "shortcutKey": "f", "url": "https://attack.mitre.org/"},
+                    {"name": "NIST Cybersecurity Framework", "shortcutKey": "g", "url": "https://www.nist.gov/cyberframework"},
+                    {"name": "GeeksForGeeks", "shortcutKey": "h", "url": "https://www.geeksforgeeks.org/"}
                 ]
             },
             {
-                "groupName": "Important",
+                "groupName": "University",
                 "items": [
-                    {"name": "CAST Sharepoint", "shortcutKey": "z", "url": "https://emailarizona.sharepoint.com/sites/CAST"},
+                    {"name": "CAST Home Page", "shortcutKey": "z", "url": "https://azcast.arizona.edu/"},
                     {"name": "CYBER OPERATIONS /PORTAL", "shortcutKey": "x", "url": "https://portal.cyberapolis.com/"},
-                    {"name": "ChatGPT", "shortcutKey": "c", "url": "https://chat.openai.com"},
-                    {"name": "UA VITAE", "shortcutKey": "v", "url": "https://uavitae.arizona.edu/"},
-                    {"name": "UA Access", "shortcutKey": "b", "url": "https://uaccess.arizona.edu/"},
-                    {"name": "D2L", "shortcutKey": "n", "url": "https://d2l.arizona.edu/d2l/home"},
-                    {"name": "CDW Anywhere", "shortcutKey": "m", "url": "https://anywhere.cdw.com/logon/LogonPoint/tmindex.html"}
+                    {"name": "UA VITAE", "shortcutKey": "c", "url": "https://uavitae.arizona.edu/"},
+                    {"name": "UA Access", "shortcutKey": "v", "url": "https://uaccess.arizona.edu/"},
+                    {"name": "D2L", "shortcutKey": "b", "url": "https://d2l.arizona.edu/d2l/home"},
+                    {"name": "Office.com", "shortcutKey": "n", "url": "https://www.office.com/"},
+                    {"name": "Academic Calendar", "shortcutKey": "m", "url": "https://catalog.arizona.edu/academic-calendar"}
                 ]
             },
             {
                 "groupName": "Tools",
                 "items": [
                     {"name": "Claude AI", "shortcutKey": "1", "url": "https://claude.ai/"},
-                    {"name": "VirusTotal", "shortcutKey": "2", "url": "https://www.virustotal.com/"},
-                    {"name": "Google Drive", "shortcutKey": "3", "url": "https://drive.google.com/"},
-                    {"name": "Trello", "shortcutKey": "4", "url": "https://trello.com/"},
-                    {"name": "Notion", "shortcutKey": "5", "url": "https://www.notion.so/"},
-                    {"name": "LinkedIn", "shortcutKey": "6", "url": "https://www.linkedin.com/"}
+                    {"name": "ChatGPT", "shortcutKey": "2", "url": "https://chat.openai.com"},
+                    {"name": "Any Run", "shortcutKey": "3", "url": "https://app.any.run/"},
+                    {"name": "DNS Dumpster", "shortcutKey": "4", "url": "https://dnsdumpster.com/"},
+                    {"name": "SHODAN", "shortcutKey": "5", "url": "https://shodan.io/"},
+                    {"name": "VirusTotal", "shortcutKey": "6", "url": "https://www.virustotal.com/"}
+                ]
+            },
+            {
+                "groupName": "Connections",
+                "items": [
+                    {"name": "Bluesky", "shortcutKey": "j", "url": "https://bsky.app/"},
+                    {"name": "Reddit", "shortcutKey": "k", "url": "https://www.reddit.com/"},
+                    {"name": "YouTube", "shortcutKey": "l", "url": "https://www.youtube.com/"},
+                    {"name": "LinkedIn", "shortcutKey": ";", "url": "https://www.linkedin.com/"},
+                    {"name": "GitHub", "shortcutKey": "i", "url": "https://github.com/mgalde"},
+                    {"name": "Twitter", "shortcutKey": "o", "url": "https://twitter.com/"}
+                ]
+            },
+            {
+                "groupName": "Entertainment",
+                "items": [
+                    {"name": "Netflix", "shortcutKey": "7", "url": "https://www.netflix.com/"},
+                    {"name": "Hulu", "shortcutKey": "8", "url": "https://www.hulu.com/"},
+                    {"name": "Disney+", "shortcutKey": "9", "url": "https://www.disneyplus.com/"},
+                    {"name": "Spotify", "shortcutKey": "0", "url": "https://open.spotify.com/"},
+                    {"name": "Amazon Prime", "shortcutKey": "-", "url": "https://www.amazon.com/Prime-Video/"},
+                    {"name": "Twitch", "shortcutKey": "=", "url": "https://www.twitch.tv/"}
                 ]
             }
         ];
@@ -532,8 +559,8 @@
         
         function fetchWeather() {
             // Las Vegas coordinates (example)
-            const latitude = 32.253460;
-            const longitude = -110.911789;
+            const latitude = 36.1699;
+            const longitude = -115.1398;
             
             // First fetch the gridpoint data for the location
             fetch(`https://api.weather.gov/points/${latitude},${longitude}`)
