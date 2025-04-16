@@ -413,7 +413,7 @@
             position: absolute;
             white-space: nowrap;
             will-change: transform;
-            animation: ticker-scroll 120s linear infinite; /* Slowed down from 30s to 60s */
+            animation: ticker-scroll 240s linear infinite; /* Changed from 120s to 240s for much slower speed */
         }
         
         .news-ticker-item {
@@ -814,52 +814,106 @@
     </script>
     <script>
         // Function to fetch cybersecurity news
-        function fetchCyberSecurityNews() {
-            // Array of news sources to fetch from
-            const newsSources = [
-                // Cybersecurity sources
-                {
-                    name: 'The Hacker News',
-                    url: 'https://api.rss2json.com/v1/api.json?rss_url=https://feeds.feedburner.com/TheHackersNews',
-                    limit: 7
-                },
-                {
-                    name: 'Krebs on Security',
-                    url: 'https://api.rss2json.com/v1/api.json?rss_url=https://krebsonsecurity.com/feed/',
-                    limit: 7
-                },
-                {
-                    name: 'Dark Reading',
-                    url: 'https://api.rss2json.com/v1/api.json?rss_url=https://www.darkreading.com/rss_simple.asp',
-                    limit: 7
-                },
-                {
-                    name: 'Bleeping Computer',
-                    url: 'https://api.rss2json.com/v1/api.json?rss_url=https://www.bleepingcomputer.com/feed/',
-                    limit: 7
-                },
-                // General news sources
-                {
-                    name: 'CNN',
-                    url: 'https://api.rss2json.com/v1/api.json?rss_url=http://rss.cnn.com/rss/edition.rss',
-                    limit: 7
-                },
-                {
-                    name: 'BBC',
-                    url: 'https://api.rss2json.com/v1/api.json?rss_url=http://feeds.bbci.co.uk/news/rss.xml',
-                    limit: 7
-                },
-                {
-                    name: 'NY Times',
-                    url: 'https://api.rss2json.com/v1/api.json?rss_url=https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml',
-                    limit: 7
-                },
-                {
-                    name: 'Yahoo News',
-                    url: 'https://api.rss2json.com/v1/api.json?rss_url=https://news.yahoo.com/rss/',
-                    limit: 7
-                }
-            ];
+        // Function to add some redundancy to prevent gaps
+function updateNewsTicker(newsItems) {
+    const tickerContent = document.getElementById('news-ticker-content');
+    tickerContent.innerHTML = '';
+    
+    // Create a longer list by duplicating the news items to ensure no gaps
+    // First add all the original items
+    newsItems.forEach(item => {
+        const newsItem = document.createElement('div');
+        newsItem.className = 'news-ticker-item';
+        
+        const link = document.createElement('a');
+        link.href = item.link;
+        link.target = '_blank';
+        
+        // Include the source name in brackets before the headline
+        link.textContent = `[${item.sourceName || 'News'}] ${item.title}`;
+        
+        newsItem.appendChild(link);
+        tickerContent.appendChild(newsItem);
+    });
+    
+    // Then add a spacer
+    const spacer = document.createElement('div');
+    spacer.className = 'news-ticker-item';
+    spacer.style.margin = '0 100px';
+    tickerContent.appendChild(spacer);
+    
+    // Remove Dark Reading RSS source that's giving 500 errors
+    // Function to add some redundancy to prevent gaps
+function updateNewsTicker(newsItems) {
+    const tickerContent = document.getElementById('news-ticker-content');
+    tickerContent.innerHTML = '';
+    
+    // Create a longer list by duplicating the news items to ensure no gaps
+    // First add all the original items
+    newsItems.forEach(item => {
+        const newsItem = document.createElement('div');
+        newsItem.className = 'news-ticker-item';
+        
+        const link = document.createElement('a');
+        link.href = item.link;
+        link.target = '_blank';
+        
+        // Include the source name in brackets before the headline
+        link.textContent = `[${item.sourceName || 'News'}] ${item.title}`;
+        
+        newsItem.appendChild(link);
+        tickerContent.appendChild(newsItem);
+    });
+    
+    // Then add a spacer
+    const spacer = document.createElement('div');
+    spacer.className = 'news-ticker-item';
+    spacer.style.margin = '0 100px';
+    tickerContent.appendChild(spacer);
+    
+    // Remove Dark Reading RSS source that's giving 500 errors
+    function fetchCyberSecurityNews() {
+        // Array of news sources to fetch from
+        const newsSources = [
+            // Cybersecurity sources
+            {
+                name: 'The Hacker News',
+                url: 'https://api.rss2json.com/v1/api.json?rss_url=https://feeds.feedburner.com/TheHackersNews',
+                limit: 7
+            },
+            {
+                name: 'Krebs on Security',
+                url: 'https://api.rss2json.com/v1/api.json?rss_url=https://krebsonsecurity.com/feed/',
+                limit: 7
+            },
+            // Dark Reading removed due to 500 errors
+            {
+                name: 'Bleeping Computer',
+                url: 'https://api.rss2json.com/v1/api.json?rss_url=https://www.bleepingcomputer.com/feed/',
+                limit: 7
+            },
+            // General news sources
+            {
+                name: 'CNN',
+                url: 'https://api.rss2json.com/v1/api.json?rss_url=http://rss.cnn.com/rss/edition.rss',
+                limit: 7
+            },
+            {
+                name: 'BBC',
+                url: 'https://api.rss2json.com/v1/api.json?rss_url=http://feeds.bbci.co.uk/news/rss.xml',
+                limit: 7
+            },
+            {
+                name: 'NY Times',
+                url: 'https://api.rss2json.com/v1/api.json?rss_url=https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml',
+                limit: 7
+            },
+            {
+                name: 'Yahoo News',
+                url: 'https://api.rss2json.com/v1/api.json?rss_url=https://news.yahoo.com/rss/',
+                limit: 7
+            }
+        ];
             
             // Array to hold all news items from all sources
             let allNewsItems = [];
@@ -970,7 +1024,7 @@
         // Refresh news every 30 minutes (1800000 ms)
         function setupNewsTicker() {
             fetchCyberSecurityNews();
-            setInterval(fetchCyberSecurityNews, 1800000);
+            setInterval(fetchCyberSecurityNews, 600000);
         }
     </script>
 </body>
