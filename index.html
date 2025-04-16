@@ -414,7 +414,7 @@
     white-space: nowrap;
     will-change: transform;
     transition: all 0.5s ease;
-    animation: ticker-scroll 60s linear infinite; /* Slowed down from 240s to 360s for much slower speed */
+    animation: ticker-scroll 900s linear infinite; /* Slowed down from 240s to 360s for much slower speed */
     animation-timing-function: linear; /* Ensures consistently smooth scrolling */
 }
 
@@ -818,6 +818,7 @@
         // Function to fetch cybersecurity news
         // Function to add some redundancy to prevent gaps
 // Fisher-Yates shuffle algorithm to randomize news items
+// Function to shuffle array (Fisher-Yates algorithm)
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -826,42 +827,7 @@ function shuffleArray(array) {
     return array;
 }
 
-// Function to update the news ticker with items
-function updateNewsTicker(newsItems) {
-    const tickerContent = document.getElementById('news-ticker-content');
-    tickerContent.innerHTML = '';
-    
-    const itemsCopy = [...newsItems];
-
-    newsItems.forEach(item => {
-        const newsItem = document.createElement('div');
-        newsItem.className = 'news-ticker-item';
-        const link = document.createElement('a');
-        link.href = item.link;
-        link.target = '_blank';
-        link.textContent = `[${item.sourceName || 'News'}] ${item.title}`;
-        newsItem.appendChild(link);
-        tickerContent.appendChild(newsItem);
-    });
-
-    const spacer = document.createElement('div');
-    spacer.className = 'news-ticker-item';
-    spacer.style.margin = '0 100px';
-    tickerContent.appendChild(spacer);
-
-    itemsCopy.forEach(item => {
-        const newsItem = document.createElement('div');
-        newsItem.className = 'news-ticker-item';
-        const link = document.createElement('a');
-        link.href = item.link;
-        link.target = '_blank';
-        link.textContent = `[${item.sourceName || 'News'}] ${item.title}`;
-        newsItem.appendChild(link);
-        tickerContent.appendChild(newsItem);
-    });
-}
-
-// Fallback news in case the API fails
+// Load fallback news immediately to show something while fetching real news
 function loadFallbackNews() {
     const fallbackNews = [
         { title: "Maintaining proper cyber hygiene is essential for protecting against threats", link: "https://thehackernews.com/", sourceName: "The Hacker News" },
@@ -882,12 +848,86 @@ function loadFallbackNews() {
         { title: "New transportation technology promises to reduce commute times", link: "https://news.yahoo.com/", sourceName: "Yahoo News" }
     ];
     
-    shuffleArray(fallbackNews);
-    updateNewsTicker(fallbackNews);
+    const shuffledNews = shuffleArray(fallbackNews);
+    updateNewsTicker(shuffledNews);
+    return shuffledNews;
 }
 
-// Function to fetch cybersecurity news
+// Improved function to update the news ticker with better continuity
+function updateNewsTicker(newsItems) {
+    const tickerContent = document.getElementById('news-ticker-content');
+    tickerContent.innerHTML = '';
+    
+    // Calculate the total width needed
+    let totalWidth = 0;
+    const tempDiv = document.createElement('div');
+    tempDiv.style.visibility = 'hidden';
+    tempDiv.style.position = 'absolute';
+    document.body.appendChild(tempDiv);
+    
+    newsItems.forEach(item => {
+        const testItem = document.createElement('div');
+        testItem.className = 'news-ticker-item';
+        const testLink = document.createElement('a');
+        testLink.textContent = `[${item.sourceName || 'News'}] ${item.title}`;
+        testItem.appendChild(testLink);
+        tempDiv.appendChild(testItem);
+        totalWidth += testItem.offsetWidth + 60; // Adding margin-right
+    });
+    
+    document.body.removeChild(tempDiv);
+    
+    // Create duplicate sets to ensure seamless scrolling
+    const sets = 4; // Create multiple sets for continuous scrolling
+    for (let i = 0; i < sets; i++) {
+        newsItems.forEach(item => {
+            const newsItem = document.createElement('div');
+            newsItem.className = 'news-ticker-item';
+            const link = document.createElement('a');
+            link.href = item.link;
+            link.target = '_blank';
+            link.textContent = `[${item.sourceName || 'News'}] ${item.title}`;
+            newsItem.appendChild(link);
+            tickerContent.appendChild(newsItem);
+        });
+    }
+    
+    // Adjust animation based on content
+    const tickerContainer = document.querySelector('.news-ticker-container');
+    const containerWidth = tickerContainer.offsetWidth;
+    const contentWidth = totalWidth;
+    
+    // Dynamic animation duration based on content length
+    // Calculate a reasonable speed (pixels per second)
+    const pixelsPerSecond = 60; // Adjust this value to control speed
+    const animationDuration = (contentWidth / pixelsPerSecond) * sets;
+    
+    tickerContent.style.animation = `ticker-scroll ${animationDuration}s linear infinite`;
+    
+    // Restart animation to apply new duration
+    tickerContent.style.animationName = 'none';
+    void tickerContent.offsetWidth; // Trigger reflow
+    tickerContent.style.animationName = 'ticker-scroll';
+}
+
+// Function to fetch cybersecurity news with better error handling and loading states
 function fetchCyberSecurityNews() {
+    // Show loading state only if we don't already have news displayed
+    const tickerContent = document.getElementById('news-ticker-content');
+    if (tickerContent.children.length <= 1) {
+        const loadingItem = document.createElement('div');
+        loadingItem.className = 'news-ticker-item';
+        const loadingLink = document.createElement('a');
+        loadingLink.href = "#";
+        loadingLink.textContent = "Loading news feed...";
+        loadingItem.appendChild(loadingLink);
+        tickerContent.innerHTML = '';
+        tickerContent.appendChild(loadingItem);
+        
+        // Load fallback news immediately to show something
+        const fallbackItems = loadFallbackNews();
+    }
+    
     const newsSources = [
         {
             name: 'The Hacker News',
@@ -929,45 +969,136 @@ function fetchCyberSecurityNews() {
     let allNewsItems = [];
     let fetchPromises = [];
     
+    // Create a timeout promise to limit waiting time
+    const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Fetch timeout')), 10000); // 10 second timeout
+    });
+    
     newsSources.forEach(source => {
-        const fetchPromise = fetch(source.url)
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'ok') {
-                    const items = data.items.slice(0, source.limit).map(item => {
-                        item.sourceName = source.name;
-                        return item;
-                    });
-                    allNewsItems = allNewsItems.concat(items);
-                }
-            })
-            .catch(error => {
-                console.error(`Error fetching from ${source.name}:`, error);
-            });
+        const fetchPromise = Promise.race([
+            fetch(source.url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.status === 'ok') {
+                        const items = data.items.slice(0, source.limit).map(item => {
+                            return {
+                                title: item.title,
+                                link: item.link,
+                                sourceName: source.name
+                            };
+                        });
+                        allNewsItems = allNewsItems.concat(items);
+                        
+                        // Update ticker progressively as we get more news
+                        if (allNewsItems.length >= 5) {
+                            shuffleArray(allNewsItems);
+                            updateNewsTicker(allNewsItems);
+                        }
+                    }
+                }),
+            timeoutPromise
+        ]).catch(error => {
+            console.warn(`Error fetching from ${source.name}:`, error);
+            // Continue without this source
+        });
         
         fetchPromises.push(fetchPromise);
     });
     
-    Promise.all(fetchPromises)
+    // Handle all promises
+    Promise.allSettled(fetchPromises)
         .then(() => {
             if (allNewsItems.length > 0) {
                 shuffleArray(allNewsItems);
                 updateNewsTicker(allNewsItems);
             } else {
+                // If we didn't get any news, ensure fallback is displayed
                 loadFallbackNews();
             }
-        })
-        .catch(error => {
-            console.error('Error fetching news:', error);
-            loadFallbackNews();
         });
 }
 
 // Initialize the ticker
 function setupNewsTicker() {
+    // Load fallback news immediately to prevent initial empty state
+    loadFallbackNews();
+    
+    // Try to fetch real news right away
     fetchCyberSecurityNews();
-    setInterval(fetchCyberSecurityNews, 600000); // every 10 minutes
+    
+    // Set refresh interval (every 5 minutes)
+    setInterval(fetchCyberSecurityNews, 300000);
 }
+
+// Update the CSS for better news ticker animation
+function updateNewsTickerCSS() {
+    const styleElement = document.createElement('style');
+    styleElement.textContent = `
+    @keyframes ticker-scroll {
+        0% {
+            transform: translateX(100%);
+        }
+        100% {
+            transform: translateX(-300%);
+        }
+    }
+    
+    .news-ticker {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: var(--group-bg);
+        color: var(--text-color);
+        padding: 10px;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        overflow: hidden;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        backdrop-filter: blur(8px);
+    }
+    
+    .news-ticker-container {
+        overflow: hidden;
+        height: 100%;
+        flex-grow: 1;
+        position: relative;
+    }
+    
+    .news-ticker-content {
+        display: flex;
+        align-items: center;
+        position: absolute;
+        white-space: nowrap;
+        will-change: transform;
+        animation: ticker-scroll 180s linear infinite;
+    }
+    
+    .news-ticker-item {
+        margin-right: 60px;
+        display: inline-flex;
+        align-items: center;
+    }
+    `;
+    
+    document.head.appendChild(styleElement);
+}
+
+// Call this function to update the CSS when setting up
+function initializeNewsTickerImprovements() {
+    updateNewsTickerCSS();
+    setupNewsTicker();
+}
+
+// This is the function you should call to initialize everything
+initializeNewsTickerImprovements();
 
     </script>
 </body>
