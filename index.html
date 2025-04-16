@@ -829,10 +829,18 @@ function shuffleArray(array) {
 // Function to update the news ticker with items
 function updateNewsTicker(newsItems) {
     const tickerContent = document.getElementById('news-ticker-content');
+    
+    // Reset animation - this helps prevent delay
+    tickerContent.style.animation = 'none';
+    void tickerContent.offsetWidth; // Force reflow
+    
+    // Clear content
     tickerContent.innerHTML = '';
     
+    // Make copy of items for duplication
     const itemsCopy = [...newsItems];
-
+    
+    // Add first set of items
     newsItems.forEach(item => {
         const newsItem = document.createElement('div');
         newsItem.className = 'news-ticker-item';
@@ -843,12 +851,14 @@ function updateNewsTicker(newsItems) {
         newsItem.appendChild(link);
         tickerContent.appendChild(newsItem);
     });
-
+    
+    // Add spacer
     const spacer = document.createElement('div');
     spacer.className = 'news-ticker-item';
     spacer.style.margin = '0 100px';
     tickerContent.appendChild(spacer);
-
+    
+    // Add duplicate set of items
     itemsCopy.forEach(item => {
         const newsItem = document.createElement('div');
         newsItem.className = 'news-ticker-item';
@@ -859,8 +869,10 @@ function updateNewsTicker(newsItems) {
         newsItem.appendChild(link);
         tickerContent.appendChild(newsItem);
     });
+    
+    // Start animation with a reasonable speed
+    tickerContent.style.animation = 'ticker-scroll 120s linear infinite';
 }
-
 // Fallback news in case the API fails
 function loadFallbackNews() {
     const fallbackNews = [
@@ -965,9 +977,13 @@ function fetchCyberSecurityNews() {
 
 // Initialize the ticker
 function setupNewsTicker() {
-    // Show fallback news immediately
+    // Show fallback news immediately while waiting for feeds
     loadFallbackNews();
+    
+    // Then try to fetch the real news
     fetchCyberSecurityNews();
+    
+    // Set up periodic refresh
     setInterval(fetchCyberSecurityNews, 600000); // every 10 minutes
 }
 
