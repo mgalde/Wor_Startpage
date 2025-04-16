@@ -374,85 +374,85 @@
         }
         
         .news-ticker {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: var(--group-bg);
-            color: var(--text-color);
-            padding: 10px;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15);
-            z-index: 1000;
-            overflow: hidden;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            backdrop-filter: blur(8px);
-        }
-        
-        .news-ticker-label {
-            font-weight: bold;
-            padding: 5px 15px;
-            margin-right: 20px;
-            background-color: rgba(255, 0, 0, 0.7);
-            color: white;
-            border-radius: 4px;
-            white-space: nowrap;
-        }
-        
-        .news-ticker-container {
-            overflow: hidden;
-            height: 100%;
-            flex-grow: 1;
-            position: relative;
-        }
-        
-        .news-ticker-content {
-            display: flex;
-            align-items: center;
-            position: absolute;
-            white-space: nowrap;
-            will-change: transform;
-            animation: ticker-scroll 240s linear infinite; /* Changed from 120s to 240s for much slower speed */
-        }
-        
-        .news-ticker-item {
-            margin-right: 60px; /* Increased from 50px to 60px for more spacing between items */
-            display: inline-flex;
-            align-items: center;
-        }
-        
-        .news-ticker-item a {
-            color: var(--text-color);
-            text-decoration: none;
-            opacity: 0.9;
-            transition: opacity 0.3s;
-            font-size: 0.95rem; /* Slightly larger for better readability */
-        }
-        
-        .news-ticker-item a:hover {
-            opacity: 1;
-            color: var(--link-hover);
-        }
-        
-        .news-ticker-item::before {
-            content: "•";
-            margin-right: 10px;
-            color: rgba(255, 0, 0, 0.7);
-        }
-        
-        .news-ticker-container:hover .news-ticker-content {
-            animation-play-state: paused;
-        }
-        
-        @keyframes ticker-scroll {
-            0% {
-                transform: translateX(100%);
-            }
-            100% {
-                transform: translateX(-100%);
-            }
-        }
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--group-bg);
+    color: var(--text-color);
+    padding: 10px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    overflow: hidden;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    backdrop-filter: blur(8px);
+}
+
+.news-ticker-label {
+    font-weight: bold;
+    padding: 5px 15px;
+    margin-right: 20px;
+    background-color: rgba(255, 0, 0, 0.7);
+    color: white;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.news-ticker-container {
+    overflow: hidden;
+    height: 100%;
+    flex-grow: 1;
+    position: relative;
+}
+
+.news-ticker-content {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    white-space: nowrap;
+    will-change: transform;
+    animation: ticker-scroll 360s linear infinite; /* Slowed down from 240s to 360s for much slower speed */
+}
+
+.news-ticker-item {
+    margin-right: 60px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.news-ticker-item a {
+    color: var(--text-color);
+    text-decoration: none;
+    opacity: 0.9;
+    transition: opacity 0.3s;
+    font-size: 0.95rem;
+}
+
+.news-ticker-item a:hover {
+    opacity: 1;
+    color: var(--link-hover);
+}
+
+.news-ticker-item::before {
+    content: "•";
+    margin-right: 10px;
+    color: rgba(255, 0, 0, 0.7);
+}
+
+.news-ticker-container:hover .news-ticker-content {
+    animation-play-state: paused;
+}
+
+@keyframes ticker-scroll {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-140%); /* Extended to ensure continuous scrolling */
+    }
+}
     </style>
 </head>
 <body>
@@ -843,160 +843,187 @@ function updateNewsTicker(newsItems) {
     tickerContent.appendChild(spacer);
     
     // Remove Dark Reading RSS source that's giving 500 errors
-    function fetchCyberSecurityNews() {
-        // Array of news sources to fetch from
-        const newsSources = [
-            // Cybersecurity sources
-            {
-                name: 'The Hacker News',
-                url: 'https://api.rss2json.com/v1/api.json?rss_url=https://feeds.feedburner.com/TheHackersNews',
-                limit: 7
-            },
-            {
-                name: 'Krebs on Security',
-                url: 'https://api.rss2json.com/v1/api.json?rss_url=https://krebsonsecurity.com/feed/',
-                limit: 7
-            },
-            // Dark Reading removed due to 500 errors
-            {
-                name: 'Bleeping Computer',
-                url: 'https://api.rss2json.com/v1/api.json?rss_url=https://www.bleepingcomputer.com/feed/',
-                limit: 7
-            },
-            // General news sources
-            {
-                name: 'CNN',
-                url: 'https://api.rss2json.com/v1/api.json?rss_url=http://rss.cnn.com/rss/edition.rss',
-                limit: 7
-            },
-            {
-                name: 'BBC',
-                url: 'https://api.rss2json.com/v1/api.json?rss_url=http://feeds.bbci.co.uk/news/rss.xml',
-                limit: 7
-            },
-            {
-                name: 'NY Times',
-                url: 'https://api.rss2json.com/v1/api.json?rss_url=https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml',
-                limit: 7
-            },
-            {
-                name: 'Yahoo News',
-                url: 'https://api.rss2json.com/v1/api.json?rss_url=https://news.yahoo.com/rss/',
-                limit: 7
-            }
-        ];
-            
-            // Array to hold all news items from all sources
-            let allNewsItems = [];
-            let fetchPromises = [];
-            
-            // Fetch from each news source
-            newsSources.forEach(source => {
-                const fetchPromise = fetch(source.url)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'ok') {
-                            // Take only the specified number of items from this source
-                            const items = data.items.slice(0, source.limit).map(item => {
-                                // Add the source name to each item
-                                item.sourceName = source.name;
-                                return item;
-                            });
-                            
-                            // Add these items to our collection
-                            allNewsItems = allNewsItems.concat(items);
-                        }
-                    })
-                    .catch(error => {
-                        console.error(`Error fetching from ${source.name}:`, error);
+    // Function to fetch cybersecurity news
+function fetchCyberSecurityNews() {
+    // Array of news sources to fetch from
+    const newsSources = [
+        // Cybersecurity sources
+        {
+            name: 'The Hacker News',
+            url: 'https://api.rss2json.com/v1/api.json?rss_url=https://feeds.feedburner.com/TheHackersNews',
+            limit: 7
+        },
+        {
+            name: 'Krebs on Security',
+            url: 'https://api.rss2json.com/v1/api.json?rss_url=https://krebsonsecurity.com/feed/',
+            limit: 7
+        },
+        // Dark Reading removed due to 500 errors
+        {
+            name: 'Bleeping Computer',
+            url: 'https://api.rss2json.com/v1/api.json?rss_url=https://www.bleepingcomputer.com/feed/',
+            limit: 7
+        },
+        // General news sources
+        {
+            name: 'CNN',
+            url: 'https://api.rss2json.com/v1/api.json?rss_url=http://rss.cnn.com/rss/edition.rss',
+            limit: 7
+        },
+        {
+            name: 'BBC',
+            url: 'https://api.rss2json.com/v1/api.json?rss_url=http://feeds.bbci.co.uk/news/rss.xml',
+            limit: 7
+        },
+        {
+            name: 'NY Times',
+            url: 'https://api.rss2json.com/v1/api.json?rss_url=https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml',
+            limit: 7
+        },
+        {
+            name: 'Yahoo News',
+            url: 'https://api.rss2json.com/v1/api.json?rss_url=https://news.yahoo.com/rss/',
+            limit: 7
+        }
+    ];
+    
+    // Array to hold all news items from all sources
+    let allNewsItems = [];
+    let fetchPromises = [];
+    
+    // Fetch from each news source
+    newsSources.forEach(source => {
+        const fetchPromise = fetch(source.url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'ok') {
+                    // Take only the specified number of items from this source
+                    const items = data.items.slice(0, source.limit).map(item => {
+                        // Add the source name to each item
+                        item.sourceName = source.name;
+                        return item;
                     });
-                
-                fetchPromises.push(fetchPromise);
+                    
+                    // Add these items to our collection
+                    allNewsItems = allNewsItems.concat(items);
+                }
+            })
+            .catch(error => {
+                console.error(`Error fetching from ${source.name}:`, error);
             });
-            
-            // When all fetches are complete (or failed)
-            Promise.all(fetchPromises)
-                .then(() => {
-                    if (allNewsItems.length > 0) {
-                        // Shuffle the array to mix the sources
-                        shuffleArray(allNewsItems);
-                        updateNewsTicker(allNewsItems);
-                    } else {
-                        // If we got no items, use fallback
-                        console.warn('No news items found, using fallback');
-                        loadFallbackNews();
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching news:', error);
-                    loadFallbackNews();
-                });
-        }
         
-        // Fisher-Yates shuffle algorithm to randomize news items
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
+        fetchPromises.push(fetchPromise);
+    });
+    
+    // When all fetches are complete (or failed)
+    Promise.all(fetchPromises)
+        .then(() => {
+            if (allNewsItems.length > 0) {
+                // Shuffle the array to mix the sources
+                shuffleArray(allNewsItems);
+                updateNewsTicker(allNewsItems);
+            } else {
+                // If we got no items, use fallback
+                console.warn('No news items found, using fallback');
+                loadFallbackNews();
             }
-            return array;
-        }
+        })
+        .catch(error => {
+            console.error('Error fetching news:', error);
+            loadFallbackNews();
+        });
+}
+
+// Fisher-Yates shuffle algorithm to randomize news items
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+// Function to update the news ticker with items
+function updateNewsTicker(newsItems) {
+    const tickerContent = document.getElementById('news-ticker-content');
+    tickerContent.innerHTML = '';
+    
+    // Create a copy of the news items to use for duplication
+    const itemsCopy = [...newsItems];
+    
+    // Add original items
+    newsItems.forEach(item => {
+        const newsItem = document.createElement('div');
+        newsItem.className = 'news-ticker-item';
         
-        function updateNewsTicker(newsItems) {
-            const tickerContent = document.getElementById('news-ticker-content');
-            tickerContent.innerHTML = '';
-            
-            // Take all of the items (already limited per source when fetched)
-            newsItems.forEach(item => {
-                const newsItem = document.createElement('div');
-                newsItem.className = 'news-ticker-item';
-                
-                const link = document.createElement('a');
-                link.href = item.link;
-                link.target = '_blank';
-                
-                // Include the source name in brackets before the headline
-                link.textContent = `[${item.sourceName || 'News'}] ${item.title}`;
-                
-                newsItem.appendChild(link);
-                tickerContent.appendChild(newsItem);
-            });
-        }
+        const link = document.createElement('a');
+        link.href = item.link;
+        link.target = '_blank';
         
-        function loadFallbackNews() {
-            // Fallback news in case the API fails
-            const fallbackNews = [
-                // Cybersecurity news
-                { title: "AA Maintaining proper cyber hygiene is essential for protecting against threats", link: "https://thehackernews.com/", sourceName: "The Hacker News" },
-                { title: "AA Zero-day vulnerabilities continue to be exploited in major software", link: "https://thehackernews.com/", sourceName: "The Hacker News" },
-                { title: "AA Ransomware attacks target critical infrastructure worldwide", link: "https://krebsonsecurity.com/", sourceName: "Krebs on Security" },
-                { title: "AA New phishing campaign targets corporate executives", link: "https://www.darkreading.com/", sourceName: "Dark Reading" },
-                { title: "AA Security researchers discover vulnerability in popular IoT devices", link: "https://www.bleepingcomputer.com/", sourceName: "Bleeping Computer" },
-                { title: "AA Data breach exposes millions of customer records", link: "https://krebsonsecurity.com/", sourceName: "Krebs on Security" },
-                { title: "AA NIST releases new guidelines for password security", link: "https://www.nist.gov/", sourceName: "NIST" },
-                { title: "AA Critical security patches released for major operating systems", link: "https://www.bleepingcomputer.com/", sourceName: "Bleeping Computer" },
-                
-                // General news
-                { title: "AA Global economic outlook shows signs of recovery", link: "https://www.cnn.com/", sourceName: "CNN" },
-                { title: "AA New climate agreement reached at international summit", link: "https://www.bbc.com/news", sourceName: "BBC" },
-                { title: "AA Tech companies announce major investments in AI research", link: "https://www.nytimes.com/", sourceName: "NY Times" },
-                { title: "AA Scientists make breakthrough in renewable energy storage", link: "https://news.yahoo.com/", sourceName: "Yahoo News" },
-                { title: "AA Space agency reveals plans for next lunar mission", link: "https://www.bbc.com/news", sourceName: "BBC" },
-                { title: "AA Major sports league announces expansion teams", link: "https://www.cnn.com/", sourceName: "CNN" },
-                { title: "AA Global health organization reports decline in pandemic cases", link: "https://www.nytimes.com/", sourceName: "NY Times" },
-                { title: "AA New transportation technology promises to reduce commute times", link: "https://news.yahoo.com/", sourceName: "Yahoo News" }
-            ];
-            
-            // Shuffle the fallback news for variety
-            shuffleArray(fallbackNews);
-            updateNewsTicker(fallbackNews);
-        }
+        // Include the source name in brackets before the headline
+        link.textContent = `[${item.sourceName || 'News'}] ${item.title}`;
         
-        // Refresh news every 30 minutes (1800000 ms)
-        function setupNewsTicker() {
-            fetchCyberSecurityNews();
-            setInterval(fetchCyberSecurityNews, 600000);
-        }
+        newsItem.appendChild(link);
+        tickerContent.appendChild(newsItem);
+    });
+    
+    // Add a spacer
+    const spacer = document.createElement('div');
+    spacer.className = 'news-ticker-item';
+    spacer.style.margin = '0 100px';
+    tickerContent.appendChild(spacer);
+    
+    // Add duplicate items to ensure continuous scrolling
+    itemsCopy.forEach(item => {
+        const newsItem = document.createElement('div');
+        newsItem.className = 'news-ticker-item';
+        
+        const link = document.createElement('a');
+        link.href = item.link;
+        link.target = '_blank';
+        
+        // Include the source name in brackets before the headline
+        link.textContent = `[${item.sourceName || 'News'}] ${item.title}`;
+        
+        newsItem.appendChild(link);
+        tickerContent.appendChild(newsItem);
+    });
+}
+
+// Fallback news in case the API fails
+function loadFallbackNews() {
+    const fallbackNews = [
+        // Cybersecurity news
+        { title: "Maintaining proper cyber hygiene is essential for protecting against threats", link: "https://thehackernews.com/", sourceName: "The Hacker News" },
+        { title: "Zero-day vulnerabilities continue to be exploited in major software", link: "https://thehackernews.com/", sourceName: "The Hacker News" },
+        { title: "Ransomware attacks target critical infrastructure worldwide", link: "https://krebsonsecurity.com/", sourceName: "Krebs on Security" },
+        { title: "New phishing campaign targets corporate executives", link: "https://www.darkreading.com/", sourceName: "Dark Reading" },
+        { title: "Security researchers discover vulnerability in popular IoT devices", link: "https://www.bleepingcomputer.com/", sourceName: "Bleeping Computer" },
+        { title: "Data breach exposes millions of customer records", link: "https://krebsonsecurity.com/", sourceName: "Krebs on Security" },
+        { title: "NIST releases new guidelines for password security", link: "https://www.nist.gov/", sourceName: "NIST" },
+        { title: "Critical security patches released for major operating systems", link: "https://www.bleepingcomputer.com/", sourceName: "Bleeping Computer" },
+        
+        // General news
+        { title: "Global economic outlook shows signs of recovery", link: "https://www.cnn.com/", sourceName: "CNN" },
+        { title: "New climate agreement reached at international summit", link: "https://www.bbc.com/news", sourceName: "BBC" },
+        { title: "Tech companies announce major investments in AI research", link: "https://www.nytimes.com/", sourceName: "NY Times" },
+        { title: "Scientists make breakthrough in renewable energy storage", link: "https://news.yahoo.com/", sourceName: "Yahoo News" },
+        { title: "Space agency reveals plans for next lunar mission", link: "https://www.bbc.com/news", sourceName: "BBC" },
+        { title: "Major sports league announces expansion teams", link: "https://www.cnn.com/", sourceName: "CNN" },
+        { title: "Global health organization reports decline in pandemic cases", link: "https://www.nytimes.com/", sourceName: "NY Times" },
+        { title: "New transportation technology promises to reduce commute times", link: "https://news.yahoo.com/", sourceName: "Yahoo News" }
+    ];
+    
+    // Shuffle the fallback news for variety
+    shuffleArray(fallbackNews);
+    updateNewsTicker(fallbackNews);
+}
+
+// Setup news ticker and refresh every 10 minutes (600000 ms)
+function setupNewsTicker() {
+    fetchCyberSecurityNews();
+    setInterval(fetchCyberSecurityNews, 600000);
+}
     </script>
 </body>
 </html>
