@@ -488,7 +488,7 @@
         <h2>Have a great day at work!</h2>
     </div>
     
-    <div id="content">
+    <div id="content" style="margin-bottom: 70px;">
         <!--Filled dynamically by script.js. Edit `MASTER_MAP` inside the script to change page's contents-->
     </div>
     
@@ -810,6 +810,72 @@
             // Add keyboard shortcut listener
             document.addEventListener('keyup', shortcutListener, false);
         });
+    </script>
+    <script>
+        // Function to fetch cybersecurity news
+        function fetchCyberSecurityNews() {
+            // Using a free RSS to JSON converter service
+            // This fetches the latest news from The Hacker News
+            fetch('https://api.rss2json.com/v1/api.json?rss_url=https://feeds.feedburner.com/TheHackersNews')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'ok') {
+                        updateNewsTicker(data.items);
+                    } else {
+                        console.error('Error fetching news:', data.message);
+                        loadFallbackNews();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching news:', error);
+                    loadFallbackNews();
+                });
+        }
+        
+        function updateNewsTicker(newsItems) {
+            const tickerContent = document.getElementById('news-ticker-content');
+            tickerContent.innerHTML = '';
+            
+            // Take the first 10 items
+            const itemsToShow = newsItems.slice(0, 10);
+            
+            itemsToShow.forEach(item => {
+                const newsItem = document.createElement('div');
+                newsItem.className = 'news-ticker-item';
+                
+                const link = document.createElement('a');
+                link.href = item.link;
+                link.target = '_blank';
+                link.textContent = item.title;
+                
+                newsItem.appendChild(link);
+                tickerContent.appendChild(newsItem);
+            });
+        }
+        
+        function loadFallbackNews() {
+            // Fallback news in case the API fails
+            const fallbackNews = [
+                { title: "Maintaining proper cyber hygiene is essential for protecting against threats", link: "https://thehackernews.com/" },
+                { title: "Zero-day vulnerabilities continue to be exploited in major software", link: "https://thehackernews.com/" },
+                { title: "Ransomware attacks target critical infrastructure worldwide", link: "https://thehackernews.com/" },
+                { title: "New phishing campaign targets corporate executives", link: "https://thehackernews.com/" },
+                { title: "Security researchers discover vulnerability in popular IoT devices", link: "https://thehackernews.com/" },
+                { title: "Data breach exposes millions of customer records", link: "https://thehackernews.com/" },
+                { title: "NIST releases new guidelines for password security", link: "https://www.nist.gov/" },
+                { title: "Cyber attacks increasing against healthcare organizations", link: "https://www.darkreading.com/" },
+                { title: "Critical security patches released for major operating systems", link: "https://www.bleepingcomputer.com/" },
+                { title: "New state-sponsored threat group identified by researchers", link: "https://thehackernews.com/" }
+            ];
+            
+            updateNewsTicker(fallbackNews);
+        }
+        
+        // Refresh news every 30 minutes (1800000 ms)
+        function setupNewsTicker() {
+            fetchCyberSecurityNews();
+            setInterval(fetchCyberSecurityNews, 1800000);
+        }
     </script>
 </body>
 </html>
