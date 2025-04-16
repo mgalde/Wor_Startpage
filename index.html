@@ -409,12 +409,16 @@
 
 
 .news-ticker-content {
+
     display: flex;
     align-items: center;
     position: absolute;
     white-space: nowrap;
     will-change: transform;
     animation: ticker-scroll 180s linear infinite;
+
+    animation-delay: 2s;
+    animation-play-state: running;
 }
 
 
@@ -443,15 +447,12 @@
     color: rgba(255, 0, 0, 0.7);
 }
 
-.news-ticker-container:hover 
-.news-ticker-content {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    white-space: nowrap;
-    will-change: transform;
-    animation: ticker-scroll 180s linear infinite;
+
+.news-ticker-container:hover .news-ticker-content {
+    animation-play-state: paused !important;
 }
+
+
 
 
 
@@ -462,6 +463,8 @@
     100% {
         transform: translateX(-300%);
     }
+}
+
 }
 
     100% {
