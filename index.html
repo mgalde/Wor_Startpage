@@ -373,16 +373,84 @@
             }
         }
         
-        @keyframes fadein {
-            from { opacity: 0; }
-            to   { opacity: 1; }
+        .news-ticker {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--group-bg);
+            color: var(--text-color);
+            padding: 10px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            overflow: hidden;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            backdrop-filter: blur(8px);
         }
         
-        @keyframes pulse {
-            0% { opacity: 0; }
-            20% { opacity: 0.6; }
-            80% { opacity: 0.6; }
-            100%   { opacity: 0; }
+        .news-ticker-label {
+            font-weight: bold;
+            padding: 5px 15px;
+            margin-right: 20px;
+            background-color: rgba(255, 0, 0, 0.7);
+            color: white;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+        
+        .news-ticker-container {
+            overflow: hidden;
+            height: 100%;
+            flex-grow: 1;
+            position: relative;
+        }
+        
+        .news-ticker-content {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            white-space: nowrap;
+            will-change: transform;
+            animation: ticker-scroll 30s linear infinite;
+        }
+        
+        .news-ticker-item {
+            margin-right: 50px;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .news-ticker-item a {
+            color: var(--text-color);
+            text-decoration: none;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+        
+        .news-ticker-item a:hover {
+            opacity: 1;
+            color: var(--link-hover);
+        }
+        
+        .news-ticker-item::before {
+            content: "•";
+            margin-right: 10px;
+            color: rgba(255, 0, 0, 0.7);
+        }
+        
+        .news-ticker-container:hover .news-ticker-content {
+            animation-play-state: paused;
+        }
+        
+        @keyframes ticker-scroll {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
         }
     </style>
 </head>
@@ -424,8 +492,18 @@
         <!--Filled dynamically by script.js. Edit `MASTER_MAP` inside the script to change page's contents-->
     </div>
     
-    <div id="credits">
+    <div id="credits" style="bottom: 50px;">
         Made by Michael, available on <a href="https://github.com/mgalde/Wor_Startpage">GitHub</a>
+    </div>
+    
+    <div class="news-ticker">
+        <div class="news-ticker-label">CYBER NEWS</div>
+        <div class="news-ticker-container">
+            <div class="news-ticker-content" id="news-ticker-content">
+                <!-- News items will be added here by JavaScript -->
+                <div class="news-ticker-item"><a href="#" target="_blank">Loading news...</a></div>
+            </div>
+        </div>
     </div>
     
     <script>
@@ -468,7 +546,7 @@
             {
                 "groupName": "University",
                 "items": [
-                    {"name": "CAST Home Page", "shortcutKey": "z", "url": "https://azcast.arizona.edu/"},
+                    {"name": "CAST Sharepoint", "shortcutKey": "z", "url": "https://emailarizona.sharepoint.com/sites/CAST"},
                     {"name": "CYBER OPERATIONS /PORTAL", "shortcutKey": "x", "url": "https://portal.cyberapolis.com/"},
                     {"name": "UA VITAE", "shortcutKey": "c", "url": "https://uavitae.arizona.edu/"},
                     {"name": "UA Access", "shortcutKey": "v", "url": "https://uaccess.arizona.edu/"},
@@ -558,7 +636,6 @@
         }
         
         function fetchWeather() {
-            // Las Vegas coordinates (example)
             const latitude = 32.253460;
             const longitude = -110.911789;
             
@@ -728,6 +805,7 @@
             setupGroups();
             updateDateTime();
             fetchWeather();
+            setupNewsTicker(); // Initialize the news ticker
             
             // Add keyboard shortcut listener
             document.addEventListener('keyup', shortcutListener, false);
