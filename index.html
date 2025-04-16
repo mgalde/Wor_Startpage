@@ -408,13 +408,12 @@
 }
 
 .news-ticker-content {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    white-space: nowrap;
-    will-change: transform;
-    transition: all 0.5s ease;
-    animation: ticker-scroll 9s linear infinite; /* Slowed down from 240s to 360s for much slower speed */
+  display: flex;
+  align-items: center;
+  position: absolute;
+  white-space: nowrap;
+  will-change: transform;
+  animation: ticker-scroll 240s linear infinite; /* Slowed down from 240s to 360s for much slower speed */
     animation-timing-function: linear; /* Ensures consistently smooth scrolling */
 }
 
@@ -448,9 +447,13 @@
 }
 
 @keyframes ticker-scroll {
-    0% {
-        transform: translateX(100%);
-    }
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-200%);
+  }
+}
     100% {
         transform: translateX(-120%); /* Extended to ensure continuous scrolling */
     }
@@ -1040,9 +1043,13 @@ function updateNewsTickerCSS() {
     const styleElement = document.createElement('style');
     styleElement.textContent = `
     @keyframes ticker-scroll {
-        0% {
-            transform: translateX(100%);
-        }
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-200%);
+  }
+}
         100% {
             transform: translateX(-300%);
         }
@@ -1073,12 +1080,12 @@ function updateNewsTickerCSS() {
     }
     
     .news-ticker-content {
-        display: flex;
-        align-items: center;
-        position: absolute;
-        white-space: nowrap;
-        will-change: transform;
-        animation: ticker-scroll 180s linear infinite;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  white-space: nowrap;
+  will-change: transform;
+  animation: ticker-scroll 240s linear infinite;
     }
     
     .news-ticker-item {
@@ -1098,82 +1105,12 @@ function initializeNewsTickerImprovements() {
 }
 
 // This is the function you should call to initialize everything
-initializeNewsTickerImprovements();
+
 
 
         // Add this script at the end of your body tag to help debug and fix the news ticker issues
 
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('News ticker debugging script initialized');
-  
-  // 1. First, check if the ticker elements exist
-  const tickerContainer = document.querySelector('.news-ticker-container');
-  const tickerContent = document.getElementById('news-ticker-content');
-  
-  if (!tickerContainer) {
-    console.error('Ticker container not found!');
-    return;
-  }
-  
-  if (!tickerContent) {
-    console.error('Ticker content element not found!');
-    return;
-  }
-  
-  console.log('Ticker elements found in DOM');
-
-    console.log('Ticker container visibility:', 
-  window.getComputedStyle(document.querySelector('.news-ticker')).visibility,
-  window.getComputedStyle(document.querySelector('.news-ticker')).display);
-  // 2. Fix CSS issues by applying styles directly
-  const styleElement = document.createElement('style');
-  styleElement.textContent = `
-    @keyframes ticker-scroll {
-      0% {
-        transform: translateX(100%);
-      }
-      100% {
-        transform: translateX(-300%);
-      }
-    }
-    
-    .news-ticker-content {
-      display: flex;
-      align-items: center;
-      position: absolute;
-      white-space: nowrap;
-      will-change: transform;
-      animation: ticker-scroll 180s linear infinite !important;
-    }
-  `;
-  document.head.appendChild(styleElement);
-  
-  // 3. Force immediate display of fallback news
-  const fallbackNews = [
-    { title: "Maintaining proper cyber hygiene is essential for protecting against threats", link: "https://thehackernews.com/", sourceName: "The Hacker News" },
-    { title: "Zero-day vulnerabilities continue to be exploited in major software", link: "https://thehackernews.com/", sourceName: "The Hacker News" },
-    { title: "Ransomware attacks target critical infrastructure worldwide", link: "https://krebsonsecurity.com/", sourceName: "Krebs on Security" },
-    { title: "New phishing campaign targets corporate executives", link: "https://www.darkreading.com/", sourceName: "Dark Reading" }
-  ];
-  
-  // 4. Completely reset and rebuild the ticker content
-  console.log('Rebuilding ticker content with fallback news');
-  tickerContent.innerHTML = '';
-  
-  // 5. Create multiple copies for smoother animation
-  for (let i = 0; i < 3; i++) {
-    fallbackNews.forEach(item => {
-      const newsItem = document.createElement('div');
-      newsItem.className = 'news-ticker-item';
-      
-      const link = document.createElement('a');
-      link.href = item.link;
-      link.target = '_blank';
-      link.textContent = `[${item.sourceName}] ${item.title}`;
-      
-      newsItem.appendChild(link);
-      tickerContent.appendChild(newsItem);
-    });
+// [Removed extra DOMContentLoaded listeners to consolidate behavior]
   }
   
   // 6. Force a redraw of the ticker
@@ -1237,74 +1174,7 @@ setTimeout(() => {
 
         // Add this script at the end of your body tag to fix the ticker timing issues
 
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('News ticker timing fix initialized');
-  
-  // Function to fix ticker timing issues
-  function fixTickerTiming() {
-    // 1. Create custom CSS to override the animation timing
-    const styleElement = document.createElement('style');
-    styleElement.textContent = `
-      @keyframes ticker-scroll {
-        0% {
-          transform: translateX(100%);
-        }
-        100% {
-          transform: translateX(-300%);
-        }
-      }
-      
-      .news-ticker-content {
-        display: flex !important;
-        align-items: center !important;
-        position: absolute !important;
-        white-space: nowrap !important;
-        will-change: transform !important;
-        
-        /* Important flags to override existing styles */
-        animation-name: ticker-scroll !important;
-        animation-duration: 180s !important;
-        animation-timing-function: linear !important;
-        animation-iteration-count: infinite !important;
-        animation-delay: 0s !important;
-        
-        /* Ensure content is visible */
-        visibility: visible !important;
-        opacity: 1 !important;
-      }
-      
-      /* Ensure container properties are correct */
-      .news-ticker-container {
-        overflow: hidden !important;
-        height: 100% !important;
-        flex-grow: 1 !important;
-        position: relative !important;
-      }
-      
-      /* Add enough spacing between items */
-      .news-ticker-item {
-        margin-right: 60px !important;
-        display: inline-flex !important;
-        align-items: center !important;
-      }
-    `;
-    document.head.appendChild(styleElement);
-    
-    // 2. Ensure we have enough duplicated content to prevent gaps
-    const tickerContent = document.getElementById('news-ticker-content');
-    
-    // Clone all current items to create multiple sets
-    if (tickerContent && tickerContent.children.length > 0) {
-      // First, save current items
-      const originalItems = Array.from(tickerContent.children);
-      
-      // Create multiple copies for continuous scrolling
-      // (Make 5-6 copies to ensure no gaps)
-      for (let i = 0; i < 5; i++) {
-        originalItems.forEach(item => {
-          const clone = item.cloneNode(true);
-          tickerContent.appendChild(clone);
-        });
+// [Removed extra DOMContentLoaded listeners to consolidate behavior]
       }
       
       console.log(`Duplicated ticker items: ${tickerContent.children.length} total items`);
