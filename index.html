@@ -413,7 +413,9 @@
     position: absolute;
     white-space: nowrap;
     will-change: transform;
-    animation: ticker-scroll 360s linear infinite; /* Slowed down from 240s to 360s for much slower speed */
+    transition: all 0.5s ease;
+    animation: ticker-scroll 900s linear infinite; /* Slowed down from 240s to 360s for much slower speed */
+    animation-timing-function: linear; /* Ensures consistently smooth scrolling */
 }
 
 .news-ticker-item {
@@ -450,7 +452,7 @@
         transform: translateX(100%);
     }
     100% {
-        transform: translateX(-140%); /* Extended to ensure continuous scrolling */
+        transform: translateX(-120%); /* Extended to ensure continuous scrolling */
     }
 }
     </style>
