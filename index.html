@@ -965,6 +965,8 @@ function fetchCyberSecurityNews() {
 
 // Initialize the ticker
 function setupNewsTicker() {
+    // Show fallback news immediately
+    loadFallbackNews();
     fetchCyberSecurityNews();
     setInterval(fetchCyberSecurityNews, 600000); // every 10 minutes
 }
