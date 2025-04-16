@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Title of the page-->
+    <title>Home</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:200,400">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@200;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Common Variables */
+            --SHORTCUT_TIMEOUT: 1.5s;
+            
+            /* Light Theme Variables */
+            --bg-color-light: #f5f7fa;
+            --text-color-light: #333;
+            --group-bg-light: rgba(255, 255, 255, 0.7);
+            --link-hover-light: #4a6fa5;
+            
+            /* Dark Theme Variables */
+            --bg-color-dark: #121212;
+            --text-color-dark: #e1e1e1;
+            --group-bg-dark: rgba(30, 30, 30, 0.7);
+            --link-hover-dark: #a3abff;
+        }
+        
+        [data-theme="light"] {
+            --bg-color: var(--bg-color-light);
+            --text-color: var(--text-color-light);
+            --group-bg: var(--group-bg-light);
+            --link-hover: var(--link-hover-light);
+        }
+        
+        [data-theme="dark"] {
+            --bg-color: var(--bg-color-dark);
+            --text-color: var(--text-color-dark);
+            --group-bg: var(--group-bg-dark);
+            --link-hover: var(--link-hover-dark);
+        }
+        
+        body {
+            padding: 0;
+            margin: 0;
+            background-color: var(--bg-color);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-color);
+            font-family: 'Open Sans', sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+            user-select: none;
+            animation: fadein 1s;
+            transition: background-image 1s ease;
+            min-height: 100vh;
+        }
+        
+        #logo {
+            padding-top: 8vh;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        #logo h1 {
+            font-weight: 200;
+            font-family: 'Roboto', sans-serif;
+            font-size: 3.5rem;
+            margin-bottom: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        #logo h2 {
+            font-weight: 200;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.5rem;
+            margin-top: 5px;
+            opacity: 0.8;
+        }
+        
+        #content {
+            text-align: center;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        #credits {
+            position: fixed;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            bottom: 1rem;
+            left: 1rem;
+            z-index: 10;
+        }
+        
+        .group {
+            display: inline-block;
+            vertical-align: top;
+            text-align: left;
+            width: 24%;
+            min-width: 280px;
+            background-color: var(--group-bg);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .group h1 {
+            font-weight: 400;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.8rem;
+            margin-top: 0;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--text-color);
+        }
+        
+        .group p {
+            margin: 8px 0;
+            padding: 0.3rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .group:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .shortcut {
+            float: right;
+            opacity: 0;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            animation: pulse var(--SHORTCUT_TIMEOUT);
+        }
+        
+        [data-theme="light"] .shortcut {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        /* The switch - the box around the slider */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        /* Hide default HTML checkbox */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--link-hover);
+        }
+        
+        input:focus + .slider {
+            box-shadow: 0 0 1px var(--link-hover);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        a, a:hover {
+            transition: all 0.3s ease;
+        }
+        
+        a {
+            color: var(--text-color);
+            text-decoration: none;
+            opacity: 0.8;
+            padding: 5px 0;
+            display: inline-block;
+            position: relative;
+        }
+        
+        .group a:hover {
+            opacity: 1;
+            color: var(--link-hover);
+            transform: translateX(5px);
+        }
+        
+        .group a:hover::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--link-hover);
+            transform: scaleX(1);
+            transition: transform 0.3s;
+        }
+        
+        #credits a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+        
+        #theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+        }
+        
+        #theme-toggle span {
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+        
+        #search-container {
+            text-align: center;
+            margin: 25px 0;
+            position: relative;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        #search-input {
+            padding: 12px 20px;
+            width: 100%;
+            max-width: 500px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: var(--text-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        #search-input::placeholder {
+            color: var(--text-color);
+            opacity: 0.6;
+        }
+        
+        #search-input:focus {
+            outline: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            background-color: rgba(255, 255, 255, 0.25);
+        }
+        
+        .weather-widget {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px;
+            background-color: var(--group-bg);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+        
+        .weather-icon {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        #datetime {
+            position: fixed;
+            top: 70px;
+            left: 20px;
+            padding: 10px;
+            background-color: var(--group-bg);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        #datetime .time {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        #datetime .date {
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 1200px) {
+            .group {
+                width: 30%;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .group {
+                width: 45%;
+            }
+            
+            #logo h1 {
+                font-size: 3rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .group {
+                width: 90%;
+            }
+            
+            #logo h1 {
+                font-size: 2.5rem;
+            }
+            
+            #logo h2 {
+                font-size: 1.2rem;
+            }
+            
+            .weather-widget, #datetime {
+                position: static;
+                margin: 10px auto;
+                width: fit-content;
+            }
+        }
+        
+        @keyframes fadein {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0; }
+            20% { opacity: 0.6; }
+            80% { opacity: 0.6; }
+            100%   { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div id="theme-toggle">
+        <span>Toggle Theme</span>
+        <label class="switch">
+            <input type="checkbox" id="theme-switch">
+            <span class="slider"></span>
+        </label>
+    </div>
+    
+    <div class="weather-widget">
+        <div class="weather-icon">🌤️</div>
+        <div class="weather-info">
+            <span id="weather-temp">--°F</span> 
+            <span id="weather-desc">Loading...</span>
+        </div>
+    </div>
+    
+    <div id="datetime">
+        <div class="time" id="current-time">--:--:--</div>
+        <div class="date" id="current-date">--, --- --</div>
+    </div>
+    
+    <div id="search-container">
+        <form id="search-form" action="https://www.google.com/search" method="get">
+            <input type="text" name="q" id="search-input" placeholder="Search Google...">
+        </form>
+    </div>
+    
+    <div id="logo">
+        <h1 id="welcome-string"></h1>
+        <h2>Have a great day at work!</h2>
+    </div>
+    
+    <div id="content">
+        <!--Filled dynamically by script.js. Edit `MASTER_MAP` inside the script to change page's contents-->
+    </div>
+    
+    <div id="credits">
+        Made by Michael, available on <a href="https://github.com/mgalde/Wor_Startpage">GitHub</a>
+    </div>
+    
+    <script>
+        const NAME = "Michael";
+        const WELCOME_MESSAGE_TEMPLATE = ["night", "morning", "afternoon", "evening"];
+        
+        // All shortcuts are in a `SHORTCUT_STARTER+shortcutKey` format.
+        // So, for example, pressing `tab+q` would redirect you to https://google.com/?q=q
+        const SHORTCUT_STARTER = 'tab'
+        
+        // How much time (in milliseconds) you have to press shortcutKey after pressing SHORTCUT_STARTER.
+        // Also change --SHORTCUT_TIMEOUT in styles.css if you change this option.
+        const SHORTCUT_TIMEOUT = 1500;
+        
+        // The groups of links are generated from this object. Edit it to edit the page's contents.
+        // shortcutKey must hold an all-lowercase single button. Theoretically should work with values like `esc` and `f1`,
+        // but intended to be used with just regular latin letters.
+        const MASTER_MAP = [
+            {
+                "groupName": "Hacking",
+                "items": [
+                    {"name": "Exploit Database", "shortcutKey": "q", "url": "https://www.exploit-db.com/"},
+                    {"name": "Bleeping Computer", "shortcutKey": "w", "url": "https://www.bleepingcomputer.com"},
+                    {"name": "Github", "shortcutKey": "e", "url": "https://github.com/mgalde"},
+                    {"name": "Dark Reading", "shortcutKey": "r", "url": "https://www.darkreading.com"},
+                    {"name": "Malware Runner", "shortcutKey": "t", "url": "https://app.any.run/"},
+                    {"name": "DNS Dumpster", "shortcutKey": "y", "url": "https://dnsdumpster.com/"},
+                    {"name": "SHODAN", "shortcutKey": "u", "url": "https://shodan.io/"}
+                ]
+            },
+            {
+                "groupName": "References",
+                "items": [
+                    {"name": "CAST Home Page", "shortcutKey": "a", "url": "https://azcast.arizona.edu/"},
+                    {"name": "ESTCP", "shortcutKey": "s", "url": "https://www.serdp-estcp.org/Tools-and-Training/Installation-Energy-and-Water/Cybersecurity"},
+                    {"name": "Infragard", "shortcutKey": "d", "url": "https://www.infragard.org/"},
+                    {"name": "SAM.gov", "shortcutKey": "f", "url": "https://sam.gov/content/opportunities"},
+                    {"name": "MITRE ATT&CK", "shortcutKey": "g", "url": "https://attack.mitre.org/"},
+                    {"name": "NIST Cybersecurity Framework", "shortcutKey": "h", "url": "https://www.nist.gov/cyberframework"},
+                    {"name": "The Packet", "shortcutKey": "p", "url": "https://the-packet.com/"}
+                ]
+            },
+            {
+                "groupName": "Important",
+                "items": [
+                    {"name": "CAST Sharepoint", "shortcutKey": "z", "url": "https://emailarizona.sharepoint.com/sites/CAST"},
+                    {"name": "CYBER OPERATIONS /PORTAL", "shortcutKey": "x", "url": "https://portal.cyberapolis.com/"},
+                    {"name": "ChatGPT", "shortcutKey": "c", "url": "https://chat.openai.com"},
+                    {"name": "UA VITAE", "shortcutKey": "v", "url": "https://uavitae.arizona.edu/"},
+                    {"name": "UA Access", "shortcutKey": "b", "url": "https://uaccess.arizona.edu/"},
+                    {"name": "D2L", "shortcutKey": "n", "url": "https://d2l.arizona.edu/d2l/home"},
+                    {"name": "CDW Anywhere", "shortcutKey": "m", "url": "https://anywhere.cdw.com/logon/LogonPoint/tmindex.html"}
+                ]
+            },
+            {
+                "groupName": "Tools",
+                "items": [
+                    {"name": "Claude AI", "shortcutKey": "1", "url": "https://claude.ai/"},
+                    {"name": "VirusTotal", "shortcutKey": "2", "url": "https://www.virustotal.com/"},
+                    {"name": "Google Drive", "shortcutKey": "3", "url": "https://drive.google.com/"},
+                    {"name": "Trello", "shortcutKey": "4", "url": "https://trello.com/"},
+                    {"name": "Notion", "shortcutKey": "5", "url": "https://www.notion.so/"},
+                    {"name": "LinkedIn", "shortcutKey": "6", "url": "https://www.linkedin.com/"}
+                ]
+            }
+        ];
+        
+        let $container = document.getElementById("content");
+        let getUrl = {};
+        let $shortcutDisplayList = document.getElementsByClassName("shortcut");
+        let listeningForShortcut = false;
+        let listenerTimeout;
+        
+        function setupWelcomeMessage() {
+            let curHours = new Date().getHours();
+            curHours = Math.floor(curHours / 6);
+            if (curHours == 4) curHours = 3;
+            let welcome = "Good " + WELCOME_MESSAGE_TEMPLATE[curHours] + ", " + NAME;
+            document.getElementById("welcome-string").innerHTML = welcome;
+        }
+        
+        function setBackgroundBasedOnTime() {
+            const hour = new Date().getHours();
+            
+            if (hour >= 5 && hour < 8) {
+                document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("sunrise.jpg")';
+            } else if (hour >= 8 && hour < 18) {
+                document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("daytime.jpg")';
+            } else if (hour >= 18 && hour < 20) {
+                document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("sunset.jpg")';
+            } else {
+                document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("night.jpg")';
+            }
+        }
+        
+        function updateDateTime() {
+            const now = new Date();
+            
+            // Update time
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            document.getElementById('current-time').textContent = `${hours}:${minutes}:${seconds}`;
+            
+            // Update date
+            const options = { weekday: 'short', month: 'short', day: 'numeric' };
+            document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', options);
+            
+            // Call this function again in 1 second
+            setTimeout(updateDateTime, 1000);
+        }
+        
+        function fetchWeather() {
+            // This is a placeholder function - in a real implementation, you would
+            // use a weather API like OpenWeatherMap or similar.
+            // For now, we'll just update with sample data
+            
+            // For actual implementation, you would do something like:
+            // fetch('https://api.openweathermap.org/data/2.5/weather?q=YourCity&appid=YourAPIKey&units=imperial')
+            //   .then(response => response.json())
+            //   .then(data => {
+            //     document.getElementById('weather-temp').textContent = `${Math.round(data.main.temp)}°F`;
+            //     document.getElementById('weather-desc').textContent = data.weather[0].description;
+            //     // Update icon based on weather condition
+            //   });
+            
+            // Sample data for now
+            const temp = Math.floor(Math.random() * 20) + 60; // Random temp between 60-80°F
+            const conditions = ["Clear", "Partly Cloudy", "Sunny", "Overcast"];
+            const condition = conditions[Math.floor(Math.random() * conditions.length)];
+            
+            document.getElementById('weather-temp').textContent = `${temp}°F`;
+            document.getElementById('weather-desc').textContent = condition;
+            
+            // Update the icon based on condition
+            const iconElem = document.querySelector('.weather-icon');
+            if (condition === "Clear" || condition === "Sunny") {
+                iconElem.textContent = "☀️";
+            } else if (condition === "Partly Cloudy") {
+                iconElem.textContent = "🌤️";
+            } else {
+                iconElem.textContent = "☁️";
+            }
+            
+            // Refresh every 30 minutes
+            setTimeout(fetchWeather, 30 * 60 * 1000);
+        }
+        
+        function setupGroups(){
+            // Clear existing content
+            $container.innerHTML = '';
+            
+            for (let i = 0; i < MASTER_MAP.length; i++){
+                let curGroupData = MASTER_MAP[i];
+                
+                let group = document.createElement("div");
+                group.className = "group";
+                $container.appendChild(group);
+                
+                let header = document.createElement("h1");
+                header.innerHTML = curGroupData.groupName;
+                group.appendChild(header);
+                
+                for (let j = 0; j < curGroupData.items.length; j++){
+                    let curItemData = curGroupData.items[j];
+                    
+                    let pContainer = document.createElement("p");
+                    group.appendChild(pContainer);
+                    
+                    let link = document.createElement("a");
+                    link.innerHTML = curItemData.name;
+                    link.setAttribute("href", curItemData.url);
+                    link.setAttribute("target", "_blank");
+                    
+                    pContainer.appendChild(link);
+                    
+                    let shortcutDisplay = document.createElement("span");
+                    shortcutDisplay.innerHTML = curItemData.shortcutKey;
+                    shortcutDisplay.className = "shortcut";
+                    shortcutDisplay.style.animation = "none";
+                    pContainer.appendChild(shortcutDisplay);
+                    
+                    getUrl[curItemData.shortcutKey] = curItemData.url;
+                }
+            }
+        }
+        
+        function shortcutListener(e) {
+            let key = e.key.toLowerCase();
+            
+            if (listeningForShortcut && getUrl.hasOwnProperty(key)){
+                window.location = getUrl[key];
+            }
+            
+            if (key === SHORTCUT_STARTER) {
+                clearTimeout(listenerTimeout);
+                listeningForShortcut = true;
+                
+                // Animation reset
+                for (let i = 0; i < $shortcutDisplayList.length; i++){
+                    $shortcutDisplayList[i].style.animation = "none";
+                    setTimeout(function() { $shortcutDisplayList[i].style.animation = ''; }, 10);
+                }
+                
+                listenerTimeout = setTimeout(function(){ listeningForShortcut = false; }, SHORTCUT_TIMEOUT);
+            }
+        }
+        
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        }
+        
+        function toggleTheme() {
+            let themeSwitch = document.getElementById('theme-switch');
+            let currentTheme = document.documentElement.getAttribute('data-theme');
+            let newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            setTheme(newTheme);
+            themeSwitch.checked = newTheme === 'light';  // Update the switch's state
+        }
+        
+        // Event when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', (event) => {
+            let themeSwitch = document.getElementById('theme-switch');
+            themeSwitch.addEventListener('change', toggleTheme);
+            
+            // Handle search form focus
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('focus', () => {
+                searchInput.style.width = '90%';
+            });
+            
+            searchInput.addEventListener('blur', () => {
+                if (searchInput.value === '') {
+                    searchInput.style.width = '';
+                }
+            });
+            
+            // Load saved theme or default to dark
+            let savedTheme = localStorage.getItem('theme') || 'dark';
+            setTheme(savedTheme);
+            themeSwitch.checked = savedTheme === 'light';
+            
+            // Initialize all components
+            setBackgroundBasedOnTime();
+            setupWelcomeMessage();
+            setupGroups();
+            updateDateTime();
+            fetchWeather();
+            
+            // Add keyboard shortcut listener
+            document.addEventListener('keyup', shortcutListener, false);
+        });
+    </script>
+</body>
+</html>
