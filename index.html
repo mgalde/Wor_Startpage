@@ -1100,6 +1100,126 @@ function initializeNewsTickerImprovements() {
 // This is the function you should call to initialize everything
 initializeNewsTickerImprovements();
 
+
+        // Add this script at the end of your body tag to help debug and fix the news ticker issues
+
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('News ticker debugging script initialized');
+  
+  // 1. First, check if the ticker elements exist
+  const tickerContainer = document.querySelector('.news-ticker-container');
+  const tickerContent = document.getElementById('news-ticker-content');
+  
+  if (!tickerContainer) {
+    console.error('Ticker container not found!');
+    return;
+  }
+  
+  if (!tickerContent) {
+    console.error('Ticker content element not found!');
+    return;
+  }
+  
+  console.log('Ticker elements found in DOM');
+  
+  // 2. Fix CSS issues by applying styles directly
+  const styleElement = document.createElement('style');
+  styleElement.textContent = `
+    @keyframes ticker-scroll {
+      0% {
+        transform: translateX(100%);
+      }
+      100% {
+        transform: translateX(-300%);
+      }
+    }
+    
+    .news-ticker-content {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      white-space: nowrap;
+      will-change: transform;
+      animation: ticker-scroll 180s linear infinite !important;
+    }
+  `;
+  document.head.appendChild(styleElement);
+  
+  // 3. Force immediate display of fallback news
+  const fallbackNews = [
+    { title: "Maintaining proper cyber hygiene is essential for protecting against threats", link: "https://thehackernews.com/", sourceName: "The Hacker News" },
+    { title: "Zero-day vulnerabilities continue to be exploited in major software", link: "https://thehackernews.com/", sourceName: "The Hacker News" },
+    { title: "Ransomware attacks target critical infrastructure worldwide", link: "https://krebsonsecurity.com/", sourceName: "Krebs on Security" },
+    { title: "New phishing campaign targets corporate executives", link: "https://www.darkreading.com/", sourceName: "Dark Reading" }
+  ];
+  
+  // 4. Completely reset and rebuild the ticker content
+  console.log('Rebuilding ticker content with fallback news');
+  tickerContent.innerHTML = '';
+  
+  // 5. Create multiple copies for smoother animation
+  for (let i = 0; i < 3; i++) {
+    fallbackNews.forEach(item => {
+      const newsItem = document.createElement('div');
+      newsItem.className = 'news-ticker-item';
+      
+      const link = document.createElement('a');
+      link.href = item.link;
+      link.target = '_blank';
+      link.textContent = `[${item.sourceName}] ${item.title}`;
+      
+      newsItem.appendChild(link);
+      tickerContent.appendChild(newsItem);
+    });
+  }
+  
+  // 6. Force a redraw of the ticker
+  tickerContent.style.display = 'none';
+  void tickerContent.offsetHeight; // Trigger reflow
+  tickerContent.style.display = 'flex';
+  
+  // 7. Apply animation programmatically
+  setTimeout(() => {
+    console.log('Applying animation directly');
+    tickerContent.style.animationName = 'ticker-scroll';
+    tickerContent.style.animationDuration = '180s';
+    tickerContent.style.animationIterationCount = 'infinite';
+    tickerContent.style.animationTimingFunction = 'linear';
+  }, 100);
+  
+  // 8. Monitor if animation is actually running
+  setTimeout(() => {
+    const computedStyle = window.getComputedStyle(tickerContent);
+    console.log('Animation status check:', {
+      animationName: computedStyle.animationName,
+      animationDuration: computedStyle.animationDuration,
+      animationPlayState: computedStyle.animationPlayState,
+      display: computedStyle.display,
+      visibility: computedStyle.visibility,
+      transform: computedStyle.transform
+    });
+    
+    // 9. If still no animation, try forcing with transform
+    if (computedStyle.animationPlayState !== 'running' || 
+        computedStyle.animationName === 'none') {
+      console.log('Animation not running, applying manual animation');
+      
+      // Create a manual animation using requestAnimationFrame
+      let startPosition = 100; // Start off-screen to the right
+      const animate = () => {
+        startPosition -= 0.05; // Adjust speed as needed
+        if (startPosition < -300) startPosition = 100; // Reset when fully off-screen
+        
+        tickerContent.style.transform = `translateX(${startPosition}%)`;
+        requestAnimationFrame(animate);
+      };
+      
+      requestAnimationFrame(animate);
+    }
+  }, 1000);
+});
     </script>
+
+    
 </body>
 </html>
