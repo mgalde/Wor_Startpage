@@ -373,7 +373,7 @@
             }
         }
         
-        .news-ticker {
+.news-ticker {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -415,7 +415,7 @@
     will-change: transform;
     transition: all 0.5s ease;
     /* animation: ticker-scroll 900s linear infinite; /* Slowed down from 240s to 360s for much slower speed */
-    animation: ticker-scroll 120s linear infinite;
+    animation: ticker-scroll 280s linear infinite;
     animation-delay: 0s;
     animation-timing-function: linear; /* Ensures consistently smooth scrolling */
 }
@@ -832,17 +832,19 @@ function shuffleArray(array) {
 function updateNewsTicker(newsItems) {
     const tickerContent = document.getElementById('news-ticker-content');
     
-    // Reset animation - this helps prevent delay
+    // Stop existing animation first
     tickerContent.style.animation = 'none';
-    void tickerContent.offsetWidth; // Force reflow
     
-    // Clear content
+    // Force reflow to make sure animation stop is registered
+    void tickerContent.offsetWidth;
+    
+    // Clear existing content
     tickerContent.innerHTML = '';
     
-    // Make copy of items for duplication
+    // Create duplicate news items for seamless looping
     const itemsCopy = [...newsItems];
     
-    // Add first set of items
+    // First set of items
     newsItems.forEach(item => {
         const newsItem = document.createElement('div');
         newsItem.className = 'news-ticker-item';
@@ -860,7 +862,7 @@ function updateNewsTicker(newsItems) {
     spacer.style.margin = '0 100px';
     tickerContent.appendChild(spacer);
     
-    // Add duplicate set of items
+    // Add duplicate set for seamless loop
     itemsCopy.forEach(item => {
         const newsItem = document.createElement('div');
         newsItem.className = 'news-ticker-item';
@@ -872,8 +874,11 @@ function updateNewsTicker(newsItems) {
         tickerContent.appendChild(newsItem);
     });
     
-    // Start animation with a reasonable speed
-    tickerContent.style.animation = 'ticker-scroll 120s linear infinite';
+    // Restart animation after content is ready
+    // Use setTimeout to ensure DOM has updated
+    setTimeout(() => {
+        tickerContent.style.animation = 'ticker-scroll 280s linear infinite';
+    }, 10);
 }
 // Fallback news in case the API fails
 function loadFallbackNews() {
@@ -906,37 +911,37 @@ function fetchCyberSecurityNews() {
         {
             name: 'The Hacker News',
             url: 'https://api.rss2json.com/v1/api.json?rss_url=https://feeds.feedburner.com/TheHackersNews',
-            limit: 7
+            limit: 1
         },
         {
             name: 'Krebs on Security',
             url: 'https://api.rss2json.com/v1/api.json?rss_url=https://krebsonsecurity.com/feed/',
-            limit: 7
+            limit: 1
         },
         {
             name: 'Bleeping Computer',
             url: 'https://api.rss2json.com/v1/api.json?rss_url=https://www.bleepingcomputer.com/feed/',
-            limit: 7
+            limit: 1
         },
         {
             name: 'CNN',
             url: 'https://api.rss2json.com/v1/api.json?rss_url=http://rss.cnn.com/rss/edition.rss',
-            limit: 7
+            limit: 1
         },
         {
             name: 'BBC',
             url: 'https://api.rss2json.com/v1/api.json?rss_url=http://feeds.bbci.co.uk/news/rss.xml',
-            limit: 7
+            limit: 1
         },
         {
             name: 'NY Times',
             url: 'https://api.rss2json.com/v1/api.json?rss_url=https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml',
-            limit: 7
+            limit: 1
         },
         {
             name: 'Yahoo News',
             url: 'https://api.rss2json.com/v1/api.json?rss_url=https://news.yahoo.com/rss/',
-            limit: 7
+            limit: 1
         }
     ];
     
@@ -979,14 +984,27 @@ function fetchCyberSecurityNews() {
 
 // Initialize the ticker
 function setupNewsTicker() {
-    // Show fallback news immediately while waiting for feeds
+    // Show fallback news IMMEDIATELY
     loadFallbackNews();
     
-    // Then try to fetch the real news
-    fetchCyberSecurityNews();
+    // Fetch real news with a slight delay to let fallback display first
+    setTimeout(() => {
+        fetchCyberSecurityNews();
+        
+        // Set refresh interval
+        setInterval(fetchCyberSecurityNews, 600000); // every 10 minutes
+    }, 100);
     
-    // Set up periodic refresh
-    setInterval(fetchCyberSecurityNews, 600000); // every 10 minutes
+    // Add visibility change detection to handle tab switching
+    document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) {
+            // Reset animation when tab becomes visible again
+            const tickerContent = document.getElementById('news-ticker-content');
+            tickerContent.style.animation = 'none';
+            void tickerContent.offsetWidth;
+            tickerContent.style.animation = 'ticker-scroll 280s linear infinite';
+        }
+    });
 }
 
     </script>
