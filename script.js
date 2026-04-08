@@ -630,12 +630,24 @@ async function fetchCISAFeed() {
     `;
 
     try {
-        // CISA's CDN does not send CORS headers, so a direct browser fetch is
-        // blocked. Route through corsproxy.io (public, no-key CORS proxy).
+        // CISA's CDN does not send CORS headers so a direct browser fetch is blocked.
+        // Try two public CORS proxies in order; the first successful response wins.
         const CISA_URL = 'https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json';
-        const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(CISA_URL)}`);
-        if (!res.ok) throw new Error('non-200');
-        const data = await res.json();
+        const PROXIES  = [
+            u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+            u => `https://corsproxy.io/?${encodeURIComponent(u)}`,
+        ];
+
+        let data = null;
+        for (const proxy of PROXIES) {
+            try {
+                const r = await fetch(proxy(CISA_URL));
+                if (!r.ok) continue;
+                data = await r.json();
+                break;
+            } catch (_) { continue; }
+        }
+        if (!data) throw new Error('all proxies failed');
 
         const vulns = (data.vulnerabilities || [])
             .slice()
