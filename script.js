@@ -645,8 +645,11 @@ async function fetchCISAFeed() {
         itemsEl.innerHTML = '';
 
         advisories.forEach(adv => {
-            const row = document.createElement('div');
-            row.className = 'threat-row';
+            const row = document.createElement('a');
+            row.className  = 'threat-row';
+            row.href       = adv.html_url;
+            row.target     = '_blank';
+            row.rel        = 'noopener noreferrer';
 
             // Prefer CVE ID; fall back to GHSA ID
             const badge = document.createElement('span');

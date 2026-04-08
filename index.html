@@ -496,6 +496,25 @@
             border-bottom: none;
         }
 
+        a.threat-row {
+            display: block;
+            text-decoration: none;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.15s;
+        }
+
+        a.threat-row:hover {
+            background: rgba(239, 68, 68, 0.07);
+            opacity: 1;
+            transform: none;
+            color: inherit;
+        }
+
+        a.threat-row:hover .threat-name {
+            color: #fff;
+        }
+
         .cve-badge {
             display: inline-block;
             background: #ef4444;
