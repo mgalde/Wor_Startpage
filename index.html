@@ -1,46 +1,47 @@
 <!DOCTYPE html>
+<!-- try ctrl+\ -->
 <html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--Title of the page-->
-    <title>Home</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:200,400">
+    <title>acirema // dev</title>
+
+    <!-- SVG favicon: stylized "a/" monogram, purple on dark bg -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' rx='3' fill='%230e0e14'/><text x='1' y='12' font-family='monospace' font-size='11' fill='%239b59f5' font-weight='bold'>a/</text></svg>">
+
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@200;400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
     <style>
+        /* ─── CSS Variables ─────────────────────────────────────────── */
         :root {
-            /* Common Variables */
             --SHORTCUT_TIMEOUT: 1.5s;
-            
-            /* Light Theme Variables */
-            --bg-color-light: #f5f7fa;
-            --text-color-light: #333;
-            --group-bg-light: rgba(255, 255, 255, 0.7);
-            --link-hover-light: #4a6fa5;
-            
-            /* Dark Theme Variables */
-            --bg-color-dark: #121212;
-            --text-color-dark: #e1e1e1;
-            --group-bg-dark: rgba(30, 30, 30, 0.7);
-            --link-hover-dark: #a3abff;
         }
-        
-        [data-theme="light"] {
-            --bg-color: var(--bg-color-light);
-            --text-color: var(--text-color-light);
-            --group-bg: var(--group-bg-light);
-            --link-hover: var(--link-hover-light);
-        }
-        
+
         [data-theme="dark"] {
-            --bg-color: var(--bg-color-dark);
-            --text-color: var(--text-color-dark);
-            --group-bg: var(--group-bg-dark);
-            --link-hover: var(--link-hover-dark);
+            --accent-primary:    #9b59f5;
+            --accent-secondary:  #6c3fc7;
+            --accent-glow:       rgba(155, 89, 245, 0.25);
+            --card-border:       rgba(155, 89, 245, 0.3);
+            --bg-color:          #0e0e14;
+            --text-color:        #e1e1e1;
+            --group-bg:          rgba(20, 18, 32, 0.75);
+            --link-hover:        #9b59f5;
         }
-        
+
+        [data-theme="light"] {
+            --accent-primary:    #3b82f6;
+            --accent-secondary:  #1d4ed8;
+            --accent-glow:       rgba(59, 130, 246, 0.2);
+            --card-border:       rgba(59, 130, 246, 0.35);
+            --bg-color:          #eef4fb;
+            --text-color:        #1e293b;
+            --group-bg:          rgba(255, 255, 255, 0.72);
+            --link-hover:        #1d4ed8;
+        }
+
+        /* ─── Base ──────────────────────────────────────────────────── */
         body {
             padding: 0;
             margin: 0;
@@ -55,51 +56,83 @@
             text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
             user-select: none;
             animation: fadein 1s;
-            transition: background-image 1s ease;
+            transition: background-color 0.4s ease, color 0.4s ease;
             min-height: 100vh;
         }
-        
+
+        /* Scanline overlay for terminal mode (body::after) */
+        body.terminal-mode::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.03) 2px,
+                rgba(0, 0, 0, 0.03) 4px
+            );
+            pointer-events: none;
+            z-index: 8000;
+        }
+
+        /* ─── Wordmark / Logo ───────────────────────────────────────── */
         #logo {
             padding-top: 8vh;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
-        
-        #logo h1 {
+
+        .wordmark {
             font-weight: 200;
             font-family: 'Roboto', sans-serif;
             font-size: 3.5rem;
-            margin-bottom: 0;
+            margin: 0;
+            letter-spacing: -0.02em;
+            color: var(--text-color);
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
-        
-        #logo h2 {
+
+        .cursor {
+            display: inline-block;
+            margin-left: 3px;
+            color: var(--accent-primary);
+            animation: blink 1s step-end infinite;
+            font-weight: 200;
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        /* ─── Greeting ──────────────────────────────────────────────── */
+        #welcome-string {
             font-weight: 200;
             font-family: 'Roboto', sans-serif;
-            font-size: 1.5rem;
-            margin-top: 5px;
-            opacity: 0.8;
+            font-size: 1.4rem;
+            margin-top: 8px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            color: var(--text-color);
         }
-        
+
+        #welcome-string.visible {
+            opacity: 0.75;
+        }
+
+        /* ─── Content Grid ──────────────────────────────────────────── */
         #content {
             text-align: center;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             max-width: 1400px;
-            margin: 0 auto;
+            margin: 20px auto 0;
             padding: 0 20px;
         }
-        
-        #credits {
-            position: fixed;
-            font-size: 0.9rem;
-            opacity: 0.7;
-            bottom: 1rem;
-            left: 1rem;
-            z-index: 10;
-        }
-        
+
+        /* ─── Cards / Groups ────────────────────────────────────────── */
         .group {
             display: inline-block;
             vertical-align: top;
@@ -113,8 +146,14 @@
             padding: 20px;
             margin: 10px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 3px solid transparent;
         }
-        
+
+        /* Category left-border accents */
+        .group[data-category="security"]   { border-left: 3px solid #ef4444; }
+        .group[data-category="references"] { border-left: 3px solid var(--accent-primary); }
+        .group[data-category="important"]  { border-left: 3px solid #f59e0b; }
+
         .group h1 {
             font-weight: 400;
             font-family: 'Roboto', sans-serif;
@@ -122,9 +161,10 @@
             margin-top: 0;
             margin-bottom: 15px;
             padding-bottom: 8px;
-            border-bottom: 2px solid var(--text-color);
+            border-bottom: 2px solid var(--accent-primary);
+            color: var(--text-color);
         }
-        
+
         .group p {
             margin: 8px 0;
             padding: 0.3rem 0;
@@ -132,12 +172,43 @@
             justify-content: space-between;
             align-items: center;
         }
-        
+
         .group:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2), 0 0 24px var(--accent-glow);
         }
-        
+
+        /* ─── Links ─────────────────────────────────────────────────── */
+        a, a:hover {
+            transition: all 0.3s ease;
+        }
+
+        a {
+            color: var(--text-color);
+            text-decoration: none;
+            opacity: 0.8;
+            padding: 5px 0;
+            display: inline-block;
+            position: relative;
+        }
+
+        .group a:hover {
+            opacity: 1;
+            color: var(--accent-primary);
+            transform: translateX(5px);
+        }
+
+        .group a:hover::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--accent-primary);
+        }
+
+        /* ─── Shortcut badges ───────────────────────────────────────── */
         .shortcut {
             float: right;
             opacity: 0;
@@ -147,39 +218,48 @@
             font-size: 0.8rem;
             animation: pulse var(--SHORTCUT_TIMEOUT);
         }
-        
+
         [data-theme="light"] .shortcut {
             background-color: rgba(0, 0, 0, 0.1);
         }
-        
-        /* The switch - the box around the slider */
+
+        /* ─── Theme Toggle ──────────────────────────────────────────── */
+        #theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+        }
+
+        #theme-toggle span {
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+
         .switch {
             position: relative;
             display: inline-block;
             width: 60px;
             height: 34px;
         }
-        
-        /* Hide default HTML checkbox */
+
         .switch input {
             opacity: 0;
             width: 0;
             height: 0;
         }
-        
-        /* The slider */
+
         .slider {
             position: absolute;
             cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background-color: #ccc;
             transition: .4s;
             border-radius: 34px;
         }
-        
+
         .slider:before {
             position: absolute;
             content: "";
@@ -191,103 +271,20 @@
             transition: .4s;
             border-radius: 50%;
         }
-        
+
         input:checked + .slider {
-            background-color: var(--link-hover);
+            background-color: var(--accent-primary);
         }
-        
+
         input:focus + .slider {
-            box-shadow: 0 0 1px var(--link-hover);
+            box-shadow: 0 0 1px var(--accent-primary);
         }
-        
+
         input:checked + .slider:before {
             transform: translateX(26px);
         }
-        
-        a, a:hover {
-            transition: all 0.3s ease;
-        }
-        
-        a {
-            color: var(--text-color);
-            text-decoration: none;
-            opacity: 0.8;
-            padding: 5px 0;
-            display: inline-block;
-            position: relative;
-        }
-        
-        .group a:hover {
-            opacity: 1;
-            color: var(--link-hover);
-            transform: translateX(5px);
-        }
-        
-        .group a:hover::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: var(--link-hover);
-            transform: scaleX(1);
-            transition: transform 0.3s;
-        }
-        
-        #credits a:hover {
-            opacity: 1;
-            text-decoration: underline;
-        }
-        
-        #theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-        }
-        
-        #theme-toggle span {
-            margin-right: 10px;
-            font-size: 0.9rem;
-        }
-        
-        #search-container {
-            text-align: center;
-            margin: 25px 0;
-            position: relative;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        #search-input {
-            padding: 12px 20px;
-            width: 100%;
-            max-width: 500px;
-            border: none;
-            border-radius: 30px;
-            font-size: 16px;
-            background-color: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            color: var(--text-color);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-        
-        #search-input::placeholder {
-            color: var(--text-color);
-            opacity: 0.6;
-        }
-        
-        #search-input:focus {
-            outline: none;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-            background-color: rgba(255, 255, 255, 0.25);
-        }
-        
+
+        /* ─── Weather Widget ────────────────────────────────────────── */
         .weather-widget {
             position: fixed;
             top: 20px;
@@ -303,17 +300,18 @@
             z-index: 100;
             transition: all 0.3s ease;
         }
-        
+
         .weather-widget:hover {
             transform: translateY(3px);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
         }
-        
+
         .weather-icon {
             margin-right: 10px;
             font-size: 1.5rem;
         }
-        
+
+        /* ─── DateTime ──────────────────────────────────────────────── */
         #datetime {
             position: fixed;
             top: 70px;
@@ -326,136 +324,510 @@
             text-align: center;
             font-size: 0.9rem;
         }
-        
+
         #datetime .time {
             font-size: 1.2rem;
             font-weight: bold;
             margin-bottom: 5px;
         }
-        
+
         #datetime .date {
             opacity: 0.8;
         }
-        
+
+        /* ─── Search Bar ────────────────────────────────────────────── */
+        #search-container {
+            text-align: center;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        #search-input {
+            padding: 12px 20px;
+            width: 100%;
+            max-width: 500px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: var(--text-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            user-select: text;
+        }
+
+        #search-input::placeholder {
+            color: var(--text-color);
+            opacity: 0.6;
+        }
+
+        #search-input:focus {
+            outline: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            background-color: rgba(255, 255, 255, 0.25);
+        }
+
+        /* ─── Credits ───────────────────────────────────────────────── */
+        #credits {
+            position: fixed;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            bottom: 50px;
+            left: 1rem;
+            z-index: 10;
+        }
+
+        #credits a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        /* ─── News Ticker ───────────────────────────────────────────── */
+        .news-ticker {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--group-bg);
+            color: var(--text-color);
+            padding: 10px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            overflow: hidden;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            backdrop-filter: blur(8px);
+        }
+
+        .news-ticker-label {
+            font-weight: bold;
+            padding: 5px 15px;
+            margin-right: 20px;
+            background-color: var(--accent-primary);
+            color: white;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .news-ticker-container {
+            overflow: hidden;
+            height: 100%;
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .news-ticker-content {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            white-space: nowrap;
+            will-change: transform;
+        }
+
+        .news-ticker-item {
+            margin-right: 60px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .news-ticker-item a {
+            color: var(--text-color);
+            text-decoration: none;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .news-ticker-item a:hover {
+            opacity: 1;
+            color: var(--link-hover);
+        }
+
+        .news-ticker-item::before {
+            content: "•";
+            margin-right: 10px;
+            color: var(--accent-primary);
+        }
+
+        .news-ticker-container:hover .news-ticker-content {
+            animation-play-state: paused;
+        }
+
+        /* ─── Threat Feed Card ──────────────────────────────────────── */
+        .threat-feed-card {
+            background: rgba(10, 10, 20, 0.92) !important;
+            font-family: Consolas, Monaco, monospace;
+            color: #ccc;
+            width: calc(50% - 20px);
+            min-width: 320px;
+        }
+
+        .threat-feed-card h1 {
+            color: #bbb;
+            border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+            font-family: Consolas, Monaco, monospace;
+            font-size: 1rem !important;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0.25; }
+        }
+
+        .live-dot {
+            color: #ef4444;
+            animation: pulse-dot 1.5s ease-in-out infinite;
+            margin-right: 8px;
+        }
+
+        .threat-row {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 0.78rem;
+            line-height: 1.7;
+        }
+
+        .threat-row:last-child {
+            border-bottom: none;
+        }
+
+        .cve-badge {
+            display: inline-block;
+            background: #ef4444;
+            color: #fff;
+            padding: 1px 7px;
+            border-radius: 3px;
+            font-size: 0.72rem;
+            font-weight: bold;
+            margin-right: 8px;
+            letter-spacing: 0.03em;
+        }
+
+        .threat-vendor {
+            color: #888;
+            font-size: 0.75rem;
+        }
+
+        .threat-name {
+            display: block;
+            color: #ddd;
+            margin-top: 2px;
+        }
+
+        .threat-date {
+            display: block;
+            color: #444;
+            font-size: 0.68rem;
+            margin-top: 1px;
+        }
+
+        .feed-unavailable {
+            color: #ef4444;
+            font-size: 0.85rem;
+            padding: 10px 0;
+            letter-spacing: 0.1em;
+        }
+
+        /* ─── Command Palette ───────────────────────────────────────── */
+        #command-palette-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 9000;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 15vh;
+        }
+
+        #command-palette-overlay.active {
+            display: flex;
+        }
+
+        #command-palette {
+            width: 100%;
+            max-width: 600px;
+            background: var(--group-bg);
+            backdrop-filter: blur(24px);
+            border-radius: 14px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+        }
+
+        #command-palette-input-wrap {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .palette-search-icon {
+            font-size: 1.1rem;
+            margin-right: 12px;
+            opacity: 0.5;
+            flex-shrink: 0;
+        }
+
+        #command-palette-input {
+            flex: 1;
+            background: none;
+            border: none;
+            outline: none;
+            color: var(--text-color);
+            font-size: 1.05rem;
+            font-family: 'Open Sans', sans-serif;
+            user-select: text;
+        }
+
+        #command-palette-input::placeholder {
+            color: var(--text-color);
+            opacity: 0.35;
+        }
+
+        #command-palette-results {
+            max-height: 380px;
+            overflow-y: auto;
+        }
+
+        .palette-result {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 20px;
+            cursor: pointer;
+            transition: background 0.12s;
+            border-bottom: 1px solid rgba(128, 128, 128, 0.07);
+        }
+
+        .palette-result:last-child {
+            border-bottom: none;
+        }
+
+        .palette-result:hover,
+        .palette-result.selected {
+            background: rgba(155, 89, 245, 0.08);
+        }
+
+        [data-theme="light"] .palette-result:hover,
+        [data-theme="light"] .palette-result.selected {
+            background: rgba(59, 130, 246, 0.08);
+        }
+
+        .palette-cat-badge {
+            font-size: 0.65rem;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-weight: 700;
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            flex-shrink: 0;
+        }
+
+        .palette-cat-badge[data-cat="security"] {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.35);
+        }
+
+        .palette-cat-badge[data-cat="references"] {
+            background: rgba(155, 89, 245, 0.15);
+            color: var(--accent-primary);
+            border: 1px solid var(--card-border);
+        }
+
+        [data-theme="light"] .palette-cat-badge[data-cat="references"] {
+            background: rgba(59, 130, 246, 0.12);
+        }
+
+        .palette-cat-badge[data-cat="important"] {
+            background: rgba(245, 158, 11, 0.15);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.35);
+        }
+
+        .palette-link-name {
+            flex: 1;
+            font-size: 0.92rem;
+            color: var(--text-color);
+        }
+
+        .palette-link-url {
+            font-size: 0.75rem;
+            opacity: 0.35;
+            font-family: Consolas, Monaco, monospace;
+        }
+
+        .palette-empty {
+            padding: 24px 20px;
+            text-align: center;
+            opacity: 0.4;
+            font-size: 0.9rem;
+        }
+
+        /* ─── Press / Hint ──────────────────────────────────────────── */
+        #search-hint {
+            position: fixed;
+            bottom: 50px;
+            right: 20px;
+            font-size: 0.72rem;
+            opacity: 0.22;
+            pointer-events: none;
+            z-index: 100;
+            font-family: Consolas, Monaco, monospace;
+            letter-spacing: 0.05em;
+        }
+
+        /* ─── Terminal Mode ─────────────────────────────────────────── */
+        body.terminal-mode {
+            background-image: none !important;
+            background-color: #0a0a0a !important;
+            color: #00ff41 !important;
+            font-family: Consolas, Monaco, monospace !important;
+        }
+
+        body.terminal-mode .wordmark {
+            color: #00ff41;
+            text-shadow: 0 0 8px rgba(0, 255, 65, 0.7);
+        }
+
+        body.terminal-mode .cursor {
+            color: #00ff41;
+        }
+
+        body.terminal-mode #welcome-string {
+            color: #00ff41;
+        }
+
+        body.terminal-mode .group {
+            backdrop-filter: none !important;
+            background: rgba(0, 255, 65, 0.04) !important;
+            border: 1px solid rgba(0, 255, 65, 0.5) !important;
+            box-shadow: none !important;
+        }
+
+        body.terminal-mode .group[data-category] {
+            border-left: 1px solid rgba(0, 255, 65, 0.5) !important;
+        }
+
+        body.terminal-mode .group h1 {
+            color: #00ff41;
+            text-shadow: 0 0 8px rgba(0, 255, 65, 0.7);
+            border-bottom-color: rgba(0, 255, 65, 0.3) !important;
+        }
+
+        body.terminal-mode a {
+            color: #00ff41 !important;
+        }
+
+        body.terminal-mode a:hover {
+            color: #ffffff !important;
+        }
+
+        body.terminal-mode .group a:hover::after {
+            background-color: #00ff41;
+        }
+
+        body.terminal-mode .weather-widget,
+        body.terminal-mode #datetime {
+            background: rgba(0, 255, 65, 0.05) !important;
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            backdrop-filter: none;
+            color: #00ff41;
+        }
+
+        body.terminal-mode .news-ticker {
+            background: rgba(0, 10, 0, 0.95) !important;
+            backdrop-filter: none;
+        }
+
+        body.terminal-mode .news-ticker-label {
+            background-color: rgba(0, 255, 65, 0.15);
+            color: #00ff41;
+        }
+
+        body.terminal-mode .news-ticker-item a {
+            color: #00ff41 !important;
+        }
+
+        body.terminal-mode .news-ticker-item::before {
+            color: #00ff41;
+        }
+
+        body.terminal-mode #search-input {
+            background-color: rgba(0, 255, 65, 0.05);
+            color: #00ff41;
+            border: 1px solid rgba(0, 255, 65, 0.3);
+        }
+
+        body.terminal-mode .threat-feed-card {
+            border: 1px solid rgba(0, 255, 65, 0.3) !important;
+        }
+
+        /* ─── Animations ────────────────────────────────────────────── */
+        @keyframes fadein {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%   { opacity: 0; }
+            20%  { opacity: 0.3; }
+            80%  { opacity: 0.3; }
+            100% { opacity: 0; }
+        }
+
+        /* ─── Responsive ────────────────────────────────────────────── */
         @media (max-width: 1200px) {
-            .group {
-                width: 30%;
-            }
+            .group { width: 30%; }
+            .threat-feed-card { width: calc(62% - 20px); }
         }
-        
+
         @media (max-width: 900px) {
-            .group {
-                width: 45%;
-            }
-            
-            #logo h1 {
-                font-size: 3rem;
-            }
+            .group { width: 45%; }
+            .threat-feed-card { width: 90%; }
+            .wordmark { font-size: 3rem; }
         }
-        
+
         @media (max-width: 600px) {
-            .group {
-                width: 90%;
-            }
-            
-            #logo h1 {
-                font-size: 2.5rem;
-            }
-            
-            #logo h2 {
-                font-size: 1.2rem;
-            }
-            
+            .group { width: 90%; }
+            .threat-feed-card { width: 90%; }
+            .wordmark { font-size: 2.5rem; }
+            #welcome-string { font-size: 1.1rem; }
             .weather-widget, #datetime {
                 position: static;
                 margin: 10px auto;
                 width: fit-content;
             }
         }
-        
-.news-ticker {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: var(--group-bg);
-    color: var(--text-color);
-    padding: 10px;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15);
-    z-index: 1000;
-    overflow: hidden;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    backdrop-filter: blur(8px);
-}
-
-.news-ticker-label {
-    font-weight: bold;
-    padding: 5px 15px;
-    margin-right: 20px;
-    background-color: rgba(255, 0, 0, 0.7);
-    color: white;
-    border-radius: 4px;
-    white-space: nowrap;
-}
-
-.news-ticker-container {
-    overflow: hidden;
-    height: 100%;
-    flex-grow: 1;
-    position: relative;
-}
-
-.news-ticker-content {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    white-space: nowrap;
-    will-change: transform;
-    /* animation properties removed */
-}
-
-.news-ticker-item {
-    margin-right: 60px;
-    display: inline-flex;
-    align-items: center;
-}
-
-.news-ticker-item a {
-    color: var(--text-color);
-    text-decoration: none;
-    opacity: 0.9;
-    transition: opacity 0.3s;
-    font-size: 0.95rem;
-}
-
-.news-ticker-item a:hover {
-    opacity: 1;
-    color: var(--link-hover);
-}
-
-.news-ticker-item::before {
-    content: "•";
-    margin-right: 10px;
-    color: rgba(255, 0, 0, 0.7);
-}
-
-.news-ticker-container:hover .news-ticker-content {
-    animation-play-state: paused;
-}
-
-@keyframes ticker-scroll {
-    0% {
-        transform: translateX(100%);
-    }
-    100% {
-        transform: translateX(-120%); /* Extended to ensure continuous scrolling */
-    }
-}
     </style>
 </head>
 <body>
+
+    <!-- ── Command Palette ──────────────────────────────────────── -->
+    <div id="command-palette-overlay" role="dialog" aria-modal="true" aria-label="Command palette">
+        <div id="command-palette">
+            <div id="command-palette-input-wrap">
+                <span class="palette-search-icon" aria-hidden="true">⌕</span>
+                <input
+                    type="text"
+                    id="command-palette-input"
+                    placeholder="Search links…"
+                    autocomplete="off"
+                    spellcheck="false"
+                >
+            </div>
+            <div id="command-palette-results" role="listbox"></div>
+        </div>
+    </div>
+
+    <!-- ── Theme Toggle ──────────────────────────────────────────── -->
     <div id="theme-toggle">
         <span>Toggle Theme</span>
         <label class="switch">
@@ -463,591 +835,55 @@
             <span class="slider"></span>
         </label>
     </div>
-    
+
+    <!-- ── Weather Widget ────────────────────────────────────────── -->
     <div class="weather-widget">
         <div class="weather-icon">🌤️</div>
         <div class="weather-info">
-            <span id="weather-temp">--°F</span> 
-            <span id="weather-desc">Loading...</span>
-            <div id="weather-location" style="font-size: 0.8rem; opacity: 0.8; margin-top: 2px;">Tucson, AZ</div>
+            <span id="weather-temp">--°F</span>
+            <span id="weather-desc">Loading…</span>
+            <div id="weather-location" style="font-size:0.8rem;opacity:0.8;margin-top:2px;">Tucson, AZ</div>
         </div>
     </div>
-    
+
+    <!-- ── Date / Time ────────────────────────────────────────────── -->
     <div id="datetime">
         <div class="time" id="current-time">--:--:--</div>
         <div class="date" id="current-date">--, --- --</div>
     </div>
-    
+
+    <!-- ── Google Search Bar ─────────────────────────────────────── -->
     <div id="search-container">
         <form id="search-form" action="https://www.google.com/search" method="get">
-            <input type="text" name="q" id="search-input" placeholder="Search Google...">
+            <input type="text" name="q" id="search-input" placeholder="Search Google…">
         </form>
     </div>
-    
+
+    <!-- ── Wordmark + Greeting ────────────────────────────────────── -->
     <div id="logo">
-        <h1 id="welcome-string"></h1>
-        <h2>Have a great day at work!</h2>
+        <h1 class="wordmark"><span id="wordmark-text">acirema.dev</span><span class="cursor">|</span></h1>
+        <div id="welcome-string" class="greeting"></div>
     </div>
-    
-    <div id="content" style="margin-bottom: 70px;">
-        <!--Filled dynamically by script.js. Edit `MASTER_MAP` inside the script to change page's contents-->
+
+    <!-- ── Content Grid (groups injected by script.js) ───────────── -->
+    <div id="content" style="margin-bottom:70px;">
+        <!-- Threat feed card is prepended here by fetchCISAFeed() -->
+        <!-- Link groups are appended here by setupGroups()        -->
     </div>
-    
+
+    <!-- ── News Ticker ───────────────────────────────────────────── -->
     <div class="news-ticker">
         <div class="news-ticker-label">NEWS FEED</div>
         <div class="news-ticker-container">
             <div class="news-ticker-content" id="news-ticker-content">
-                <!-- News items will be added here by JavaScript -->
-                <div class="news-ticker-item"><a href="#" target="_blank">Loading news...</a></div>
+                <div class="news-ticker-item"><a href="#" target="_blank">Loading news…</a></div>
             </div>
         </div>
     </div>
-    
-    <script>
-        const NAME = "Arizona";
-        const WELCOME_MESSAGE_TEMPLATE = ["night", "morning", "afternoon", "evening"];
-        
-        // All shortcuts are in a `SHORTCUT_STARTER+shortcutKey` format.
-        // So, for example, pressing `tab+q` would redirect you to https://google.com/?q=q
-        const SHORTCUT_STARTER = 'tab'
-        
-        // How much time (in milliseconds) you have to press shortcutKey after pressing SHORTCUT_STARTER.
-        // Also change --SHORTCUT_TIMEOUT in styles.css if you change this option.
-        const SHORTCUT_TIMEOUT = 1500;
-        
-        // The groups of links are generated from this object. Edit it to edit the page's contents.
-        // shortcutKey must hold an all-lowercase single button. Theoretically should work with values like `esc` and `f1`,
-        // but intended to be used with just regular latin letters.
-        const MASTER_MAP = [
-            {
-                "groupName": "Hacking News",
-                "items": [
-                    {"name": "Bleeping Computer", "shortcutKey": "q", "url": "https://www.bleepingcomputer.com"},
-                    {"name": "Dark Reading", "shortcutKey": "w", "url": "https://www.darkreading.com"},
-                    {"name": "NY Times", "shortcutKey": "e", "url": "https://www.nytimes.com/"},
-                    {"name": "Hacker News", "shortcutKey": "r", "url": "https://news.ycombinator.com/"},
-                    {"name": "The Hacker News", "shortcutKey": "t", "url": "https://thehackernews.com/"}
-                ]
-            },
-            {
-                "groupName": "References",
-                "items": [
-                    {"name": "ESTCP", "shortcutKey": "a", "url": "https://www.serdp-estcp.org/Tools-and-Training/Installation-Energy-and-Water/Cybersecurity"},
-                    {"name": "Infragard", "shortcutKey": "s", "url": "https://www.infragard.org/"},
-                    {"name": "SAM.gov", "shortcutKey": "d", "url": "https://sam.gov/content/opportunities"},
-                    {"name": "MITRE ATT&CK", "shortcutKey": "f", "url": "https://attack.mitre.org/"},
-                    {"name": "NIST Cybersecurity Framework", "shortcutKey": "g", "url": "https://www.nist.gov/cyberframework"},
-                    {"name": "GeeksForGeeks", "shortcutKey": "h", "url": "https://www.geeksforgeeks.org/"}
-                ]
-            },
-            {
-                "groupName": "University",
-                "items": [
-                    {"name": "CAST Sharepoint", "shortcutKey": "z", "url": "https://emailarizona.sharepoint.com/sites/CAST"},
-                    {"name": "CYBER OPERATIONS /PORTAL", "shortcutKey": "x", "url": "https://portal.cyberapolis.com/"},
-                    {"name": "UA VITAE", "shortcutKey": "c", "url": "https://uavitae.arizona.edu/"},
-                    {"name": "UA Access", "shortcutKey": "v", "url": "https://uaccess.arizona.edu/"},
-                    {"name": "D2L", "shortcutKey": "b", "url": "https://d2l.arizona.edu/d2l/home"},
-                    {"name": "Office.com", "shortcutKey": "n", "url": "https://www.office.com/"},
-                    {"name": "Academic Calendar", "shortcutKey": "m", "url": "https://catalog.arizona.edu/academic-calendar"}
-                ]
-            },
-            {
-                "groupName": "Tools",
-                "items": [
-                    {"name": "Claude AI", "shortcutKey": "1", "url": "https://claude.ai/"},
-                    {"name": "ChatGPT", "shortcutKey": "2", "url": "https://chat.openai.com"},
-                    {"name": "Any Run", "shortcutKey": "3", "url": "https://app.any.run/"},
-                    {"name": "DNS Dumpster", "shortcutKey": "4", "url": "https://dnsdumpster.com/"},
-                    {"name": "SHODAN", "shortcutKey": "5", "url": "https://shodan.io/"},
-                    {"name": "VirusTotal", "shortcutKey": "6", "url": "https://www.virustotal.com/"}
-                ]
-            },
-            {
-                "groupName": "Connections",
-                "items": [
-                    {"name": "Bluesky", "shortcutKey": "j", "url": "https://bsky.app/"},
-                    {"name": "Reddit", "shortcutKey": "k", "url": "https://www.reddit.com/"},
-                    {"name": "YouTube", "shortcutKey": "l", "url": "https://www.youtube.com/"},
-                    {"name": "LinkedIn", "shortcutKey": ";", "url": "https://www.linkedin.com/"},
-                    {"name": "GitHub", "shortcutKey": "i", "url": "https://github.com/"},
-                    {"name": "Twitter", "shortcutKey": "o", "url": "https://twitter.com/"}
-                ]
-            },
-            {
-                "groupName": "Entertainment",
-                "items": [
-                    {"name": "Netflix", "shortcutKey": "7", "url": "https://www.netflix.com/"},
-                    {"name": "Hulu", "shortcutKey": "8", "url": "https://www.hulu.com/"},
-                    {"name": "Disney+", "shortcutKey": "9", "url": "https://www.disneyplus.com/"},
-                    {"name": "Spotify", "shortcutKey": "0", "url": "https://open.spotify.com/"},
-                    {"name": "Amazon Prime", "shortcutKey": "-", "url": "https://www.amazon.com/Prime-Video/"},
-                    {"name": "Twitch", "shortcutKey": "=", "url": "https://www.twitch.tv/"}
-                ]
-            }
-        ];
-        
-        let $container = document.getElementById("content");
-        let getUrl = {};
-        let $shortcutDisplayList = document.getElementsByClassName("shortcut");
-        let listeningForShortcut = false;
-        let listenerTimeout;
-        
-        function setupWelcomeMessage() {
-            let curHours = new Date().getHours();
-            curHours = Math.floor(curHours / 6);
-            if (curHours == 4) curHours = 3;
-            let welcome = "Good " + WELCOME_MESSAGE_TEMPLATE[curHours] + ", " + NAME;
-            document.getElementById("welcome-string").innerHTML = welcome;
-        }
-        
-        function setBackgroundBasedOnTime() {
-            const hour = new Date().getHours();
-            
-            if (hour >= 5 && hour < 8) {
-                document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("sunrise.jpg")';
-            } else if (hour >= 8 && hour < 18) {
-                document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("daytime.jpg")';
-            } else if (hour >= 18 && hour < 20) {
-                document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("sunset.jpg")';
-            } else {
-                document.body.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("night.jpg")';
-            }
-        }
-        
-        function updateDateTime() {
-            const now = new Date();
-            
-            // Update time
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const seconds = now.getSeconds().toString().padStart(2, '0');
-            document.getElementById('current-time').textContent = `${hours}:${minutes}:${seconds}`;
-            
-            // Update date
-            const options = { weekday: 'short', month: 'short', day: 'numeric' };
-            document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', options);
-            
-            // Call this function again in 1 second
-            setTimeout(updateDateTime, 1000);
-        }
-        
-        function fetchWeather() {
-            const latitude = 32.253460;
-            const longitude = -110.911789;
-            
-            // First fetch the gridpoint data for the location
-            fetch(`https://api.weather.gov/points/${latitude},${longitude}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Weather API response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Get the forecast URL from the response
-                    const forecastUrl = data.properties.forecast;
-                    
-                    // Fetch the forecast data
-                    return fetch(forecastUrl);
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Forecast API response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(forecastData => {
-                    // Get the current period's forecast (first period)
-                    const currentForecast = forecastData.properties.periods[0];
-                    
-                    // Update the UI with the forecast data
-                    document.getElementById('weather-temp').textContent = `${currentForecast.temperature}°${currentForecast.temperatureUnit}`;
-                    document.getElementById('weather-desc').textContent = currentForecast.shortForecast;
-                    
-                    // Update the icon based on the forecast
-                    const iconElem = document.querySelector('.weather-icon');
-                    const forecast = currentForecast.shortForecast.toLowerCase();
-                    
-                    if (forecast.includes('sunny') || forecast.includes('clear')) {
-                        iconElem.textContent = "☀️";
-                    } else if (forecast.includes('cloud')) {
-                        if (forecast.includes('partly')) {
-                            iconElem.textContent = "🌤️";
-                        } else {
-                            iconElem.textContent = "☁️";
-                        }
-                    } else if (forecast.includes('rain') || forecast.includes('shower')) {
-                        iconElem.textContent = "🌧️";
-                    } else if (forecast.includes('snow')) {
-                        iconElem.textContent = "❄️";
-                    } else if (forecast.includes('storm') || forecast.includes('thunder')) {
-                        iconElem.textContent = "⛈️";
-                    } else {
-                        iconElem.textContent = "🌡️"; // Default icon
-                    }
-                    
-                    console.log('Weather updated with forecast:', currentForecast);
-                })
-                .catch(error => {
-                    console.error('Error fetching weather data:', error);
-                    // Fallback to a simple display if API fails
-                    document.getElementById('weather-temp').textContent = '--°F';
-                    document.getElementById('weather-desc').textContent = 'Weather unavailable';
-                    document.querySelector('.weather-icon').textContent = "🌡️";
-                });
-            
-            // Refresh every 30 minutes
-            setTimeout(fetchWeather, 30 * 60 * 1000);
-        }
-        
-        function setupGroups(){
-            // Clear existing content
-            $container.innerHTML = '';
-            
-            for (let i = 0; i < MASTER_MAP.length; i++){
-                let curGroupData = MASTER_MAP[i];
-                
-                let group = document.createElement("div");
-                group.className = "group";
-                $container.appendChild(group);
-                
-                let header = document.createElement("h1");
-                header.innerHTML = curGroupData.groupName;
-                group.appendChild(header);
-                
-                for (let j = 0; j < curGroupData.items.length; j++){
-                    let curItemData = curGroupData.items[j];
-                    
-                    let pContainer = document.createElement("p");
-                    group.appendChild(pContainer);
-                    
-                    let link = document.createElement("a");
-                    link.innerHTML = curItemData.name;
-                    link.setAttribute("href", curItemData.url);
-                    link.setAttribute("target", "_blank");
-                    
-                    pContainer.appendChild(link);
-                    
-                    let shortcutDisplay = document.createElement("span");
-                    shortcutDisplay.innerHTML = curItemData.shortcutKey;
-                    shortcutDisplay.className = "shortcut";
-                    shortcutDisplay.style.animation = "none";
-                    pContainer.appendChild(shortcutDisplay);
-                    
-                    getUrl[curItemData.shortcutKey] = curItemData.url;
-                }
-            }
-        }
-        
-        function shortcutListener(e) {
-            let key = e.key.toLowerCase();
-            
-            if (listeningForShortcut && getUrl.hasOwnProperty(key)){
-                window.location = getUrl[key];
-            }
-            
-            if (key === SHORTCUT_STARTER) {
-                clearTimeout(listenerTimeout);
-                listeningForShortcut = true;
-                
-                // Animation reset
-                for (let i = 0; i < $shortcutDisplayList.length; i++){
-                    $shortcutDisplayList[i].style.animation = "none";
-                    setTimeout(function() { $shortcutDisplayList[i].style.animation = ''; }, 10);
-                }
-                
-                listenerTimeout = setTimeout(function(){ listeningForShortcut = false; }, SHORTCUT_TIMEOUT);
-            }
-        }
-        
-        function setTheme(theme) {
-            document.documentElement.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
-        }
-        
-        function toggleTheme() {
-            let themeSwitch = document.getElementById('theme-switch');
-            let currentTheme = document.documentElement.getAttribute('data-theme');
-            let newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            setTheme(newTheme);
-            themeSwitch.checked = newTheme === 'light';  // Update the switch's state
-        }
-        
-        // Event when the DOM is fully loaded
-        document.addEventListener('DOMContentLoaded', (event) => {
-            let themeSwitch = document.getElementById('theme-switch');
-            themeSwitch.addEventListener('change', toggleTheme);
-            
-            // Handle search form focus
-            const searchInput = document.getElementById('search-input');
-            searchInput.addEventListener('focus', () => {
-                searchInput.style.width = '90%';
-            });
-            
-            searchInput.addEventListener('blur', () => {
-                if (searchInput.value === '') {
-                    searchInput.style.width = '';
-                }
-            });
-            
-            // Load saved theme or default to dark
-            let savedTheme = localStorage.getItem('theme') || 'dark';
-            setTheme(savedTheme);
-            themeSwitch.checked = savedTheme === 'light';
-            
-            // Initialize all components
-            setBackgroundBasedOnTime();
-            setupWelcomeMessage();
-            setupGroups();
-            updateDateTime();
-            fetchWeather();
-            setupNewsTicker(); // Initialize the news ticker
-            
-            // Add keyboard shortcut listener
-            document.addEventListener('keyup', shortcutListener, false);
-        });
-    </script>
-    <script>
-        // Function to fetch cybersecurity news
-        // Function to add some redundancy to prevent gaps
 
-        // Keep this function
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-}
-// Function to update the news ticker with items
-function updateNewsTicker(newsItems) {
-    const tickerContent = document.getElementById('news-ticker-content');
-    
-    // Clear existing content
-    tickerContent.innerHTML = '';
-    
-    // Add news items
-    newsItems.forEach(item => {
-        const newsItem = document.createElement('div');
-        newsItem.className = 'news-ticker-item';
-        const link = document.createElement('a');
-        link.href = item.link;
-        link.target = '_blank';
-        link.textContent = `[${item.sourceName || 'News'}] ${item.title}`;
-        newsItem.appendChild(link);
-        tickerContent.appendChild(newsItem);
-    });
-    
-    // Duplicate items for seamless looping
-    newsItems.forEach(item => {
-        const newsItem = document.createElement('div');
-        newsItem.className = 'news-ticker-item';
-        const link = document.createElement('a');
-        link.href = item.link;
-        link.target = '_blank';
-        link.textContent = `[${item.sourceName || 'News'}] ${item.title}`;
-        newsItem.appendChild(link);
-        tickerContent.appendChild(newsItem);
-    });
+    <!-- ── Press / hint ──────────────────────────────────────────── -->
+    <div id="search-hint">Press / to search</div>
 
-    // Start JS-based animation (replaces CSS animation)
-    startTickerAnimation();
-}
-
-// JavaScript-based animation function
-function startTickerAnimation() {
-    const tickerContent = document.getElementById('news-ticker-content');
-    const tickerContainer = document.querySelector('.news-ticker-container');
-    let startPosition = tickerContainer.offsetWidth; // Start from right edge
-    let position = startPosition;
-    let isPaused = false;
-    let animationId = null;
-    
-    // Reset any existing animation
-    if (tickerContent.animationId) {
-        cancelAnimationFrame(tickerContent.animationId);
-    }
-    
-    // Remove CSS animation
-    tickerContent.style.animation = 'none';
-    
-    // Apply initial position
-    tickerContent.style.transform = `translateX(${position}px)`;
-    
-    // Set up pause on hover
-    tickerContainer.addEventListener('mouseenter', () => {
-        isPaused = true;
-    });
-    
-    tickerContainer.addEventListener('mouseleave', () => {
-        isPaused = false;
-    });
-    
-    // Animation function
-    function animate() {
-        if (!isPaused) {
-            // Move left (adjust speed by changing this value)
-            position -= 0.5;
-            
-            // If content has scrolled past left edge, reset to right
-            if (position < -tickerContent.offsetWidth) {
-                position = startPosition;
-            }
-            
-            // Apply new position
-            tickerContent.style.transform = `translateX(${position}px)`;
-        }
-        
-        // Continue animation
-        animationId = requestAnimationFrame(animate);
-        tickerContent.animationId = animationId;
-    }
-    
-    // Start animation
-    animate();
-}
-
-// Initialize the ticker
-function setupNewsTicker() {
-    // Show fallback news IMMEDIATELY
-    loadFallbackNews();
-    
-    // Fetch real news with a slight delay
-    setTimeout(() => {
-        fetchCyberSecurityNews();
-        
-        // Set refresh interval
-        setInterval(fetchCyberSecurityNews, 600000); // every 10 minutes
-    }, 100);
-}
-// Fallback news in case the API fails
-function loadFallbackNews() {
-    const fallbackNews = [
-        { title: "AA Maintaining proper cyber hygiene is essential for protecting against threats", link: "https://thehackernews.com/", sourceName: "The Hacker News" },
-        { title: "AA Zero-day vulnerabilities continue to be exploited in major software", link: "https://thehackernews.com/", sourceName: "The Hacker News" },
-        { title: "AA Ransomware attacks target critical infrastructure worldwide", link: "https://krebsonsecurity.com/", sourceName: "Krebs on Security" },
-        { title: "AA New phishing campaign targets corporate executives", link: "https://www.darkreading.com/", sourceName: "Dark Reading" },
-        { title: "AA Security researchers discover vulnerability in popular IoT devices", link: "https://www.bleepingcomputer.com/", sourceName: "Bleeping Computer" },
-        { title: "AA Data breach exposes millions of customer records", link: "https://krebsonsecurity.com/", sourceName: "Krebs on Security" },
-        { title: "AA NIST releases new guidelines for password security", link: "https://www.nist.gov/", sourceName: "NIST" },
-        { title: "AA Critical security patches released for major operating systems", link: "https://www.bleepingcomputer.com/", sourceName: "Bleeping Computer" },
-        { title: "AA Global economic outlook shows signs of recovery", link: "https://www.cnn.com/", sourceName: "CNN" },
-        { title: "AA New climate agreement reached at international summit", link: "https://www.bbc.com/news", sourceName: "BBC" },
-        { title: "AA Tech companies announce major investments in AI research", link: "https://www.nytimes.com/", sourceName: "NY Times" },
-        { title: "AA Scientists make breakthrough in renewable energy storage", link: "https://news.yahoo.com/", sourceName: "Yahoo News" },
-        { title: "AA Space agency reveals plans for next lunar mission", link: "https://www.bbc.com/news", sourceName: "BBC" },
-        { title: "AA Major sports league announces expansion teams", link: "https://www.cnn.com/", sourceName: "CNN" },
-        { title: "AA Global health organization reports decline in pandemic cases", link: "https://www.nytimes.com/", sourceName: "NY Times" },
-        { title: "AA New transportation technology promises to reduce commute times", link: "https://news.yahoo.com/", sourceName: "Yahoo News" }
-    ];
-    
-    shuffleArray(fallbackNews);
-    updateNewsTicker(fallbackNews);
-}
-
-// Function to fetch cybersecurity news
-function fetchCyberSecurityNews() {
-    const newsSources = [
-        {
-            name: 'The Hacker News',
-            url: 'https://api.rss2json.com/v1/api.json?rss_url=https://feeds.feedburner.com/TheHackersNews',
-            limit: 10
-        },
-        {
-            name: 'Krebs on Security',
-            url: 'https://api.rss2json.com/v1/api.json?rss_url=https://krebsonsecurity.com/feed/',
-            limit: 10
-        },
-        {
-            name: 'Bleeping Computer',
-            url: 'https://api.rss2json.com/v1/api.json?rss_url=https://www.bleepingcomputer.com/feed/',
-            limit: 10
-        },
-        {
-            name: 'CNN',
-            url: 'https://api.rss2json.com/v1/api.json?rss_url=http://rss.cnn.com/rss/edition.rss',
-            limit: 5
-        },
-        {
-            name: 'BBC',
-            url: 'https://api.rss2json.com/v1/api.json?rss_url=http://feeds.bbci.co.uk/news/rss.xml',
-            limit: 5
-        },
-        {
-            name: 'NY Times',
-            url: 'https://api.rss2json.com/v1/api.json?rss_url=https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml',
-            limit: 5
-        },
-        {
-            name: 'Yahoo News',
-            url: 'https://api.rss2json.com/v1/api.json?rss_url=https://news.yahoo.com/rss/',
-            limit: 5
-        }
-    ];
-    
-    let allNewsItems = [];
-    let fetchPromises = [];
-    
-    newsSources.forEach(source => {
-        const fetchPromise = fetch(source.url)
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'ok') {
-                    const items = data.items.slice(0, source.limit).map(item => {
-                        item.sourceName = source.name;
-                        return item;
-                    });
-                    allNewsItems = allNewsItems.concat(items);
-                }
-            })
-            .catch(error => {
-                console.error(`Error fetching from ${source.name}:`, error);
-            });
-        
-        fetchPromises.push(fetchPromise);
-    });
-    
-    Promise.all(fetchPromises)
-        .then(() => {
-            if (allNewsItems.length > 0) {
-                shuffleArray(allNewsItems);
-                updateNewsTicker(allNewsItems);
-            } else {
-                loadFallbackNews();
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching news:', error);
-            loadFallbackNews();
-        });
-}
-
-// Initialize the ticker
-function setupNewsTicker() {
-    // Show fallback news IMMEDIATELY
-    loadFallbackNews();
-    
-    // Fetch real news with a slight delay to let fallback display first
-    setTimeout(() => {
-        fetchCyberSecurityNews();
-        
-        // Set refresh interval
-        setInterval(fetchCyberSecurityNews, 600000); // every 10 minutes
-    }, 100);
-    
-    // Add visibility change detection to handle tab switching
-    document.addEventListener('visibilitychange', function() {
-    if (document.hidden) {
-        cancelAnimationFrame(document.getElementById('news-ticker-content').animationId);
-    } else {
-        startTickerAnimation();
-    }
-});
-
-
-}
-
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
