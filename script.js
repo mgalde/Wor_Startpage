@@ -614,14 +614,16 @@ function globalKeyHandler(e) {
    ═══════════════════════════════════════════════════════════════════ */
 
 async function fetchCISAFeed() {
-    // Ensure the threat feed card exists as the first child of #content
+    // Ensure the threat feed card exists and is always the first child of #content.
+    // setupGroups() may have already populated the container, so always re-anchor.
     let card = document.getElementById('threat-feed');
     if (!card) {
         card = document.createElement('div');
         card.id        = 'threat-feed';
         card.className = 'group threat-feed-card';
-        $container.insertBefore(card, $container.firstChild);
     }
+    // Move/insert to front regardless of current position
+    $container.insertBefore(card, $container.firstChild);
 
     // Build/reset the card structure
     card.innerHTML = `
@@ -630,22 +632,29 @@ async function fetchCISAFeed() {
     `;
 
     try {
-        // CISA's CDN does not send CORS headers so a direct browser fetch is blocked.
-        // Try two public CORS proxies in order; the first successful response wins.
+        // CISA's CDN does not set CORS headers. Try three proxies in order.
+        // allorigins /get wraps the response in { contents: "<json string>" }.
+        // codetabs and thingproxy return raw content.
         const CISA_URL = 'https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json';
-        const PROXIES  = [
-            u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
-            u => `https://corsproxy.io/?${encodeURIComponent(u)}`,
-        ];
+
+        async function tryProxy(url, parseWrapped) {
+            const r = await fetch(url, { signal: AbortSignal.timeout(8000) });
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            if (parseWrapped) {
+                const wrapper = await r.json();
+                return JSON.parse(wrapper.contents);
+            }
+            return r.json();
+        }
 
         let data = null;
-        for (const proxy of PROXIES) {
-            try {
-                const r = await fetch(proxy(CISA_URL));
-                if (!r.ok) continue;
-                data = await r.json();
-                break;
-            } catch (_) { continue; }
+        const attempts = [
+            () => tryProxy(`https://api.allorigins.win/get?url=${encodeURIComponent(CISA_URL)}`, true),
+            () => tryProxy(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(CISA_URL)}`, false),
+            () => tryProxy(`https://thingproxy.freeboard.io/fetch/${CISA_URL}`, false),
+        ];
+        for (const attempt of attempts) {
+            try { data = await attempt(); break; } catch (_) { continue; }
         }
         if (!data) throw new Error('all proxies failed');
 
@@ -893,12 +902,10 @@ document.addEventListener('DOMContentLoaded', () => {
         activateTerminalMode();
     }
 
-    // Content — threat feed first, then link groups
+    // Link groups render immediately; threat feed fetches independently
     buildSearchIndex();
-    fetchCISAFeed().then(() => {
-        // groups appear after threat feed in DOM order
-        setupGroups();
-    });
+    setupGroups();
+    fetchCISAFeed();
     setInterval(fetchCISAFeed, 10 * 60 * 1000);
 
     // UI components
