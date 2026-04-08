@@ -259,6 +259,14 @@ function setupWelcomeMessage() {
    ═══════════════════════════════════════════════════════════════════ */
 
 function setBackgroundBasedOnTime() {
+    // Light mode uses its own background color — dark photo backgrounds make
+    // the light-mode text (#1e293b) invisible.
+    const theme = document.documentElement.getAttribute('data-theme');
+    if (theme === 'light') {
+        document.body.style.backgroundImage = 'none';
+        return;
+    }
+
     const hour = new Date().getHours();
     let img;
     if      (hour >= 5  && hour < 8)  img = 'sunrise.jpg';
@@ -422,6 +430,7 @@ function shortcutListener(e) {
 function setTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
+    setBackgroundBasedOnTime(); // re-evaluate: light mode clears the photo bg
 }
 
 function toggleTheme() {
@@ -621,9 +630,10 @@ async function fetchCISAFeed() {
     `;
 
     try {
-        const res = await fetch(
-            'https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json'
-        );
+        // CISA's CDN does not send CORS headers, so a direct browser fetch is
+        // blocked. Route through corsproxy.io (public, no-key CORS proxy).
+        const CISA_URL = 'https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json';
+        const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(CISA_URL)}`);
         if (!res.ok) throw new Error('non-200');
         const data = await res.json();
 
