@@ -632,59 +632,40 @@ async function fetchCISAFeed() {
     `;
 
     try {
-        // CISA's CDN does not set CORS headers. Try three proxies in order.
-        // allorigins /get wraps the response in { contents: "<json string>" }.
-        // codetabs and thingproxy return raw content.
-        const CISA_URL = 'https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json';
-
-        async function tryProxy(url, parseWrapped) {
-            const r = await fetch(url, { signal: AbortSignal.timeout(8000) });
-            if (!r.ok) throw new Error(`HTTP ${r.status}`);
-            if (parseWrapped) {
-                const wrapper = await r.json();
-                return JSON.parse(wrapper.contents);
-            }
-            return r.json();
-        }
-
-        let data = null;
-        const attempts = [
-            () => tryProxy(`https://api.allorigins.win/get?url=${encodeURIComponent(CISA_URL)}`, true),
-            () => tryProxy(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(CISA_URL)}`, false),
-            () => tryProxy(`https://thingproxy.freeboard.io/fetch/${CISA_URL}`, false),
-        ];
-        for (const attempt of attempts) {
-            try { data = await attempt(); break; } catch (_) { continue; }
-        }
-        if (!data) throw new Error('all proxies failed');
-
-        const vulns = (data.vulnerabilities || [])
-            .slice()
-            .sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded))
-            .slice(0, 5);
+        // GitHub Security Advisories API — native CORS support, no key required.
+        // Returns reviewed advisories with CVE IDs, severity, and package info.
+        const res = await fetch(
+            'https://api.github.com/advisories?per_page=5&sort=published&direction=desc&type=reviewed',
+            { headers: { 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' } }
+        );
+        if (!res.ok) throw new Error(`GitHub API HTTP ${res.status}`);
+        const advisories = await res.json();
 
         const itemsEl = document.getElementById('threat-feed-items');
         itemsEl.innerHTML = '';
 
-        vulns.forEach(v => {
-            const row    = document.createElement('div');
+        advisories.forEach(adv => {
+            const row = document.createElement('div');
             row.className = 'threat-row';
 
-            const badge  = document.createElement('span');
+            // Prefer CVE ID; fall back to GHSA ID
+            const badge = document.createElement('span');
             badge.className   = 'cve-badge';
-            badge.textContent = v.cveID;
+            badge.textContent = adv.cve_id || adv.ghsa_id;
 
+            // Ecosystem + package name from first affected package
+            const pkg    = adv.vulnerabilities && adv.vulnerabilities[0] && adv.vulnerabilities[0].package;
             const vendor = document.createElement('span');
             vendor.className   = 'threat-vendor';
-            vendor.textContent = `${v.vendorProject} — ${v.product}`;
+            vendor.textContent = pkg ? `${pkg.ecosystem} — ${pkg.name}` : adv.ghsa_id;
 
-            const name   = document.createElement('span');
+            const name = document.createElement('span');
             name.className   = 'threat-name';
-            name.textContent = v.vulnerabilityName;
+            name.textContent = adv.summary;
 
-            const date   = document.createElement('span');
+            const date = document.createElement('span');
             date.className   = 'threat-date';
-            date.textContent = v.dateAdded;
+            date.textContent = adv.published_at ? adv.published_at.slice(0, 10) : '';
 
             row.appendChild(badge);
             row.appendChild(vendor);
