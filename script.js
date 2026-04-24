@@ -8,7 +8,7 @@ const SHORTCUT_TIMEOUT = 1500;
 // ─── Link Map ─────────────────────────────────────────────────────────
 const MASTER_MAP = [
     {
-        groupName: "Threat Intel",
+        groupName: "OSINT",
         category:  "security",
         items: [
             { name: "Bleeping Computer",  shortcutKey: "q", url: "https://www.bleepingcomputer.com/" },
