@@ -34,6 +34,7 @@ const MASTER_MAP = [
         category:  "references",
         items: [
             { name: "InfraGard",          shortcutKey: "a", url: "https://www.infragard.org/" },
+            { name: "Office",             shortcutKey: "j", url: "https://www.office.com/" },
             { name: "MITRE ATT&CK",       shortcutKey: "s", url: "https://attack.mitre.org/" },
             { name: "NIST NVD",           shortcutKey: "d", url: "https://nvd.nist.gov/" },
             { name: "CVE.org",            shortcutKey: "f", url: "https://www.cve.org/" },
