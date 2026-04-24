@@ -1,281 +1,405 @@
 /* ═══════════════════════════════════════════════════════════════════
-   acirema.dev — script.js
-   All application logic for the start page.
+   ACIREMA // DASHBOARD — script.js
    ═══════════════════════════════════════════════════════════════════ */
 
-// ─── Constants ────────────────────────────────────────────────────────
-const SHORTCUT_STARTER  = 'tab';
-const SHORTCUT_TIMEOUT  = 1500; // ms — keep in sync with --SHORTCUT_TIMEOUT in CSS
+const SHORTCUT_STARTER = 'tab';
+const SHORTCUT_TIMEOUT = 1500;
 
 // ─── Link Map ─────────────────────────────────────────────────────────
-// `category` drives the left-border accent and command palette badge.
-// Values: "security" | "references" | "important"
 const MASTER_MAP = [
     {
-        groupName: "Hacking News",
+        groupName: "Threat Intel",
         category:  "security",
         items: [
-            { name: "Bleeping Computer",  shortcutKey: "q", url: "https://www.bleepingcomputer.com" },
-            { name: "Dark Reading",       shortcutKey: "w", url: "https://www.darkreading.com" },
-            { name: "NY Times",           shortcutKey: "e", url: "https://www.nytimes.com/" },
-            { name: "Hacker News",        shortcutKey: "r", url: "https://news.ycombinator.com/" },
-            { name: "The Hacker News",    shortcutKey: "t", url: "https://thehackernews.com/" }
+            { name: "Bleeping Computer",  shortcutKey: "q", url: "https://www.bleepingcomputer.com/" },
+            { name: "Dark Reading",       shortcutKey: "w", url: "https://www.darkreading.com/" },
+            { name: "Krebs on Security",  shortcutKey: "e", url: "https://krebsonsecurity.com/" },
+            { name: "SANS ISC",           shortcutKey: "r", url: "https://isc.sans.edu/" }
+        ]
+    },
+    {
+        groupName: "News",
+        category:  "news",
+        items: [
+            { name: "NY Times",           shortcutKey: "t", url: "https://www.nytimes.com/" },
+            { name: "KOLD News 13",       shortcutKey: "y", url: "https://www.kold.com/" },
+            { name: "KVOA News 4",        shortcutKey: "u", url: "https://kvoa.com/" },
+            { name: "KGUN 9",             shortcutKey: "p", url: "https://www.kgun9.com/" },
+            { name: "Arizona Daily Star", shortcutKey: "o", url: "https://tucson.com/" },
+            { name: "AZFamily",           shortcutKey: "i", url: "https://www.azfamily.com/" }
         ]
     },
     {
         groupName: "References",
         category:  "references",
         items: [
-            { name: "ESTCP",                     shortcutKey: "a", url: "https://www.serdp-estcp.org/Tools-and-Training/Installation-Energy-and-Water/Cybersecurity" },
-            { name: "Infragard",                 shortcutKey: "s", url: "https://www.infragard.org/" },
-            { name: "SAM.gov",                   shortcutKey: "d", url: "https://sam.gov/content/opportunities" },
-            { name: "MITRE ATT&CK",              shortcutKey: "f", url: "https://attack.mitre.org/" },
-            { name: "NIST Cybersecurity",        shortcutKey: "g", url: "https://www.nist.gov/cyberframework" },
-            { name: "GeeksForGeeks",             shortcutKey: "h", url: "https://www.geeksforgeeks.org/" }
+            { name: "InfraGard",          shortcutKey: "a", url: "https://www.infragard.org/" },
+            { name: "MITRE ATT&CK",       shortcutKey: "s", url: "https://attack.mitre.org/" },
+            { name: "NIST NVD",           shortcutKey: "d", url: "https://nvd.nist.gov/" },
+            { name: "CVE.org",            shortcutKey: "f", url: "https://www.cve.org/" },
+            { name: "Exploit-DB",         shortcutKey: "g", url: "https://www.exploit-db.com/" },
+            { name: "NIST CSF",           shortcutKey: "h", url: "https://www.nist.gov/cyberframework" }
         ]
     },
     {
         groupName: "University",
-        category:  "important",
+        category:  "university",
         items: [
-            { name: "CAST Sharepoint",       shortcutKey: "z", url: "https://emailarizona.sharepoint.com/sites/CAST" },
-            { name: "Cyber Ops Portal",      shortcutKey: "x", url: "https://portal.cyberapolis.com/" },
-            { name: "UA VITAE",              shortcutKey: "c", url: "https://uavitae.arizona.edu/" },
-            { name: "UA Access",             shortcutKey: "v", url: "https://uaccess.arizona.edu/" },
-            { name: "D2L",                   shortcutKey: "b", url: "https://d2l.arizona.edu/d2l/home" },
-            { name: "Office.com",            shortcutKey: "n", url: "https://www.office.com/" },
-            { name: "Academic Calendar",     shortcutKey: "m", url: "https://catalog.arizona.edu/academic-calendar" }
+            { name: "InfoSci SharePoint", shortcutKey: "z", url: "https://emailarizona.sharepoint.com/sites/InfoSci" },
+            { name: "UA VITAE",           shortcutKey: "x", url: "https://uavitae.arizona.edu/" },
+            { name: "UA Access",          shortcutKey: "c", url: "https://uaccess.arizona.edu/" },
+            { name: "D2L",                shortcutKey: "v", url: "https://d2l.arizona.edu/d2l/home" },
+            { name: "Academic Calendar",  shortcutKey: "b", url: "https://catalog.arizona.edu/academic-calendar" },
+            { name: "GenAI Arizona",      shortcutKey: "n", url: "https://genai.arizona.edu/" },
+            { name: "Coursebook Adopt.",  shortcutKey: "m", url: "https://shop.arizona.edu/faculty" },
+            { name: "TopHat",             shortcutKey: ",", url: "https://app.tophat.com/" }
         ]
     },
     {
         groupName: "Tools",
-        category:  "important",
+        category:  "tools",
         items: [
-            { name: "Claude AI",   shortcutKey: "1", url: "https://claude.ai/" },
-            { name: "ChatGPT",     shortcutKey: "2", url: "https://chat.openai.com" },
-            { name: "Any Run",     shortcutKey: "3", url: "https://app.any.run/" },
-            { name: "DNS Dumpster",shortcutKey: "4", url: "https://dnsdumpster.com/" },
-            { name: "SHODAN",      shortcutKey: "5", url: "https://shodan.io/" },
-            { name: "VirusTotal",  shortcutKey: "6", url: "https://www.virustotal.com/" }
+            { name: "Claude AI",          shortcutKey: "1", url: "https://claude.ai/" },
+            { name: "ChatGPT",            shortcutKey: "2", url: "https://chat.openai.com/" },
+            { name: "Gemini",             shortcutKey: "3", url: "https://gemini.google.com/" },
+            { name: "Shodan",             shortcutKey: "4", url: "https://www.shodan.io/" },
+            { name: "VirusTotal",         shortcutKey: "5", url: "https://www.virustotal.com/" },
+            { name: "Any.Run",            shortcutKey: "6", url: "https://app.any.run/" },
+            { name: "Binary Ninja Cloud", shortcutKey: "7", url: "https://cloud.binary.ninja/" },
+            { name: "DNS Dumpster",       shortcutKey: "8", url: "https://dnsdumpster.com/" }
         ]
     },
     {
         groupName: "Connections",
-        category:  "important",
+        category:  "social",
         items: [
-            { name: "Bluesky",   shortcutKey: "j", url: "https://bsky.app/" },
-            { name: "Reddit",    shortcutKey: "k", url: "https://www.reddit.com/" },
-            { name: "YouTube",   shortcutKey: "l", url: "https://www.youtube.com/" },
-            { name: "LinkedIn",  shortcutKey: ";", url: "https://www.linkedin.com/" },
-            { name: "GitHub",    shortcutKey: "i", url: "https://github.com/" },
-            { name: "Twitter",   shortcutKey: "o", url: "https://twitter.com/" }
+            { name: "Bluesky",            shortcutKey: "j", url: "https://bsky.app/" },
+            { name: "Reddit",             shortcutKey: "k", url: "https://www.reddit.com/" },
+            { name: "YouTube",            shortcutKey: "l", url: "https://www.youtube.com/" },
+            { name: "LinkedIn",           shortcutKey: ";", url: "https://www.linkedin.com/" },
+            { name: "GitHub",             shortcutKey: "'", url: "https://github.com/" }
         ]
     },
     {
-        groupName: "Entertainment",
-        category:  "important",
+        groupName: "CTF & Labs",
+        category:  "ctf",
         items: [
-            { name: "Netflix",       shortcutKey: "7", url: "https://www.netflix.com/" },
-            { name: "Hulu",          shortcutKey: "8", url: "https://www.hulu.com/" },
-            { name: "Disney+",       shortcutKey: "9", url: "https://www.disneyplus.com/" },
-            { name: "Spotify",       shortcutKey: "0", url: "https://open.spotify.com/" },
-            { name: "Amazon Prime",  shortcutKey: "-", url: "https://www.amazon.com/Prime-Video/" },
-            { name: "Twitch",        shortcutKey: "=", url: "https://www.twitch.tv/" }
+            { name: "Hack The Box",        shortcutKey: "9", url: "https://www.hackthebox.com/" },
+            { name: "TryHackMe",           shortcutKey: "0", url: "https://tryhackme.com/" },
+            { name: "PicoCTF",             shortcutKey: "`", url: "https://picoctf.org/" },
+            { name: "PortSwigger Academy", shortcutKey: "=", url: "https://portswigger.net/web-security" },
+            { name: "Blue Team Labs",      shortcutKey: "",  url: "https://blueteamlabs.online/" }
+        ]
+    },
+    {
+        groupName: "Research",
+        category:  "research",
+        items: [
+            { name: "arXiv · Security",    shortcutKey: "-", url: "https://arxiv.org/list/cs.CR/recent" },
+            { name: "Google Scholar",      shortcutKey: "[", url: "https://scholar.google.com/" },
+            { name: "IEEE Xplore",         shortcutKey: "]", url: "https://ieeexplore.ieee.org/" },
+            { name: "USENIX",              shortcutKey: "\\",url: "https://www.usenix.org/" },
+            { name: "ACM Digital Library", shortcutKey: "",  url: "https://dl.acm.org/" }
+        ]
+    },
+    {
+        groupName: "Privacy & OPSEC",
+        category:  "opsec",
+        items: [
+            { name: "Privacy Guides",  shortcutKey: ".", url: "https://www.privacyguides.org/" },
+            { name: "HaveIBeenPwned",  shortcutKey: "",  url: "https://haveibeenpwned.com/" },
+            { name: "EFF",             shortcutKey: "",  url: "https://www.eff.org/" },
+            { name: "ProtonMail",      shortcutKey: "",  url: "https://mail.proton.me/" },
+            { name: "Tor Project",     shortcutKey: "",  url: "https://www.torproject.org/" }
+        ]
+    },
+    {
+        groupName: "Developer",
+        category:  "dev",
+        items: [
+            { name: "Stack Overflow",  shortcutKey: "", url: "https://stackoverflow.com/" },
+            { name: "DevDocs",         shortcutKey: "", url: "https://devdocs.io/" },
+            { name: "CyberChef",       shortcutKey: "", url: "https://gchq.github.io/CyberChef/" },
+            { name: "Regex101",        shortcutKey: "", url: "https://regex101.com/" },
+            { name: "ExplainShell",    shortcutKey: "", url: "https://explainshell.com/" }
         ]
     }
 ];
 
 // ─── Runtime State ────────────────────────────────────────────────────
-let $container;
-let getUrl                = {};
+let getUrl               = {};
 let $shortcutDisplayList;
-let listeningForShortcut  = false;
+let listeningForShortcut = false;
 let listenerTimeout;
-
-let commandPaletteOpen    = false;
-let paletteResults        = [];
-let selectedPaletteIndex  = -1;
-let searchIndex           = [];
-
-let terminalMode          = false;
+let commandPaletteOpen   = false;
+let paletteResults       = [];
+let selectedPaletteIndex = -1;
+let searchIndex          = [];
+let terminalMode         = false;
+let spaceXCountdownTimer = null;
 
 /* ═══════════════════════════════════════════════════════════════════
-   1. CONTEXT-AWARE GREETING
+   1. BACKGROUND CANVAS
    ═══════════════════════════════════════════════════════════════════ */
 
-const GREETINGS = {
+function initBackground() {
+    const canvas = document.getElementById('bg-canvas');
+    const ctx    = canvas.getContext('2d');
+    let W, H;
+    const N    = 72;
+    const DIST = 130;
+    const pts  = [];
+
+    function resize() {
+        W = canvas.width  = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+        pts.forEach(p => {
+            if (p.x > W) p.x = Math.random() * W;
+            if (p.y > H) p.y = Math.random() * H;
+        });
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    for (let i = 0; i < N; i++) {
+        pts.push({
+            x:  Math.random() * W,
+            y:  Math.random() * H,
+            vx: (Math.random() - 0.5) * 0.22,
+            vy: (Math.random() - 0.5) * 0.22,
+            r:  Math.random() * 1.2 + 0.3
+        });
+    }
+
+    function getColors() {
+        const h    = new Date().getHours();
+        const dark = document.documentElement.getAttribute('data-theme') !== 'light';
+
+        if (!dark) {
+            return { from: '#dbeafe', to: '#eff6ff', dot: 'rgba(59,130,246,0.35)', line: '59,130,246' };
+        }
+
+        if (h >= 5 && h < 8)  return { from: '#08050f', to: '#140a1c', dot: 'rgba(180,100,255,0.45)', line: '160,90,255' };
+        if (h >= 8 && h < 17) return { from: '#030b1a', to: '#051628', dot: 'rgba(0,200,255,0.4)',    line: '0,200,255' };
+        if (h >= 17 && h < 21) return { from: '#0b0814', to: '#100c20', dot: 'rgba(130,90,255,0.42)', line: '120,80,255' };
+        return                        { from: '#020810', to: '#040c18', dot: 'rgba(0,160,255,0.32)',    line: '0,150,255' };
+    }
+
+    function draw() {
+        const c = getColors();
+        const g = ctx.createLinearGradient(0, 0, W, H);
+        g.addColorStop(0, c.from);
+        g.addColorStop(1, c.to);
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, W, H);
+
+        pts.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0) p.x = W;
+            if (p.x > W) p.x = 0;
+            if (p.y < 0) p.y = H;
+            if (p.y > H) p.y = 0;
+        });
+
+        for (let i = 0; i < N; i++) {
+            for (let j = i + 1; j < N; j++) {
+                const dx = pts[i].x - pts[j].x;
+                const dy = pts[i].y - pts[j].y;
+                const d  = Math.sqrt(dx * dx + dy * dy);
+                if (d < DIST) {
+                    ctx.beginPath();
+                    ctx.moveTo(pts[i].x, pts[i].y);
+                    ctx.lineTo(pts[j].x, pts[j].y);
+                    ctx.strokeStyle = `rgba(${c.line},${(1 - d / DIST) * 0.18})`;
+                    ctx.lineWidth   = 0.5;
+                    ctx.stroke();
+                }
+            }
+        }
+
+        pts.forEach(p => {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = c.dot;
+            ctx.fill();
+        });
+
+        requestAnimationFrame(draw);
+    }
+
+    draw();
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   2. MOTD — tech-themed, time/season/day-aware
+   ═══════════════════════════════════════════════════════════════════ */
+
+const MOTD = {
     earlyMorning: {
         weekday: [
-            "Up before the sun. Let's get to work.",
-            "Early hours. No distractions. Use them.",
-            "Before the noise starts. Go.",
-            "First one in. Make it mean something."
+            "Boot sequence complete. No critical alerts overnight. Begin.",
+            "Pre-dawn window. Optimal signal-to-noise ratio. Use it.",
+            "Attackers don't observe business hours. You're already ahead.",
+            "The network logs accumulated while you were offline.",
+            "Before the noise starts. This is the window.",
+            "0500 hrs. Stack trace from yesterday: address it first."
         ],
         monday: [
-            "Monday. Up before the sun. Points for effort.",
-            "Week starts now. Make it count.",
-            "Early Monday. The edge is yours."
+            "New week, fresh attack surface. Enumerate accordingly.",
+            "Monday pre-dawn. Week threat model: initialize.",
+            "Configuration drift accrues over weekends. Check it."
         ],
         weekend: [
-            "Early start. Enjoy the quiet.",
-            "Weekend early bird. Rare.",
-            "No alarm needed today. Good habit."
+            "Weekend early boot. No standups. Just signal.",
+            "The network doesn't respect weekends. Smart of you.",
+            "Quiet hours. Optimal time for deep work and deep packets."
         ]
     },
     morning: {
         weekday: [
-            "Morning. Time to build something.",
-            "Fresh start. What matters today?",
-            "Morning window. Don't waste it.",
-            "The day is still yours. Act like it."
+            "New CVEs published while you slept. Triage pending.",
+            "Coffee loaded. Threat model reviewed. Systems nominal.",
+            "The attack surface is unchanged. Your awareness should be sharper.",
+            "Patch Tuesday approaches. Inventory your exposure.",
+            "New day. The adversary already has a plan. Do you?",
+            "Morning. What's your threat model for the next eight hours?"
         ],
         monday: [
-            "New week. Clean slate. Make it count.",
-            "Monday morning. Reset and go.",
-            "Week one of the rest. Start clean."
+            "New week. What's your threat model for the next five days?",
+            "Monday initialized. Every incident this week starts with today.",
+            "Week loaded. Carry over only what's worth carrying."
         ],
         friday: [
-            "Friday morning. One more push.",
-            "Last stretch. Finish what you started.",
-            "Friday. Don't coast. Not yet."
+            "Friday. No deployments without a rollback plan. Non-negotiable.",
+            "End-of-week push. Ship nothing you can't un-ship.",
+            "Friday morning. Whatever you break today, you fix today."
         ],
         weekend: [
-            "No meetings. No deadlines. Good.",
-            "Weekend morning. Yours to use however.",
-            "Coffee first. Then whatever you want."
+            "Weekend access. No Jira tickets. Just work.",
+            "Saturday morning. The best debugging happens here.",
+            "No standup. No blockers. The terminal is yours."
         ]
     },
     midday: {
         weekday: [
-            "Halfway through. Stay focused.",
-            "Midday check: are you ahead or behind?",
-            "Half the day left. Use it.",
-            "Lunch earned. Keep the momentum."
+            "Midday. Peak phishing delivery window. Stay calibrated.",
+            "Half the workday elapsed. Threat landscape: unchanged.",
+            "Entropy increases. So does your patch backlog.",
+            "Midday check. Logs reviewed. Incidents triaged. Carry on.",
+            "12:00 UTC. Nation-state actors: clocking in."
         ],
         weekend: [
-            "Midday. Still time to do something useful.",
-            "Half the day gone. No pressure.",
-            "Afternoon starting. Still yours."
+            "Midday weekend. The attack surface doesn't observe Sundays.",
+            "Afternoon loading. Systems nominal.",
+            "Half the day. The terminal has been patient."
         ]
     },
     afternoon: {
         weekday: [
-            "Afternoon. The focus window is narrowing.",
-            "Post-lunch. Fight the slump.",
-            "Second half. Make it productive.",
-            "Still time to ship something today."
+            "Post-lunch cognitive dip is a real attack vector. Compensate.",
+            "SOC activity peaks in the afternoon. So does the noise.",
+            "The work you finish today is the incident you prevent tomorrow.",
+            "Four hours left. Use them like the threat is already inside.",
+            "Afternoon. Don't let the slump be the adversary's advantage."
         ],
         friday: [
-            "Almost there. Finish strong.",
-            "Friday afternoon. Hold the line.",
-            "End of week push. Don't blink now."
+            "Friday afternoon. No force pushes to production. Ever.",
+            "End of week. What's your Friday failure mode?",
+            "Almost there. Don't merge technical debt with your features."
         ],
         weekend: [
-            "Afternoon. Rest or build — your call.",
-            "Weekend afternoon. No wrong answer here.",
-            "Halfway through the day. Relax."
+            "Weekend afternoon. Rest is a force multiplier. Or keep hacking.",
+            "No deadline, no manager. What are you actually building?",
+            "Afternoon. The best open-source contributions happen here."
         ]
     },
     evening: {
         weekday: [
-            "Evening. What did you actually finish?",
-            "Day's end. Did it matter?",
-            "Wrap up. Document what you did.",
-            "Closing time. Leave it better than you found it."
+            "Day complete. What did the adversary attempt while you worked?",
+            "Evening threat brief: vulnerabilities discovered today — many.",
+            "The SIEM is still watching. Are you?",
+            "Close out clean. Document what you broke. Fix it tomorrow.",
+            "End of operational day. Logging off shouldn't stop the monitoring."
         ],
         weekend: [
-            "Evening. Wind down or push forward.",
-            "Weekend winding down. Make peace with what got done.",
-            "Sunday evening. Tomorrow is a clean slate."
+            "Evening. The best research sessions start right here.",
+            "Weekend wind-down. Or it's just getting interesting.",
+            "Late afternoon light. The terminal is still warm."
         ]
     },
     night: {
         weekday: [
-            "Still at it. Respect.",
-            "Late night build session. Classic.",
-            "The quiet hours are productive. Use them.",
-            "Night shift. Get something shipped."
+            "Most APT activity occurs after business hours. Be aware.",
+            "Late night. Either you're dedicated, or there's an incident.",
+            "Night shift: where caffeine meets kernel modules.",
+            "0-dark-something. The packet captures are clean. Keep going.",
+            "After-hours access. The audit log sees everything. That's fine."
         ],
         weekend: [
-            "Night owl on the weekend. Respect.",
-            "Late weekend. You do you.",
-            "Not everyone burns midnight oil on weekends."
+            "Weekend night mode. The interesting vulnerabilities live here.",
+            "Night owl. The attack surface never looked this clear.",
+            "Late night, no constraints. What are you building?"
         ]
     },
     lateNight: {
         any: [
-            "Still at it. Respect.",
-            "It's that late. Hydrate and ship.",
-            "The world is asleep. You're not. Make it count.",
-            "Late night run. Whatever keeps you going."
+            "It's that late. Hydrate, then ship.",
+            "SIGTERM not received. Process continues.",
+            "The dark web doesn't observe business hours. Neither do you.",
+            "Sleep is a security risk only if deferred indefinitely.",
+            "0200 hrs. The threat actors are clocking in. You never left.",
+            "Late-night kernel panic: caffeine. Root cause: stubbornness.",
+            "After midnight. The logs see everything. That's fine."
         ]
     }
 };
 
-function getGreeting() {
-    const now    = new Date();
-    const hour   = now.getHours();
-    const day    = now.getDay(); // 0=Sun, 6=Sat
-    const isWknd = day === 0 || day === 6;
-    const isMon  = day === 1;
-    const isFri  = day === 5;
-
-    let slot;
-    if      (hour >= 5  && hour < 9)  slot = 'earlyMorning';
-    else if (hour >= 9  && hour < 12) slot = 'morning';
-    else if (hour >= 12 && hour < 14) slot = 'midday';
-    else if (hour >= 14 && hour < 17) slot = 'afternoon';
-    else if (hour >= 17 && hour < 20) slot = 'evening';
-    else if (hour >= 20 && hour < 24) slot = 'night';
-    else                               slot = 'lateNight';
-
-    const pool = GREETINGS[slot];
-    let options;
-
-    if (slot === 'lateNight') {
-        options = pool.any;
-    } else if (isWknd) {
-        options = pool.weekend || pool.weekday;
-    } else if (isMon && pool.monday) {
-        options = pool.monday;
-    } else if (isFri && pool.friday) {
-        options = pool.friday;
-    } else {
-        options = pool.weekday || pool.any;
-    }
-
-    return options[Math.floor(Math.random() * options.length)];
+function getSeason() {
+    const m = new Date().getMonth();
+    if (m >= 2 && m <= 4)  return 'Spring';
+    if (m >= 5 && m <= 7)  return 'Summer';
+    if (m >= 8 && m <= 10) return 'Fall';
+    return 'Winter';
 }
 
-function setupWelcomeMessage() {
-    const el = document.getElementById('welcome-string');
-    el.textContent = getGreeting();
-    // Trigger fade-in on next tick so transition fires
+function getTimeSlot() {
+    const h = new Date().getHours();
+    if (h >= 5  && h < 8)  return ['earlyMorning', 'Pre-Dawn'];
+    if (h >= 8  && h < 12) return ['morning',      'Morning'];
+    if (h >= 12 && h < 14) return ['midday',        'Midday'];
+    if (h >= 14 && h < 18) return ['afternoon',     'Afternoon'];
+    if (h >= 18 && h < 22) return ['evening',       'Evening'];
+    if (h >= 22)            return ['night',         'Night'];
+    return ['lateNight', 'Late Night'];
+}
+
+function getDayType() {
+    const d    = new Date().getDay();
+    const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    if (d === 0) return ['weekend', 'Sunday'];
+    if (d === 1) return ['monday',  'Monday'];
+    if (d === 5) return ['friday',  'Friday'];
+    if (d === 6) return ['weekend', 'Saturday'];
+    return ['weekday', DAYS[d]];
+}
+
+function setupMOTD() {
+    const [slotKey, slotLabel] = getTimeSlot();
+    const [dayKey,  dayLabel]  = getDayType();
+    const season = getSeason();
+
+    const pool = MOTD[slotKey];
+    const msgs = pool[dayKey] || pool.weekday || pool.any || ['Systems nominal.'];
+    const msg  = msgs[Math.floor(Math.random() * msgs.length)];
+
+    const el = document.getElementById('motd-text');
+    el.textContent = msg;
     requestAnimationFrame(() => el.classList.add('visible'));
-}
 
-/* ═══════════════════════════════════════════════════════════════════
-   2. BACKGROUND IMAGE (time-based)
-   ═══════════════════════════════════════════════════════════════════ */
-
-function setBackgroundBasedOnTime() {
-    // Light mode uses its own background color — dark photo backgrounds make
-    // the light-mode text (#1e293b) invisible.
-    const theme = document.documentElement.getAttribute('data-theme');
-    if (theme === 'light') {
-        document.body.style.backgroundImage = 'none';
-        return;
-    }
-
-    const hour = new Date().getHours();
-    let img;
-    if      (hour >= 5  && hour < 8)  img = 'sunrise.jpg';
-    else if (hour >= 8  && hour < 18) img = 'daytime.jpg';
-    else if (hour >= 18 && hour < 20) img = 'sunset.jpg';
-    else                               img = 'night.jpg';
-
-    document.body.style.backgroundImage =
-        `linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),url("${img}")`;
+    document.getElementById('motd-context').textContent =
+        `${slotLabel}  ·  ${season}  ·  ${dayLabel}`;
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -283,54 +407,282 @@ function setBackgroundBasedOnTime() {
    ═══════════════════════════════════════════════════════════════════ */
 
 function updateDateTime() {
-    const now  = new Date();
-    const hh   = now.getHours().toString().padStart(2, '0');
-    const mm   = now.getMinutes().toString().padStart(2, '0');
-    const ss   = now.getSeconds().toString().padStart(2, '0');
-    document.getElementById('current-time').textContent = `${hh}:${mm}:${ss}`;
-    document.getElementById('current-date').textContent =
-        now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    const now = new Date();
+    const hh  = now.getHours().toString().padStart(2, '0');
+    const mm  = now.getMinutes().toString().padStart(2, '0');
+    const ss  = now.getSeconds().toString().padStart(2, '0');
+
+    const timeEl = document.getElementById('current-time');
+    const dateEl = document.getElementById('current-date');
+
+    if (timeEl) timeEl.textContent = `${hh}:${mm}:${ss}`;
+    if (dateEl) dateEl.textContent = now.toLocaleDateString('en-US', {
+        weekday: 'short', month: 'short', day: 'numeric', year: 'numeric'
+    });
+
     setTimeout(updateDateTime, 1000);
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   4. WEATHER (NWS API — Tucson, AZ)
+   4. WEATHER — NWS API, Tucson AZ
    ═══════════════════════════════════════════════════════════════════ */
 
 function fetchWeather() {
     const lat = 32.253460, lon = -110.911789;
-
     fetch(`https://api.weather.gov/points/${lat},${lon}`)
         .then(r => { if (!r.ok) throw new Error(); return r.json(); })
         .then(d => fetch(d.properties.forecast))
         .then(r => { if (!r.ok) throw new Error(); return r.json(); })
         .then(fd => {
             const cur  = fd.properties.periods[0];
-            document.getElementById('weather-temp').textContent =
-                `${cur.temperature}°${cur.temperatureUnit}`;
+            const desc = cur.shortForecast.toLowerCase();
+
+            let icon = '🌡️';
+            if (desc.includes('sunny') || desc.includes('clear'))        icon = '☀️';
+            else if (desc.includes('partly'))                             icon = '🌤️';
+            else if (desc.includes('cloud') || desc.includes('overcast')) icon = '☁️';
+            else if (desc.includes('rain') || desc.includes('shower'))    icon = '🌧️';
+            else if (desc.includes('snow'))                               icon = '❄️';
+            else if (desc.includes('storm') || desc.includes('thunder'))  icon = '⛈️';
+            else if (desc.includes('fog'))                                icon = '🌫️';
+            else if (desc.includes('wind'))                               icon = '💨';
+
+            document.getElementById('weather-icon').textContent = icon;
+            document.getElementById('weather-temp').textContent = `${cur.temperature}°${cur.temperatureUnit}`;
             document.getElementById('weather-desc').textContent = cur.shortForecast;
 
-            const ico  = document.querySelector('.weather-icon');
-            const desc = cur.shortForecast.toLowerCase();
-            if (desc.includes('sunny') || desc.includes('clear'))   ico.textContent = '☀️';
-            else if (desc.includes('partly'))                        ico.textContent = '🌤️';
-            else if (desc.includes('cloud'))                         ico.textContent = '☁️';
-            else if (desc.includes('rain') || desc.includes('shower')) ico.textContent = '🌧️';
-            else if (desc.includes('snow'))                          ico.textContent = '❄️';
-            else if (desc.includes('storm') || desc.includes('thunder')) ico.textContent = '⛈️';
-            else                                                      ico.textContent = '🌡️';
+            const wind = document.getElementById('weather-wind');
+            if (cur.windSpeed) {
+                wind.textContent = `${cur.windDirection || ''} ${cur.windSpeed}`.trim();
+            }
         })
         .catch(() => {
             document.getElementById('weather-temp').textContent = '--°F';
             document.getElementById('weather-desc').textContent = 'Unavailable';
-            document.querySelector('.weather-icon').textContent = '🌡️';
         });
 
     setTimeout(fetchWeather, 30 * 60 * 1000);
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   5. LINK GROUPS (generated from MASTER_MAP)
+   5. SPACEX LAUNCH TRACKER
+   ═══════════════════════════════════════════════════════════════════ */
+
+async function fetchSpaceXLaunch() {
+    const missionEl    = document.getElementById('spacex-mission');
+    const providerEl   = document.getElementById('spacex-provider');
+    const countdownEl  = document.getElementById('spacex-countdown');
+    const locationEl   = document.getElementById('spacex-location');
+    const visibilityEl = document.getElementById('spacex-visibility');
+
+    try {
+        // The Space Devs Launch Library 2 — includes pad location in the response
+        const res = await fetch(
+            'https://ll.thespacedevs.com/2.0.0/launch/upcoming/?lsp__name=SpaceX&ordering=net&limit=5&format=json'
+        );
+        if (!res.ok) throw new Error(`LL2 HTTP ${res.status}`);
+        const data = await res.json();
+
+        if (!data.results?.length) {
+            missionEl.textContent   = 'No launches scheduled';
+            providerEl.textContent  = '';
+            countdownEl.textContent = '';
+            locationEl.textContent  = '';
+            visibilityEl.textContent = '';
+            return;
+        }
+
+        const next = data.results[0];
+
+        missionEl.textContent  = next.name || 'Unknown Mission';
+        providerEl.textContent = next.launch_service_provider?.name || 'SpaceX';
+
+        const padName  = next.pad?.name || '';
+        const locName  = next.pad?.location?.name || '';
+        locationEl.textContent = [padName, locName].filter(Boolean).join(' · ');
+
+        const isVandenberg = locName.toLowerCase().includes('vandenberg');
+        visibilityEl.textContent = isVandenberg ? '⬡ May be visible from Southern AZ' : '';
+
+        // Show launch status if not confirmed (TBD / TBC / Hold)
+        const statusAbbrev = next.status?.abbrev || '';
+        const launchMs     = new Date(next.net).getTime();
+
+        startSpaceXCountdown(launchMs, statusAbbrev);
+
+    } catch (_) {
+        missionEl.textContent   = 'Launch data unavailable';
+        providerEl.textContent  = '';
+        countdownEl.textContent = '';
+        locationEl.textContent  = '';
+        visibilityEl.textContent = '';
+    }
+}
+
+function startSpaceXCountdown(launchMs, statusAbbrev) {
+    if (spaceXCountdownTimer) clearInterval(spaceXCountdownTimer);
+
+    const el = document.getElementById('spacex-countdown');
+    if (!el) return;
+
+    const uncertain = statusAbbrev === 'TBD' || statusAbbrev === 'TBC';
+    const prefix    = uncertain ? 'NET ' : 'T- ';
+
+    function tick() {
+        const diff = launchMs - Date.now();
+        if (diff <= 0) {
+            el.textContent = 'LAUNCH OCCURRED';
+            el.style.color = 'var(--red)';
+            clearInterval(spaceXCountdownTimer);
+            setTimeout(fetchSpaceXLaunch, 90_000);
+            return;
+        }
+
+        const d  = Math.floor(diff / 86400000);
+        const h  = Math.floor((diff % 86400000) / 3600000);
+        const m  = Math.floor((diff % 3600000) / 60000);
+        const s  = Math.floor((diff % 60000) / 1000);
+
+        el.textContent = `${prefix}${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
+        el.style.color = diff < 3600000 ? 'var(--red)' : diff < 86400000 ? 'var(--amber)' : 'var(--accent)';
+    }
+
+    tick();
+    spaceXCountdownTimer = setInterval(tick, 1000);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   6. THREAT INTEL FEED — GitHub Security Advisories
+   ═══════════════════════════════════════════════════════════════════ */
+
+async function fetchThreatFeed() {
+    const itemsEl = document.getElementById('threat-feed-items');
+    if (!itemsEl) return;
+
+    try {
+        const res = await fetch(
+            'https://api.github.com/advisories?per_page=8&sort=published&direction=desc&type=reviewed',
+            { headers: { 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' } }
+        );
+        if (!res.ok) throw new Error();
+        const advisories = await res.json();
+
+        itemsEl.innerHTML = '';
+
+        advisories.forEach(adv => {
+            const row = document.createElement('a');
+            row.className = 'threat-row';
+            row.href      = adv.html_url;
+            row.target    = '_blank';
+            row.rel       = 'noopener noreferrer';
+
+            const badge = document.createElement('span');
+            badge.className   = 'cve-badge';
+            badge.textContent = adv.cve_id || adv.ghsa_id;
+
+            const pkg    = adv.vulnerabilities?.[0]?.package;
+            const vendor = document.createElement('span');
+            vendor.className   = 'threat-vendor';
+            vendor.textContent = pkg ? `${pkg.ecosystem} / ${pkg.name}` : adv.ghsa_id;
+
+            const name = document.createElement('span');
+            name.className   = 'threat-name';
+            name.textContent = adv.summary;
+
+            const date = document.createElement('span');
+            date.className   = 'threat-date';
+            date.textContent = adv.published_at?.slice(0, 10) || '';
+
+            row.append(badge, vendor, name, date);
+            itemsEl.appendChild(row);
+        });
+
+    } catch (_) {
+        if (itemsEl) {
+            itemsEl.innerHTML = '<div class="feed-unavailable">FEED UNAVAILABLE</div>';
+        }
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   7. INTEL NEWS FEED — rss2json
+   ═══════════════════════════════════════════════════════════════════ */
+
+const NEWS_SOURCES = [
+    { name: 'Bleeping Computer', url: 'https://api.rss2json.com/v1/api.json?rss_url=https://www.bleepingcomputer.com/feed/', limit: 4 },
+    { name: 'Dark Reading',      url: 'https://api.rss2json.com/v1/api.json?rss_url=https://www.darkreading.com/rss.xml',   limit: 4 },
+    { name: 'Krebs on Security', url: 'https://api.rss2json.com/v1/api.json?rss_url=https://krebsonsecurity.com/feed/',     limit: 3 },
+    { name: 'Ars Technica',      url: 'https://api.rss2json.com/v1/api.json?rss_url=https://feeds.arstechnica.com/arstechnica/index', limit: 3 },
+    { name: 'NY Times Tech',     url: 'https://api.rss2json.com/v1/api.json?rss_url=https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml', limit: 2 }
+];
+
+function relTime(dateStr) {
+    if (!dateStr) return '';
+    const diff = Date.now() - new Date(dateStr).getTime();
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor(diff / 60000);
+    if (h >= 24) return `${Math.floor(h / 24)}d ago`;
+    if (h > 0)   return `${h}h ago`;
+    if (m > 0)   return `${m}m ago`;
+    return 'just now';
+}
+
+async function fetchNewsFeed() {
+    const itemsEl = document.getElementById('news-feed-items');
+    if (!itemsEl) return;
+
+    let items = [];
+
+    await Promise.allSettled(
+        NEWS_SOURCES.map(async src => {
+            try {
+                const res  = await fetch(src.url);
+                const data = await res.json();
+                if (data.status === 'ok') {
+                    data.items.slice(0, src.limit).forEach(item => {
+                        items.push({ title: item.title, link: item.link, source: src.name, pubDate: item.pubDate });
+                    });
+                }
+            } catch (_) {}
+        })
+    );
+
+    items.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+    items = items.slice(0, 14);
+
+    itemsEl.innerHTML = '';
+
+    if (!items.length) {
+        itemsEl.innerHTML = '<span class="feed-loading">No articles available</span>';
+        return;
+    }
+
+    items.forEach(item => {
+        const row = document.createElement('a');
+        row.className = 'news-row';
+        row.href      = item.link;
+        row.target    = '_blank';
+        row.rel       = 'noopener noreferrer';
+
+        const badge = document.createElement('span');
+        badge.className   = 'news-source-badge';
+        badge.textContent = item.source;
+
+        const title = document.createElement('span');
+        title.className   = 'news-title';
+        title.textContent = item.title;
+
+        const time = document.createElement('span');
+        time.className   = 'news-time';
+        time.textContent = relTime(item.pubDate);
+
+        row.append(badge, title, time);
+        itemsEl.appendChild(row);
+    });
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   8. LINK GROUPS
    ═══════════════════════════════════════════════════════════════════ */
 
 function buildSearchIndex() {
@@ -341,62 +693,59 @@ function buildSearchIndex() {
                 name:      item.name,
                 url:       item.url,
                 groupName: group.groupName,
-                category:  group.category || 'important'
+                category:  group.category
             });
         });
     });
 }
 
 function setupGroups() {
-    // Remove any previously generated groups (preserves threat feed card)
-    $container.querySelectorAll('.group[data-generated]').forEach(g => g.remove());
+    const grid = document.getElementById('links-grid');
+    grid.querySelectorAll('.link-card[data-generated]').forEach(el => el.remove());
+    getUrl = {};
 
-    for (let i = 0; i < MASTER_MAP.length; i++) {
-        const grpData = MASTER_MAP[i];
+    MASTER_MAP.forEach(grpData => {
+        const card = document.createElement('div');
+        card.className = 'card link-card';
+        card.setAttribute('data-generated', 'true');
+        card.setAttribute('data-category', grpData.category);
+        grid.appendChild(card);
 
-        const group = document.createElement('div');
-        group.className = 'group';
-        group.setAttribute('data-generated', 'true');
-        group.setAttribute('data-category', grpData.category || 'important');
-        $container.appendChild(group);
+        const label = document.createElement('div');
+        label.className   = 'card-label';
+        label.textContent = `// ${grpData.groupName.toUpperCase()}`;
+        card.appendChild(label);
 
-        const header = document.createElement('h1');
-        header.textContent = grpData.groupName;
-        group.appendChild(header);
-
-        for (let j = 0; j < grpData.items.length; j++) {
-            const item = grpData.items[j];
-
-            const p = document.createElement('p');
-            group.appendChild(p);
+        grpData.items.forEach(item => {
+            const row = document.createElement('div');
+            row.className = 'link-row';
+            card.appendChild(row);
 
             const link = document.createElement('a');
             link.textContent = item.name;
             link.href        = item.url;
             link.target      = '_blank';
             link.rel         = 'noopener noreferrer';
-            p.appendChild(link);
+            row.appendChild(link);
 
-            const shortcut = document.createElement('span');
-            shortcut.textContent = item.shortcutKey;
-            shortcut.className   = 'shortcut';
-            shortcut.style.animation = 'none';
-            p.appendChild(shortcut);
+            const sc = document.createElement('span');
+            sc.textContent = item.shortcutKey;
+            sc.className   = 'shortcut';
+            sc.style.animation = 'none';
+            row.appendChild(sc);
 
             getUrl[item.shortcutKey] = item.url;
-        }
-    }
+        });
+    });
 
-    // Re-read the live collection after DOM update
     $shortcutDisplayList = document.getElementsByClassName('shortcut');
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   6. KEYBOARD SHORTCUTS (Tab + key)
+   9. KEYBOARD SHORTCUTS (Tab + key)
    ═══════════════════════════════════════════════════════════════════ */
 
 function shortcutListener(e) {
-    // Don't fire when command palette is open or an input is focused
     if (commandPaletteOpen) return;
     const tag = document.activeElement.tagName.toLowerCase();
     if (tag === 'input' || tag === 'textarea') return;
@@ -413,10 +762,11 @@ function shortcutListener(e) {
         clearTimeout(listenerTimeout);
         listeningForShortcut = true;
 
-        // Animate shortcut badges
         for (let i = 0; i < $shortcutDisplayList.length; i++) {
             $shortcutDisplayList[i].style.animation = 'none';
-            setTimeout(() => { $shortcutDisplayList[i].style.animation = ''; }, 10);
+            // Force reflow
+            void $shortcutDisplayList[i].offsetWidth;
+            $shortcutDisplayList[i].style.animation = '';
         }
 
         listenerTimeout = setTimeout(() => { listeningForShortcut = false; }, SHORTCUT_TIMEOUT);
@@ -424,24 +774,26 @@ function shortcutListener(e) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   7. THEME
+   10. THEME
    ═══════════════════════════════════════════════════════════════════ */
 
 function setTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
-    setBackgroundBasedOnTime(); // re-evaluate: light mode clears the photo bg
+    const btn = document.getElementById('theme-btn');
+    if (btn) {
+        btn.textContent = theme === 'dark' ? '☀' : '☾';
+        btn.title       = theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+    }
 }
 
 function toggleTheme() {
     const current = document.documentElement.getAttribute('data-theme');
-    const next    = current === 'dark' ? 'light' : 'dark';
-    setTheme(next);
-    document.getElementById('theme-switch').checked = next === 'light';
+    setTheme(current === 'dark' ? 'light' : 'dark');
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   8. COMMAND PALETTE
+   11. COMMAND PALETTE
    ═══════════════════════════════════════════════════════════════════ */
 
 function openCommandPalette() {
@@ -452,7 +804,6 @@ function openCommandPalette() {
     input.value = '';
     selectedPaletteIndex = -1;
     renderPaletteResults('');
-    // Small delay so the overlay renders before focus
     setTimeout(() => input.focus(), 30);
 }
 
@@ -466,25 +817,21 @@ function closeCommandPalette() {
 
 function renderPaletteResults(query) {
     const q = query.trim().toLowerCase();
-
-    if (q === '') {
-        paletteResults = searchIndex;
-    } else {
-        paletteResults = searchIndex.filter(item =>
+    paletteResults = q === ''
+        ? searchIndex
+        : searchIndex.filter(item =>
             item.name.toLowerCase().includes(q) ||
             item.groupName.toLowerCase().includes(q) ||
             item.url.toLowerCase().includes(q)
         );
-    }
 
     selectedPaletteIndex = paletteResults.length > 0 ? 0 : -1;
-
     const container = document.getElementById('command-palette-results');
     container.innerHTML = '';
 
-    if (paletteResults.length === 0) {
+    if (!paletteResults.length) {
         const empty = document.createElement('div');
-        empty.className = 'palette-empty';
+        empty.className   = 'palette-empty';
         empty.textContent = 'No results.';
         container.appendChild(empty);
         return;
@@ -502,46 +849,31 @@ function renderPaletteResults(query) {
         badge.textContent = item.groupName;
 
         const name = document.createElement('span');
-        name.className = 'palette-link-name';
+        name.className   = 'palette-link-name';
         name.textContent = item.name;
 
         const urlSpan = document.createElement('span');
         urlSpan.className = 'palette-link-url';
-        try {
-            urlSpan.textContent = new URL(item.url).hostname;
-        } catch (_) {
-            urlSpan.textContent = item.url;
-        }
+        try { urlSpan.textContent = new URL(item.url).hostname; }
+        catch (_) { urlSpan.textContent = item.url; }
 
-        row.appendChild(badge);
-        row.appendChild(name);
-        row.appendChild(urlSpan);
-
+        row.append(badge, name, urlSpan);
         row.addEventListener('click', () => {
             window.open(item.url, '_blank', 'noopener,noreferrer');
             closeCommandPalette();
         });
-
         container.appendChild(row);
     });
 }
 
-function navigatePalette(direction) {
-    if (paletteResults.length === 0) return;
-
-    const container = document.getElementById('command-palette-results');
-    const rows = container.querySelectorAll('.palette-result');
-
+function navigatePalette(dir) {
+    if (!paletteResults.length) return;
+    const rows = document.getElementById('command-palette-results').querySelectorAll('.palette-result');
     if (rows[selectedPaletteIndex]) {
         rows[selectedPaletteIndex].classList.remove('selected');
         rows[selectedPaletteIndex].setAttribute('aria-selected', 'false');
     }
-
-    selectedPaletteIndex = Math.max(0, Math.min(
-        paletteResults.length - 1,
-        selectedPaletteIndex + direction
-    ));
-
+    selectedPaletteIndex = Math.max(0, Math.min(paletteResults.length - 1, selectedPaletteIndex + dir));
     if (rows[selectedPaletteIndex]) {
         rows[selectedPaletteIndex].classList.add('selected');
         rows[selectedPaletteIndex].setAttribute('aria-selected', 'true');
@@ -558,50 +890,36 @@ function openSelectedResult() {
 
 function setupCommandPalette() {
     const input = document.getElementById('command-palette-input');
-
-    input.addEventListener('input', () => {
-        renderPaletteResults(input.value);
-    });
-
-    // Close when clicking the backdrop (but not the palette box itself)
+    input.addEventListener('input', () => renderPaletteResults(input.value));
     document.getElementById('command-palette-overlay').addEventListener('click', e => {
-        if (e.target === document.getElementById('command-palette-overlay')) {
-            closeCommandPalette();
-        }
+        if (e.target === document.getElementById('command-palette-overlay')) closeCommandPalette();
     });
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   9. GLOBAL KEY HANDLER (keydown)
+   12. GLOBAL KEY HANDLER
    ═══════════════════════════════════════════════════════════════════ */
 
 function globalKeyHandler(e) {
-    // ── Ctrl+\ → toggle terminal mode ──────────────────────────────
     if (e.ctrlKey && e.key === '\\') {
         e.preventDefault();
         toggleTerminalMode();
         return;
     }
 
-    // ── Escape ─────────────────────────────────────────────────────
     if (e.key === 'Escape') {
-        if (commandPaletteOpen) {
-            closeCommandPalette();
-        } else if (terminalMode) {
-            deactivateTerminalMode();
-        }
+        if (commandPaletteOpen)  closeCommandPalette();
+        else if (terminalMode)   deactivateTerminalMode();
         return;
     }
 
-    // ── Arrow / Enter navigation inside palette ─────────────────────
     if (commandPaletteOpen) {
         if (e.key === 'ArrowDown') { e.preventDefault(); navigatePalette(1);  return; }
         if (e.key === 'ArrowUp')   { e.preventDefault(); navigatePalette(-1); return; }
         if (e.key === 'Enter')     { e.preventDefault(); openSelectedResult(); return; }
-        return; // swallow other keys while palette is open
+        return;
     }
 
-    // ── "/" → open command palette (not when focused in an input) ───
     const tag = document.activeElement.tagName.toLowerCase();
     if (e.key === '/' && tag !== 'input' && tag !== 'textarea') {
         e.preventDefault();
@@ -610,108 +928,22 @@ function globalKeyHandler(e) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   10. CYBER THREAT INTEL — CISA KEV FEED
-   ═══════════════════════════════════════════════════════════════════ */
-
-async function fetchCISAFeed() {
-    // Ensure the threat feed card exists and is always the first child of #content.
-    // setupGroups() may have already populated the container, so always re-anchor.
-    let card = document.getElementById('threat-feed');
-    if (!card) {
-        card = document.createElement('div');
-        card.id        = 'threat-feed';
-        card.className = 'group threat-feed-card';
-    }
-    // Move/insert to front regardless of current position
-    $container.insertBefore(card, $container.firstChild);
-
-    // Build/reset the card structure
-    card.innerHTML = `
-        <h1><span class="live-dot">●</span> THREAT FEED</h1>
-        <div id="threat-feed-items"><span style="color:#444;font-size:0.8rem">fetching…</span></div>
-    `;
-
-    try {
-        // GitHub Security Advisories API — native CORS support, no key required.
-        // Returns reviewed advisories with CVE IDs, severity, and package info.
-        const res = await fetch(
-            'https://api.github.com/advisories?per_page=5&sort=published&direction=desc&type=reviewed',
-            { headers: { 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' } }
-        );
-        if (!res.ok) throw new Error(`GitHub API HTTP ${res.status}`);
-        const advisories = await res.json();
-
-        const itemsEl = document.getElementById('threat-feed-items');
-        itemsEl.innerHTML = '';
-
-        advisories.forEach(adv => {
-            const row = document.createElement('a');
-            row.className  = 'threat-row';
-            row.href       = adv.html_url;
-            row.target     = '_blank';
-            row.rel        = 'noopener noreferrer';
-
-            // Prefer CVE ID; fall back to GHSA ID
-            const badge = document.createElement('span');
-            badge.className   = 'cve-badge';
-            badge.textContent = adv.cve_id || adv.ghsa_id;
-
-            // Ecosystem + package name from first affected package
-            const pkg    = adv.vulnerabilities && adv.vulnerabilities[0] && adv.vulnerabilities[0].package;
-            const vendor = document.createElement('span');
-            vendor.className   = 'threat-vendor';
-            vendor.textContent = pkg ? `${pkg.ecosystem} — ${pkg.name}` : adv.ghsa_id;
-
-            const name = document.createElement('span');
-            name.className   = 'threat-name';
-            name.textContent = adv.summary;
-
-            const date = document.createElement('span');
-            date.className   = 'threat-date';
-            date.textContent = adv.published_at ? adv.published_at.slice(0, 10) : '';
-
-            row.appendChild(badge);
-            row.appendChild(vendor);
-            row.appendChild(name);
-            row.appendChild(date);
-            itemsEl.appendChild(row);
-        });
-
-    } catch (_) {
-        const itemsEl = document.getElementById('threat-feed-items');
-        if (itemsEl) {
-            const msg = document.createElement('div');
-            msg.className   = 'feed-unavailable';
-            msg.textContent = 'FEED UNAVAILABLE';
-            itemsEl.innerHTML = '';
-            itemsEl.appendChild(msg);
-        }
-    }
-}
-
-/* ═══════════════════════════════════════════════════════════════════
-   11. TERMINAL MODE EASTER EGG  (Ctrl+\)
+   13. TERMINAL MODE  (Ctrl+\)
    ═══════════════════════════════════════════════════════════════════ */
 
 function activateTerminalMode() {
     terminalMode = true;
     document.body.classList.add('terminal-mode');
-    document.body.style.backgroundImage = 'none';
-
     const wt = document.getElementById('wordmark-text');
-    if (wt) wt.textContent = '[acirema@dev ~]$';
-
+    if (wt) wt.textContent = '[root@acirema ~]$';
     sessionStorage.setItem('terminalMode', 'true');
 }
 
 function deactivateTerminalMode() {
     terminalMode = false;
     document.body.classList.remove('terminal-mode');
-    setBackgroundBasedOnTime(); // restore time-based background
-
     const wt = document.getElementById('wordmark-text');
-    if (wt) wt.textContent = 'acirema.dev';
-
+    if (wt) wt.textContent = 'ACIREMA';
     sessionStorage.removeItem('terminalMode');
 }
 
@@ -721,192 +953,44 @@ function toggleTerminalMode() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   12. NEWS TICKER
-   ═══════════════════════════════════════════════════════════════════ */
-
-function shuffleArray(arr) {
-    for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
-}
-
-function updateNewsTicker(newsItems) {
-    const content = document.getElementById('news-ticker-content');
-    content.innerHTML = '';
-
-    const addItem = item => {
-        const wrap = document.createElement('div');
-        wrap.className = 'news-ticker-item';
-        const a = document.createElement('a');
-        a.href        = item.link;
-        a.target      = '_blank';
-        a.rel         = 'noopener noreferrer';
-        a.textContent = `[${item.sourceName || 'News'}] ${item.title}`;
-        wrap.appendChild(a);
-        return wrap;
-    };
-
-    // Primary items + duplicates for seamless loop
-    newsItems.forEach(item => content.appendChild(addItem(item)));
-    newsItems.forEach(item => content.appendChild(addItem(item)));
-
-    startTickerAnimation();
-}
-
-function startTickerAnimation() {
-    const content   = document.getElementById('news-ticker-content');
-    const container = document.querySelector('.news-ticker-container');
-
-    if (!content || !container) return;
-
-    // Cancel any running animation
-    if (content._tickerRaf) cancelAnimationFrame(content._tickerRaf);
-
-    content.style.animation = 'none';
-    let position  = container.offsetWidth;
-    let isPaused  = false;
-
-    const onEnter = () => { isPaused = true; };
-    const onLeave = () => { isPaused = false; };
-
-    // Avoid stacking listeners on re-runs
-    container.removeEventListener('mouseenter', container._tickerEnter);
-    container.removeEventListener('mouseleave', container._tickerLeave);
-    container._tickerEnter = onEnter;
-    container._tickerLeave = onLeave;
-    container.addEventListener('mouseenter', onEnter);
-    container.addEventListener('mouseleave', onLeave);
-
-    content.style.transform = `translateX(${position}px)`;
-
-    function tick() {
-        if (!isPaused) {
-            position -= 0.5;
-            if (position < -content.offsetWidth) position = container.offsetWidth;
-            content.style.transform = `translateX(${position}px)`;
-        }
-        content._tickerRaf = requestAnimationFrame(tick);
-    }
-    tick();
-}
-
-function loadFallbackNews() {
-    const fallback = shuffleArray([
-        { title: "Maintaining proper cyber hygiene is essential for protecting against threats",        link: "https://thehackernews.com/",         sourceName: "The Hacker News" },
-        { title: "Zero-day vulnerabilities continue to be exploited in major software",                link: "https://thehackernews.com/",         sourceName: "The Hacker News" },
-        { title: "Ransomware attacks target critical infrastructure worldwide",                         link: "https://krebsonsecurity.com/",        sourceName: "Krebs on Security" },
-        { title: "New phishing campaign targets corporate executives",                                  link: "https://www.darkreading.com/",        sourceName: "Dark Reading" },
-        { title: "Security researchers discover vulnerability in popular IoT devices",                  link: "https://www.bleepingcomputer.com/",   sourceName: "Bleeping Computer" },
-        { title: "Data breach exposes millions of customer records",                                    link: "https://krebsonsecurity.com/",        sourceName: "Krebs on Security" },
-        { title: "NIST releases new guidelines for password security",                                  link: "https://www.nist.gov/",               sourceName: "NIST" },
-        { title: "Critical security patches released for major operating systems",                      link: "https://www.bleepingcomputer.com/",   sourceName: "Bleeping Computer" },
-        { title: "Global economic outlook shows signs of recovery",                                     link: "https://www.cnn.com/",                sourceName: "CNN" },
-        { title: "Tech companies announce major investments in AI research",                             link: "https://www.nytimes.com/",            sourceName: "NY Times" },
-        { title: "Scientists make breakthrough in renewable energy storage",                             link: "https://news.yahoo.com/",             sourceName: "Yahoo News" }
-    ]);
-    updateNewsTicker(fallback);
-}
-
-function fetchCyberSecurityNews() {
-    const sources = [
-        { name: 'The Hacker News',   url: 'https://api.rss2json.com/v1/api.json?rss_url=https://feeds.feedburner.com/TheHackersNews', limit: 10 },
-        { name: 'Krebs on Security', url: 'https://api.rss2json.com/v1/api.json?rss_url=https://krebsonsecurity.com/feed/',            limit: 10 },
-        { name: 'Bleeping Computer', url: 'https://api.rss2json.com/v1/api.json?rss_url=https://www.bleepingcomputer.com/feed/',       limit: 10 },
-        { name: 'CNN',               url: 'https://api.rss2json.com/v1/api.json?rss_url=http://rss.cnn.com/rss/edition.rss',           limit: 5  },
-        { name: 'BBC',               url: 'https://api.rss2json.com/v1/api.json?rss_url=http://feeds.bbci.co.uk/news/rss.xml',         limit: 5  },
-        { name: 'NY Times',          url: 'https://api.rss2json.com/v1/api.json?rss_url=https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml', limit: 5 },
-        { name: 'Yahoo News',        url: 'https://api.rss2json.com/v1/api.json?rss_url=https://news.yahoo.com/rss/', limit: 5 }
-    ];
-
-    let all = [];
-    const promises = sources.map(src =>
-        fetch(src.url)
-            .then(r => r.json())
-            .then(d => {
-                if (d.status === 'ok') {
-                    d.items.slice(0, src.limit).forEach(item => {
-                        item.sourceName = src.name;
-                        all.push(item);
-                    });
-                }
-            })
-            .catch(() => { /* individual source failure is acceptable */ })
-    );
-
-    Promise.all(promises).then(() => {
-        if (all.length > 0) updateNewsTicker(shuffleArray(all));
-        else                 loadFallbackNews();
-    });
-}
-
-function setupNewsTicker() {
-    loadFallbackNews(); // immediate display
-
-    setTimeout(() => {
-        fetchCyberSecurityNews();
-        setInterval(fetchCyberSecurityNews, 600_000);
-    }, 150);
-
-    document.addEventListener('visibilitychange', () => {
-        const content = document.getElementById('news-ticker-content');
-        if (document.hidden) {
-            if (content && content._tickerRaf) {
-                cancelAnimationFrame(content._tickerRaf);
-                content._tickerRaf = null;
-            }
-        } else {
-            startTickerAnimation();
-        }
-    });
-}
-
-/* ═══════════════════════════════════════════════════════════════════
    INIT
    ═══════════════════════════════════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', () => {
-    $container           = document.getElementById('content');
-    getUrl               = {};
-    listeningForShortcut = false;
-
     // Theme
-    const themeSwitch = document.getElementById('theme-switch');
-    themeSwitch.addEventListener('change', toggleTheme);
     const savedTheme = localStorage.getItem('theme') || 'dark';
     setTheme(savedTheme);
-    themeSwitch.checked = savedTheme === 'light';
+    document.getElementById('theme-btn').addEventListener('click', toggleTheme);
 
-    // Background (before terminal mode check)
-    setBackgroundBasedOnTime();
+    // Background canvas
+    initBackground();
 
-    // Restore terminal mode from sessionStorage
-    if (sessionStorage.getItem('terminalMode') === 'true') {
-        activateTerminalMode();
-    }
+    // Terminal mode restore
+    if (sessionStorage.getItem('terminalMode') === 'true') activateTerminalMode();
 
-    // Link groups render immediately; threat feed fetches independently
+    // Link grid
     buildSearchIndex();
     setupGroups();
-    fetchCISAFeed();
-    setInterval(fetchCISAFeed, 10 * 60 * 1000);
 
-    // UI components
-    setupWelcomeMessage();
+    // Hero widgets
+    setupMOTD();
     updateDateTime();
     fetchWeather();
-    setupNewsTicker();
+    fetchSpaceXLaunch();
+
+    // Live feeds
+    fetchThreatFeed();
+    fetchNewsFeed();
+
+    // Periodic refresh
+    setInterval(fetchThreatFeed,      10 * 60 * 1000);
+    setInterval(fetchNewsFeed,        10 * 60 * 1000);
+    setInterval(fetchSpaceXLaunch,    60 * 60 * 1000);
+
+    // Command palette
     setupCommandPalette();
 
-    // Search bar expand/contract
-    const searchInput = document.getElementById('search-input');
-    searchInput.addEventListener('focus', () => { searchInput.style.width = '90%'; });
-    searchInput.addEventListener('blur',  () => {
-        if (!searchInput.value) searchInput.style.width = '';
-    });
-
-    // Keyboard listeners
+    // Keyboard
     document.addEventListener('keydown', globalKeyHandler, false);
-    document.addEventListener('keyup',   shortcutListener, false);
+    document.addEventListener('keyup',   shortcutListener,  false);
 });
